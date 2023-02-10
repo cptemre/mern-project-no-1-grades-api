@@ -8,28 +8,28 @@ const teacherSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      req: [true, "NAME IS REQUIRED"],
+      required: [true, "NAME IS REQUIRED"],
       minLength: [3, "NAME IS TOO SHORT"],
-      maxLengt: [20, "NAME IS TOO LONG"],
+      maxLength: [20, "NAME IS TOO LONG"],
     },
     surname: {
       type: String,
-      req: [true, "SURNAME IS REQUIRED"],
+      required: [true, "SURNAME IS REQUIRED"],
       minLength: [3, "SURNAME IS TOO SHORT"],
-      maxLengt: [20, "SURNAME IS TOO LONG"],
+      maxLength: [20, "SURNAME IS TOO LONG"],
     },
     email: {
       type: String,
-      req: [true, "EMAIL ADDRESS IS REQUIRED"],
+      required: [true, "EMAIL ADDRESS IS REQUIRED"],
       minLength: [7, "EMAIL ADDRESS IS TOO SHORT"],
-      maxLengt: [30, "EMAIL ADDRESS IS TOO LONG"],
+      maxLength: [30, "EMAIL ADDRESS IS TOO LONG"],
       unique: [true, "EMAIL ADDRESS ALREADY EXISTS"],
     },
     password: {
       type: String,
-      req: [true, "PASSWORD IS REQUIRED"],
+      required: [true, "PASSWORD IS REQUIRED"],
       minLength: [7, "PASSWORD IS TOO SHORT"],
-      maxLengt: [30, "PASSWORD IS TOO LONG"],
+      maxLength: [30, "PASSWORD IS TOO LONG"],
     },
   },
   { timestapms: true }
@@ -51,7 +51,7 @@ teacherSchema.methods.genJWT = function () {
       email: this.email,
     },
     process.env.ACCESS_SECRET,
-    { expiresIn: "5m" }
+    { expiresIn: "10s" }
   );
   const refresh_token = jwt.sign(
     {
