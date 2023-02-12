@@ -4,32 +4,32 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // TEACHER SCHEMA
-const teacherSchema = mongoose.Schema(
+const teacherSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "NAME IS REQUIRED"],
-      minLength: [3, "NAME IS TOO SHORT"],
-      maxLength: [20, "NAME IS TOO LONG"],
+      minlength: [3, "NAME IS TOO SHORT"],
+      maxlength: [20, "NAME IS TOO LONG"],
     },
     surname: {
       type: String,
       required: [true, "SURNAME IS REQUIRED"],
-      minLength: [3, "SURNAME IS TOO SHORT"],
-      maxLength: [20, "SURNAME IS TOO LONG"],
+      minlength: [3, "SURNAME IS TOO SHORT"],
+      maxlength: [20, "SURNAME IS TOO LONG"],
     },
     email: {
       type: String,
       required: [true, "EMAIL ADDRESS IS REQUIRED"],
-      minLength: [7, "EMAIL ADDRESS IS TOO SHORT"],
-      maxLength: [30, "EMAIL ADDRESS IS TOO LONG"],
+      minlength: [7, "EMAIL ADDRESS IS TOO SHORT"],
+      maxlength: [30, "EMAIL ADDRESS IS TOO LONG"],
       unique: [true, "EMAIL ADDRESS ALREADY EXISTS"],
     },
     password: {
       type: String,
       required: [true, "PASSWORD IS REQUIRED"],
-      minLength: [7, "PASSWORD IS TOO SHORT"],
-      maxLength: [30, "PASSWORD IS TOO LONG"],
+      minlength: [7, "PASSWORD IS TOO SHORT"],
+      maxlength: [30, "PASSWORD IS TOO LONG"],
     },
   },
   { timestapms: true }

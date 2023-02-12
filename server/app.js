@@ -19,13 +19,13 @@ const auth = require("./middlewares/auth");
 // USER'S ROUTE
 const userRoute = require("./routes/user");
 // STUDENTS' ROUTE
-const studentsRoute = require("./routes/grades");
+const studentsRoute = require("./routes/students");
 
 app.use(express.json());
 
 // USER PATHS
 app.use("/api/v1/user", userRoute);
-app.use("/api/v1/grades", auth, studentsRoute);
+app.use("/api/v1/students", auth, studentsRoute);
 app.use(error_handler);
 app.use(("*", (req, res) => res.status(404).json({ msg: "PAGE DOES NOT EXIST" })));
 

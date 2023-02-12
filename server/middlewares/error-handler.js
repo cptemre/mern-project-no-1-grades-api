@@ -8,7 +8,7 @@ const error_handler = (err, req, res, next) => {
   };
   // MONGOOSE UNIQUE ERROR
   if (err.code && err.code === 11000) {
-    customError.msg = `EMAIL ALREADY EXIST.`;
+    customError.msg = `${Object.keys(err.keyValue)} ALREADY EXISTS`;
     customError.statusCode = StatusCodes.BAD_REQUEST;
   }
   // MONGOOSE MODEL VALIDATION ERRORS AS ARRAY
