@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 // FUNCTIONS
 const create_new_access_token = require("../functions/create-new-access-token");
 const compare_tokens = require("../functions/compare-tokens");
-
+// TODO CHANGE REFRESH TOKEN REQUEST WAY
 const auth = async (req, res, next) => {
   // CHECK HEADER
   const authHeader = req.headers.authorization;
@@ -29,12 +29,12 @@ const auth = async (req, res, next) => {
       surname,
       email
     );
-    req.user = { teacherID, name, surname, email, access_token };
+    req.user = { teacherID, access_token };
   } catch (error) {
     // IF ACCESS TOKEN IS EXPIRED THEN VERIFY REFRESH TOKEN
     try {
       // GET REFRESH TOKEN FROM CLIENT
-      const { refresh_token } = req.body;
+      const refresh_token = authHeader.split(" ")[2];
       // COMPARE ACCESS AND REFRESH TOKENS
       const { isMatch, refresh_verify } = await compare_tokens(
         access_token,
@@ -52,7 +52,7 @@ const auth = async (req, res, next) => {
           email
         );
         // SEND THE INFORMATION TO THE NEXT
-        req.user = { teacherID, name, surname, email, access_token };
+        req.user = { teacherID, access_token };
       } else {
         throw new Unauthorized("AUTHORIZATION DENIED");
       }
