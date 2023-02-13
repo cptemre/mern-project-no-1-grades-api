@@ -9,6 +9,6 @@ const {
 } = require("../controllers/students");
 
 router.route("/").get(getAll).post(createStudent);
-router.route("/:id").patch(updateStudent);
+router.route("/:id").get(getStudent).patch(updateStudent);
 
 module.exports = router;

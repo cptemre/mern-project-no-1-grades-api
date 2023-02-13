@@ -19,6 +19,9 @@ const error_handler = (err, req, res, next) => {
     );
   }
   // TODO - CAST ERROR WILL BE ADDED HERE FOR WRONG IDS
+  if (err.name === 'CastError') {
+    customError.msg = `WITH THE ID OF ${err.value} DOES NOT EXIST IN OUR DATABASE. PLEASE CHECK YOUR INPUT AGAIN`
+  }
   console.log(err);
   return res
     .status(customError["statusCode"])

@@ -32,7 +32,7 @@ const teacherSchema = new mongoose.Schema(
       maxlength: [30, "PASSWORD IS TOO LONG"],
     },
   },
-  { timestapms: true }
+  { timestamps: true }
 );
 
 // SAVE THE PASSWORD AS HASHED

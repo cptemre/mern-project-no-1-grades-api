@@ -30,9 +30,10 @@ const StudentsSchema = new mongoose.Schema(
     },
     lessons: {
       type: Object,
+      default: {}
     }
   },
-  { timestapms: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Students", StudentsSchema);
