@@ -1,5 +1,5 @@
 const Students = require("../models/Students");
-const { Not_Found, Bad_Request } = require("../errors");
+const { Bad_Request } = require("../errors");
 
 // * CREATE A NEW STUDENT
 const createStudent = async (req, res) => {
@@ -47,13 +47,15 @@ const getStudent = async (req, res) => {
       // LESSON NAME
       const lesson = Object.keys(student.lessons)[i];
       // CHECK IF THE LESSON IS CREATED BY THE THEACER
-      if (student.lessons[lesson].createdBy === teacherID) {
+      if (
+        student.lessons[lesson].createdBy &&
+        student.lessons[lesson].createdBy === teacherID
+      ) {
         // SET LESSONS KEY TO MATCHED LESSON VALUES
         lessons[lesson] = student.lessons[lesson];
       }
     }
     student.lessons = lessons;
-    console.log(student);
     res.status(200).json({ student, access_token });
   } else {
     throw new Bad_Request("STUDENT IS NOT EXIST");
@@ -72,17 +74,42 @@ const getAll = async (req, res) => {
 
   search = await search.skip(skip).sort({ updatedAt: 1 });
 
-  // * DELETE EVERY LESSON WHICH TEACHER DIDNT MARK FOR THE STUDENT
-  // * CLIENT WILL GET ONLY RELATED LESSONS BUT DB WILL KEEP ALL
-  for (let i = 0; i < search.length; i++) {
-    for (const lessonKey in search[i]["lessons"]) {
-      const lesson = search[i]["lessons"][lessonKey];
-      if (lesson.createdBy && lesson.createdBy !== teacherID) {
-        delete search[i].lessons[lessonKey];
+  if (search.length) {
+    // * DELETE EVERY LESSON WHICH TEACHER DIDNT MARK FOR THE STUDENT
+    // * CLIENT WILL GET ONLY RELATED LESSONS BUT DB WILL KEEP ALL
+    for (let i = 0; i < search.length; i++) {
+      for (const lessonKey in search[i]["lessons"]) {
+        const lesson = search[i]["lessons"][lessonKey];
+        if (lesson.createdBy && lesson.createdBy !== teacherID) {
+          delete search[i].lessons[lessonKey];
+        }
       }
     }
+    res.status(200).json({ search, access_token });
+  } else {
+    throw new Bad_Request("THERE ARE NO STUDENT RECORDED");
   }
-  res.status(200).json({ search, access_token });
 };
 
-module.exports = { getAll, getStudent, createStudent, updateStudent };
+// * DELETE STUDENT COMPLETLY FROM DB
+// SEND MSG IF DELETED
+// THROW AN ERROR IF NOT DELETED
+const deleteStudent = async (req, res) => {
+  const { id: studentID } = req.params;
+  const {access_token} = req.user
+  const student = await Students.deleteOne({ studentID });
+  console.log(student);
+  if (student.deletedCount) {
+    res.status(200).json({ msg: "STUDENT IS DELETED" });
+  }
+  throw new Bad_Request("STUDENT IS NOT DELETED");
+};
+
+
+module.exports = {
+  getAll,
+  getStudent,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+};
