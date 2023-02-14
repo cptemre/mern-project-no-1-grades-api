@@ -20,14 +20,20 @@ const auth = require("./middlewares/auth");
 const userRoute = require("./routes/user");
 // STUDENTS' ROUTE
 const studentsRoute = require("./routes/students");
+// STUDENTS' ROUTE
+const teachersRoute = require("./routes/teachers");
 
 app.use(express.json());
 
 // USER PATHS
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/students", auth, studentsRoute);
+app.use("/api/v1/teachers", auth, teachersRoute);
+// ERRORS
 app.use(error_handler);
-app.use(("*", (req, res) => res.status(404).json({ msg: "PAGE DOES NOT EXIST" })));
+app.use(
+  ("*", (req, res) => res.status(404).json({ msg: "PAGE DOES NOT EXIST" }))
+);
 
 const start = async () => {
   try {

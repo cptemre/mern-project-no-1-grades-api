@@ -1,5 +1,7 @@
 const { Unauthorized } = require("../errors");
 const jwt = require("jsonwebtoken");
+const Blacklist = require("../models/Blacklist");
+
 // FUNCTIONS
 const create_new_access_token = require("../functions/create-new-access-token");
 const compare_tokens = require("../functions/compare-tokens");
@@ -29,7 +31,7 @@ const auth = async (req, res, next) => {
       surname,
       email
     );
-    req.user = { teacherID, access_token };
+    req.user = { teacherID, access_token, email };
   } catch (error) {
     // IF ACCESS TOKEN IS EXPIRED THEN VERIFY REFRESH TOKEN
     try {
@@ -42,17 +44,23 @@ const auth = async (req, res, next) => {
       );
       // CONTINUE IF THEY MATCH
       if (isMatch) {
-        // TEACHER'S VERIFIED INFORMATION
-        const { teacherID, name, surname, email } = refresh_verify;
-        // FIND THE TEACHER, CREATE NEW ACCESS TOKEN
-        const access_token = await create_new_access_token(
-          teacherID,
-          name,
-          surname,
-          email
-        );
-        // SEND THE INFORMATION TO THE NEXT
-        req.user = { teacherID, access_token };
+        // CHECK IF REFRESH TOKEN IS IN THE BLACKLIST. IF SO DONT ALLOW TO AUTHORIZATION
+        const blacklistToken = await Blacklist.find({ refresh_token });
+        if (!blacklistToken.length) {
+          // TEACHER'S VERIFIED INFORMATION
+          const { teacherID, name, surname, email } = refresh_verify;
+          // FIND THE TEACHER, CREATE NEW ACCESS TOKEN
+          const access_token = await create_new_access_token(
+            teacherID,
+            name,
+            surname,
+            email
+          );
+          // SEND THE INFORMATION TO THE NEXT
+          req.user = { teacherID, access_token, email };
+        } else {
+          throw new Unauthorized("AUTHORIZATION DENIED");
+        }
       } else {
         throw new Unauthorized("AUTHORIZATION DENIED");
       }

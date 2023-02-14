@@ -4,7 +4,7 @@ const { Bad_Request } = require("../errors");
 // * CREATE A NEW STUDENT
 const createStudent = async (req, res) => {
   const { access_token } = req.user;
-  await Students.create({ ...req.body });
+  const student = await Students.create({ ...req.body });
   res.status(200).json({ msg: "STUDENT IS CREATED", access_token });
 };
 
@@ -22,16 +22,15 @@ const updateStudent = async (req, res) => {
   // CHANGE LESSON'S VALUE FOR CREATEDBY
   req.body.lessons[lesson] = { ...req.body.lessons[lesson], createdBy };
   const { id: studentID } = req.params;
-  try {
-    await Students.updateOne(
-      { _id: studentID, createdBy: teacherID },
-      { ...req.body },
-      { runValidators: true, new: true }
-    );
+  const student = await Students.updateOne(
+    { _id: studentID, createdBy: teacherID },
+    { ...req.body },
+    { runValidators: true, new: true }
+  );
+  if (student.modifiedCount) {
     res.status(200).json({ msg: "STUDENT IS UPDATED", access_token });
-  } catch (error) {
-    throw new Bad_Request("UPDATE FAILED");
   }
+  throw new Bad_Request("UPDATE FAILED");
 };
 
 // * FIND ONE STUDENT ONLY
@@ -63,8 +62,9 @@ const getStudent = async (req, res) => {
 };
 
 // * GET ALL STUDENTS RELATED TO THE TEACHER
+// ! CLIENT MUST FILTER EMPTY LESSON OBJECT INDEXES TO NOT SHOW TO TEACHER
 const getAll = async (req, res) => {
-  const { teacherID, access_token } = req.user;
+  const { teacherID, access_token, email } = req.user;
   // FIND RAW RESULT
   let search = Students.find();
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
@@ -75,13 +75,17 @@ const getAll = async (req, res) => {
   search = await search.skip(skip).sort({ updatedAt: 1 });
 
   if (search.length) {
-    // * DELETE EVERY LESSON WHICH TEACHER DIDNT MARK FOR THE STUDENT
-    // * CLIENT WILL GET ONLY RELATED LESSONS BUT DB WILL KEEP ALL
-    for (let i = 0; i < search.length; i++) {
-      for (const lessonKey in search[i]["lessons"]) {
-        const lesson = search[i]["lessons"][lessonKey];
-        if (lesson.createdBy && lesson.createdBy !== teacherID) {
-          delete search[i].lessons[lessonKey];
+    // ! IF THIS IS NOT ADMIN THEN FILTER
+    // ! IF IT IS ADMIN THEN SEND ALL WITHOUT ANY FILTER
+    if (email !== "admin@gmail.com") {
+      // * DELETE EVERY LESSON WHICH TEACHER DIDNT MARK FOR THE STUDENT
+      // * CLIENT WILL GET ONLY RELATED LESSONS BUT DB WILL KEEP ALL
+      for (let i = 0; i < search.length; i++) {
+        for (const lessonKey in search[i]["lessons"]) {
+          const lesson = search[i]["lessons"][lessonKey];
+          if (lesson.createdBy && lesson.createdBy !== teacherID) {
+            delete search[i].lessons[lessonKey];
+          }
         }
       }
     }
@@ -96,15 +100,14 @@ const getAll = async (req, res) => {
 // THROW AN ERROR IF NOT DELETED
 const deleteStudent = async (req, res) => {
   const { id: studentID } = req.params;
-  const {access_token} = req.user
+  const { access_token } = req.user;
   const student = await Students.deleteOne({ studentID });
   console.log(student);
   if (student.deletedCount) {
-    res.status(200).json({ msg: "STUDENT IS DELETED" });
+    res.status(200).json({ msg: "STUDENT IS DELETED", access_token });
   }
   throw new Bad_Request("STUDENT IS NOT DELETED");
 };
-
 
 module.exports = {
   getAll,
