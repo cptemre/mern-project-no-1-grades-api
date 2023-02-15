@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const StudentsSchema = new mongoose.Schema(
   {
@@ -23,17 +24,55 @@ const StudentsSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, "EMAIL ADDRESS IS REQUIRED"],
       minlength: [7, "EMAIL ADDRESS IS TOO SHORT"],
       maxlength: [30, "EMAIL ADDRESS IS TOO LONG"],
       unique: [true, "EMAIL ADDRESS MUST BE UNIQUE"],
     },
+    password: {
+      type: String,
+      required: [true, "PASSWORD IS REQUIRED"],
+      minlength: [7, "PASSWORD IS TOO SHORT"],
+      maxlength: [30, "PASSWORD IS TOO LONG"],
+    },
     lessons: {
       type: Object,
-      default: {}
-    }
+      default: {},
+    },
   },
   { timestamps: true }
 );
+
+StudentsSchema.pre("save", async function () {
+  let tempEmail = this.name[0] + this.surname + "@edu.ga.pl";
+  this.email = tempEmail.toLowerCase();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+StudentsSchema.methods.genJWT = function () {
+  const access_token = jwt.sign(
+    {
+      ID: this._id,
+      name: this.name,
+      surname: this.surname,
+      email: this.email,
+      user: "student",
+    },
+    process.env.ACCESS_SECRET,
+    { expiresIn: "10s" }
+  );
+  const refresh_token = jwt.sign(
+    {
+      ID: this._id,
+      name: this.name,
+      surname: this.surname,
+      email: this.email,
+      user: "student",
+    },
+    process.env.REFRESH_SECRET,
+    { expiresIn: "180d" }
+  );
+  return { access_token, refresh_token };
+};
 
 module.exports = mongoose.model("Students", StudentsSchema);

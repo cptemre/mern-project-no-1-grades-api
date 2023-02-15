@@ -3,7 +3,7 @@ const router = express.Router()
 
 const {updateTeacher,deleteTeacher, getAllTeachers, getSingleTeacher} = require('../controllers/teachers');
 
-router.route('/').get(getAllTeachers)
+router.get('/',getAllTeachers)
 router
   .route("/:teacherEmail")
   .delete(deleteTeacher)

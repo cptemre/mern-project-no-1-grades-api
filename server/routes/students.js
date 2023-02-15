@@ -9,6 +9,8 @@ const {
   deleteStudent
 } = require("../controllers/students");
 
-router.route("/").get(getAll).post(createStudent);
-router.route("/:id").get(getStudent).patch(updateStudent).delete(deleteStudent);
+const teacherAuth = require('../middlewares/teacherAuth');
+
+router.route("/").get(teacherAuth,getAll).post(teacherAuth,createStudent);
+router.route("/:id").get(getStudent).patch(teacherAuth,updateStudent).delete(teacherAuth,deleteStudent);
 module.exports = router;

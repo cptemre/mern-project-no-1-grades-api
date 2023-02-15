@@ -24,14 +24,15 @@ const auth = async (req, res, next) => {
   try {
     // VERIFIY ACCESS TOKEN
     const access_verify = jwt.verify(access_token, process.env.ACCESS_SECRET);
-    const { teacherID, name, surname, email } = access_verify;
+    const { ID, name, surname, email } = access_verify;
     const access_token = await create_new_access_token(
-      teacherID,
+      ID,
       name,
       surname,
-      email
+      email,
+      user
     );
-    req.user = { teacherID, access_token, email };
+    req.user = { ID, access_token, email, user };
   } catch (error) {
     // IF ACCESS TOKEN IS EXPIRED THEN VERIFY REFRESH TOKEN
     try {
@@ -48,16 +49,17 @@ const auth = async (req, res, next) => {
         const blacklistToken = await Blacklist.find({ refresh_token });
         if (!blacklistToken.length) {
           // TEACHER'S VERIFIED INFORMATION
-          const { teacherID, name, surname, email } = refresh_verify;
+          const { ID, name, surname, email,user } = refresh_verify;
           // FIND THE TEACHER, CREATE NEW ACCESS TOKEN
           const access_token = await create_new_access_token(
-            teacherID,
+            ID,
             name,
             surname,
-            email
+            email,
+            user
           );
           // SEND THE INFORMATION TO THE NEXT
-          req.user = { teacherID, access_token, email };
+          req.user = { ID, access_token, email, user };
         } else {
           throw new Unauthorized("AUTHORIZATION DENIED");
         }
@@ -65,6 +67,7 @@ const auth = async (req, res, next) => {
         throw new Unauthorized("AUTHORIZATION DENIED");
       }
     } catch (error) {
+      console.log(error);
       throw new Unauthorized("AUTHORIZATION DENIED");
     }
   }

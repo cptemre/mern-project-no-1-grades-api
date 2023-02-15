@@ -1,18 +1,22 @@
 const Students = require("../models/Students");
-const { Bad_Request } = require("../errors");
+const { Bad_Request, Unauthorized } = require("../errors");
 
 // * CREATE A NEW STUDENT
 const createStudent = async (req, res) => {
-  const { access_token } = req.user;
-  const student = await Students.create({ ...req.body });
-  res.status(200).json({ msg: "STUDENT IS CREATED", access_token });
+  const { access_token, email } = req.user;
+  if (email === "admin@ga.pl") {
+    await Students.create({ ...req.body });
+    res.status(200).json({ msg: "STUDENT IS CREATED", access_token });
+  } else {
+    throw new Unauthorized("AUTHORIZATION DENIED");
+  }
 };
 
 // * CHECK IF THE GRADE ALREADY EXISTS WITH STUDENTID AND LESSON
 // * THEN UPDATE THE WHOLE GRADE BY REQ.BODY
 const updateStudent = async (req, res) => {
-  const { teacherID, access_token } = req.user;
-  const createdBy = teacherID;
+  const { ID, access_token } = req.user;
+  const createdBy = ID;
   // * SET CREATED BY TO LESSON
   // ! ONLY CHANGE THE ONE SENT FROM THE CLIENT NOT ALL
   // LESSON KEY
@@ -23,20 +27,21 @@ const updateStudent = async (req, res) => {
   req.body.lessons[lesson] = { ...req.body.lessons[lesson], createdBy };
   const { id: studentID } = req.params;
   const student = await Students.updateOne(
-    { _id: studentID, createdBy: teacherID },
+    { _id: studentID, createdBy: ID },
     { ...req.body },
     { runValidators: true, new: true }
   );
   if (student.modifiedCount) {
     res.status(200).json({ msg: "STUDENT IS UPDATED", access_token });
+  } else {
+    throw new Bad_Request("UPDATE FAILED");
   }
-  throw new Bad_Request("UPDATE FAILED");
 };
 
 // * FIND ONE STUDENT ONLY
 const getStudent = async (req, res) => {
   const {
-    user: { teacherID, access_token },
+    user: { ID, access_token },
     params: { id: studentID },
   } = req;
   let student = await Students.findOne({ _id: studentID });
@@ -48,7 +53,7 @@ const getStudent = async (req, res) => {
       // CHECK IF THE LESSON IS CREATED BY THE THEACER
       if (
         student.lessons[lesson].createdBy &&
-        student.lessons[lesson].createdBy === teacherID
+        student.lessons[lesson].createdBy === ID
       ) {
         // SET LESSONS KEY TO MATCHED LESSON VALUES
         lessons[lesson] = student.lessons[lesson];
@@ -64,7 +69,7 @@ const getStudent = async (req, res) => {
 // * GET ALL STUDENTS RELATED TO THE TEACHER
 // ! CLIENT MUST FILTER EMPTY LESSON OBJECT INDEXES TO NOT SHOW TO TEACHER
 const getAll = async (req, res) => {
-  const { teacherID, access_token, email } = req.user;
+  const { ID, access_token, email } = req.user;
   // FIND RAW RESULT
   let search = Students.find();
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
@@ -83,7 +88,7 @@ const getAll = async (req, res) => {
       for (let i = 0; i < search.length; i++) {
         for (const lessonKey in search[i]["lessons"]) {
           const lesson = search[i]["lessons"][lessonKey];
-          if (lesson.createdBy && lesson.createdBy !== teacherID) {
+          if (lesson.createdBy && lesson.createdBy !== ID) {
             delete search[i].lessons[lessonKey];
           }
         }
@@ -101,7 +106,7 @@ const getAll = async (req, res) => {
 const deleteStudent = async (req, res) => {
   const { id: studentID } = req.params;
   const { access_token } = req.user;
-  const student = await Students.deleteOne({ studentID });
+  const student = await Students.deleteOne({ _id: studentID });
   console.log(student);
   if (student.deletedCount) {
     res.status(200).json({ msg: "STUDENT IS DELETED", access_token });

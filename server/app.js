@@ -15,12 +15,14 @@ const port = 5000 || process.env.PORT;
 // MIDDLEWARES
 const error_handler = require("./middlewares/error-handler");
 const auth = require("./middlewares/auth");
+const teacherAuth = require("./middlewares/teacherAuth");
+
 // * ROUTES
 // USER'S ROUTE
 const userRoute = require("./routes/user");
 // STUDENTS' ROUTE
 const studentsRoute = require("./routes/students");
-// STUDENTS' ROUTE
+// TEACHERS' ROUTE
 const teachersRoute = require("./routes/teachers");
 
 app.use(express.json());
@@ -28,7 +30,7 @@ app.use(express.json());
 // USER PATHS
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/students", auth, studentsRoute);
-app.use("/api/v1/teachers", auth, teachersRoute);
+app.use("/api/v1/teachers", auth, teacherAuth, teachersRoute);
 // ERRORS
 app.use(error_handler);
 app.use(

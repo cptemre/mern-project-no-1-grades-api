@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const BlacklistSchema = new mongoose.Schema({
-  refresh_token: {
+  token: {
     type: String,
     required: true,
   },

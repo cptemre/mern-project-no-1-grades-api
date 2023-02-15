@@ -7,12 +7,13 @@ const compare_tokens = async (access_token, refresh_token) => {
   const access_decode = jwt.decode(access_token, process.env.ACCESS_SECRET);
   // COMPARE EXPIRED ACCESS TOKEN AND REFRESH TOKEN INFORMATION
   const isMatch =
-    refresh_verify.teacherID === access_decode.teacherID &&
+    refresh_verify.ID === access_decode.ID &&
     refresh_verify.name === access_decode.name &&
     refresh_verify.surname === access_decode.surname &&
-    refresh_verify.email === access_decode.email;
-  refresh_verify.password === access_decode.password;
-  return {isMatch,refresh_verify};
+    refresh_verify.email === access_decode.email &&
+    refresh_verify.password === access_decode.password &&
+    refresh_verify.user === access_decode.user;
+  return { isMatch, refresh_verify };
 };
 
-module.exports = compare_tokens
+module.exports = compare_tokens;

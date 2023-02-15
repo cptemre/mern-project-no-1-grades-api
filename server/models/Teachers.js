@@ -20,7 +20,6 @@ const teacherSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, "EMAIL ADDRESS IS REQUIRED"],
       minlength: [7, "EMAIL ADDRESS IS TOO SHORT"],
       maxlength: [30, "EMAIL ADDRESS IS TOO LONG"],
       unique: [true, "EMAIL ADDRESS ALREADY EXISTS"],
@@ -41,6 +40,8 @@ const teacherSchema = new mongoose.Schema(
 
 // SAVE THE PASSWORD AS HASHED
 teacherSchema.pre("save", async function () {
+  this.email = this.name[0] + this.surname + "@ga.pl";
+  this.email.toLowerCase()
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
@@ -49,20 +50,22 @@ teacherSchema.pre("save", async function () {
 teacherSchema.methods.genJWT = function () {
   const access_token = jwt.sign(
     {
-      teacherID: this._id,
+      ID: this._id,
       name: this.name,
       surname: this.surname,
       email: this.email,
+      user: 'teacher'
     },
     process.env.ACCESS_SECRET,
     { expiresIn: "10s" }
   );
   const refresh_token = jwt.sign(
     {
-      teacherID: this._id,
+      ID: this._id,
       name: this.name,
       surname: this.surname,
       email: this.email,
+      user: "teacher",
     },
     process.env.REFRESH_SECRET,
     { expiresIn: "180d" }
