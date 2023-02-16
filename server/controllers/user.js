@@ -30,7 +30,6 @@ const login = async (req, res) => {
     account = await Students.findOne({ email });
   }
   if (account) {
-    console.log(account.password);
     const decoded = await bcrypt.compare(password, account.password);
     if (decoded) {
       const jwt = account.genJWT();

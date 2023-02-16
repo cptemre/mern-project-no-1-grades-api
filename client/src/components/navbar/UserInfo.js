@@ -1,11 +1,15 @@
-import React from "react";
-
+import React, { useContext } from "react";
+// COMPONENTS
+import { Context } from "../Context";
 const UserInfo = () => {
+  const { state } = useContext(Context);
   return (
     <section id="userInfo">
-      <article id="userTitle">TEACHER</article>
-      <article id="userName">EMRE KUNDURACI</article>
-      <article id="userEmail">kunduraci2@gmail.com</article>
+      <article id="userName">
+        {state.name} {state.surname}
+      </article>
+      <article id="userTitle">{state.title}</article>
+      <article id="userEmail">{state.email}</article>
     </section>
   );
 };

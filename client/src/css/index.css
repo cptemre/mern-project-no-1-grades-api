@@ -36,6 +36,10 @@ input,button {
   outline: none;
 }
 
+input {
+    border-radius: 8px;
+}
+
 button {
   background-color: rgb(119, 218, 119);
   padding: 0.5rem 1rem;

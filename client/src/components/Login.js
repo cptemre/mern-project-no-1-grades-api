@@ -1,31 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // IMAGE
 import homepageimg from "../assets/login/homepage.jpg";
 // NPMS
 import axios from "axios";
 import $ from "jquery";
+// HOOKS
+import usePost from "../hooks/usePost";
 const Login = () => {
+  // RADIO KEYS
+  const radioJSX = [
+    {
+      id: "teacherRadio",
+      html: "TEACHER",
+      title: "teacher",
+    },
+    {
+      id: "studentRadio",
+      html: "STUDENT",
+      title: "student",
+    },
+  ];
+
   // EMAIL AND PASSWORD VALUES INITIAL
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
+  // POST BODY
+  const [body, setBody] = useState({});
+  // POST URL
+  const [url, setUrl] = useState("");
+  // MSG FROM THE SERVER
 
   const loginHandle = async () => {
     console.log(title);
-    try {
-      const { data } = await axios.post("/api/v1/user/log_in", {
-        email,
-        password,
-        title,
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error.response.data.msg);
-    }
+    setUrl("/api/v1/user/log_in");
+    setBody({ email, password, title });
   };
 
-  const radioHandle = (e) => {};
-
+  usePost(url, body);
   return (
     <section id="login">
       <figcaption id="loginImgContainer">
@@ -35,14 +47,21 @@ const Login = () => {
         <div id="universityName">GRADES-API</div>
         <form id="loginForm" onSubmit={(e) => e.preventDefault()}>
           <div className="inputDiv" id="radioContainer">
-            <div className="radioDiv">
-              <label htmlFor="teacherRadio">TEACHER</label>
-              <input type="radio" id="teacherRadio" name="title" />
-            </div>
-            <div className="radioDiv">
-              <label htmlFor="studentRadio">STUDENT</label>
-              <input type="radio" id="studentRadio" name="title" />
-            </div>
+            {radioJSX.map((radio) => {
+              const { id, html, title } = radio;
+              return (
+                <div className="radioDiv" key={id}>
+                  <label htmlFor={id}>{html}</label>
+                  <input
+                    type="radio"
+                    data-title={title}
+                    id={id}
+                    name="title"
+                    onClick={(e) => setTitle($(e.target).attr("data-title"))}
+                  />
+                </div>
+              );
+            })}
           </div>
           <input
             placeholder="EMAIL"
@@ -62,7 +81,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div id="msg">LOGIN DENIED</div>
+          <div className="msg"></div>
           <button onMouseDown={() => loginHandle()}>LOGIN</button>
         </form>
       </div>
