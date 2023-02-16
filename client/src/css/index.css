@@ -1,3 +1,7 @@
+:root {
+  --errorRed: rgb(197, 144, 144);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -31,13 +35,14 @@ img {
   height: 100%;
 }
 
-input,button {
+input,
+button {
   border: none;
   outline: none;
 }
 
 input {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 button {

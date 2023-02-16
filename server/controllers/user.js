@@ -29,17 +29,20 @@ const login = async (req, res) => {
   } else {
     account = await Students.findOne({ email });
   }
+  if (!title) {
+    throw new Bad_Request("CHOOSE A TITLE");
+  }
   if (account) {
     const decoded = await bcrypt.compare(password, account.password);
     if (decoded) {
       const jwt = account.genJWT();
       // ! SUCCESS RESPOND IS MSG AND JWT. SAVE ACCESS TOKEN TO APP AND REFRESH TOKEN TO COOKIES
-      res.status(200).json({ msg: "SUCCESSFULY LOGGED IN", jwt });
+      res.status(200).json({ msg: "LOGGED IN", jwt });
     } else {
       throw new Bad_Request("PASSWORD IS WRONG");
     }
   } else {
-    throw new Bad_Request("EMAIL ADDRESS IS WRONG");
+    throw new Bad_Request("EMAIL IS WRONG");
   }
 };
 

@@ -1,9 +1,8 @@
 import React, { useReducer, useEffect, useState } from "react";
 // * COMPONENTS
 // NAVBAR
-import Navbar from "./components/navbar/Navbar";
 import Login from "./components/Login";
-import Teachers from "./components/pages/Teachers";
+import Home from "./components/pages/Home";
 import { Context } from "./components/Context";
 // * DATA
 import { reducer, defaultState } from "./data/reducer";
@@ -22,6 +21,8 @@ import "./css/login/login.css";
 
 // NAVBAR
 import "./css/navbar/navbar.css";
+// MENU
+import "./css/menu/menu.css";
 // USER INFO
 import "./css/navbar/userInfo.css";
 // OPTIONS
@@ -30,6 +31,8 @@ import "./css/navbar/options.css";
 import "./css/navbar/logout.css";
 
 // PAGES
+// HOME
+import "./css/pages/home.css";
 import "./css/pages/teachers.css";
 
 const App = () => {
@@ -54,18 +57,13 @@ const App = () => {
   }, [decodedToken]);
   return (
     <Router>
-      {!isExpired && (
-        <Context.Provider value={{ state }}>
-          <Navbar />
-        </Context.Provider>
-      )}
       <Routes>
         {!isExpired ? (
           <Route
             path="/"
             element={
               <Context.Provider value={{ state, dispatch }}>
-                <Teachers />
+                <Home />
               </Context.Provider>
             }
           />

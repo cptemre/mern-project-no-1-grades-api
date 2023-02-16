@@ -1,9 +1,8 @@
 nav {
-  position: fixed;
-  left: 0;
-  max-width: 14rem;
-  width: 100%;
+  position: relative;
+  width: 10rem;
   height: 100vh;
   background-color: rgb(104, 195, 104);
   border-right: 5px solid green;
+  grid-area: navbar;
 }

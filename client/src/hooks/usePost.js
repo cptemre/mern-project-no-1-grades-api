@@ -25,12 +25,10 @@ const usePost = async (url, body) => {
       dispatch({ type: "ACCESS_TOKEN", payload: jwt.access_token });
     }
   }, [jwt]);
-  console.log(state);
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
   const post = async () => {
     try {
       const { data } = await axios.post(url, body);
-      console.log(data);
       setMsg(data.msg);
       setjwt(data.jwt);
     } catch (error) {

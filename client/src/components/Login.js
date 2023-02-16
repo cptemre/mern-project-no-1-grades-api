@@ -1,12 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+// COMPONENTS
+import Header from "./header/Header";
+import { Context } from "./Context";
 // IMAGE
 import homepageimg from "../assets/login/homepage.jpg";
 // NPMS
-import axios from "axios";
 import $ from "jquery";
 // HOOKS
 import usePost from "../hooks/usePost";
 const Login = () => {
+  const { state } = useContext(Context);
   // RADIO KEYS
   const radioJSX = [
     {
@@ -32,19 +35,36 @@ const Login = () => {
   // MSG FROM THE SERVER
 
   const loginHandle = async () => {
-    console.log(title);
     setUrl("/api/v1/user/log_in");
     setBody({ email, password, title });
   };
 
+  // AXIOS POST HOOK
   usePost(url, body);
+
+  useEffect(() => {
+    if (state.msg && state.msg !== 'PAGE DOES NOT EXIST') {
+      $('.msg').css('opacity', 1);
+    }
+  }, [state.msg]);
+
+  const wrong = () => {
+    $("#emailInput").css({
+      backgroundColor: "var(--errorRed)",
+    });
+    setTimeout(() => {
+      $("#emailInput").css({
+        backgroundColor: "white",
+      });
+    }, 1000);
+  };
   return (
     <section id="login">
       <figcaption id="loginImgContainer">
         <img id="homepageimg" src={homepageimg} alt="Home Page" />
       </figcaption>
       <div id="loginContainer">
-        <div id="universityName">GRADES-API</div>
+        <Header />
         <form id="loginForm" onSubmit={(e) => e.preventDefault()}>
           <div className="inputDiv" id="radioContainer">
             {radioJSX.map((radio) => {
@@ -81,7 +101,9 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div className="msg"></div>
+          <div className="msg">
+            {state.msg}
+          </div>
           <button onMouseDown={() => loginHandle()}>LOGIN</button>
         </form>
       </div>
