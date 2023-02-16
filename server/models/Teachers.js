@@ -54,7 +54,7 @@ teacherSchema.methods.genJWT = function () {
       name: this.name,
       surname: this.surname,
       email: this.email,
-      user: 'teacher'
+      title: 'teacher'
     },
     process.env.ACCESS_SECRET,
     { expiresIn: "10s" }
@@ -65,7 +65,7 @@ teacherSchema.methods.genJWT = function () {
       name: this.name,
       surname: this.surname,
       email: this.email,
-      user: "teacher",
+      title: "teacher",
     },
     process.env.REFRESH_SECRET,
     { expiresIn: "180d" }

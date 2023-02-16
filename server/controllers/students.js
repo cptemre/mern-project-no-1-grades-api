@@ -104,14 +104,16 @@ const getAll = async (req, res) => {
 // SEND MSG IF DELETED
 // THROW AN ERROR IF NOT DELETED
 const deleteStudent = async (req, res) => {
-  const { id: studentID } = req.params;
-  const { access_token } = req.user;
-  const student = await Students.deleteOne({ _id: studentID });
-  console.log(student);
-  if (student.deletedCount) {
-    res.status(200).json({ msg: "STUDENT IS DELETED", access_token });
+  const { id: studentID, email } = req.params;
+  if (email === "admin@ga.pl") {
+    const { access_token } = req.user;
+    const student = await Students.deleteOne({ _id: studentID });
+    console.log(student);
+    if (student.deletedCount) {
+      res.status(200).json({ msg: "STUDENT IS DELETED", access_token });
+    }
+    throw new Bad_Request("STUDENT IS NOT DELETED");
   }
-  throw new Bad_Request("STUDENT IS NOT DELETED");
 };
 
 module.exports = {

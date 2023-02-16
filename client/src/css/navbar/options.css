@@ -1,0 +1,17 @@
+#options {
+  height: auto;
+  grid-row-gap: 1rem;
+  font-family: "Fjalla One", sans-serif;
+  letter-spacing: 1px;
+  color: rgb(11, 27, 7);
+  margin-top: 5rem;
+  padding: 0 1rem;
+}
+
+.option {
+  background-color: rgb(200, 223, 214);
+  font-size: 1rem;
+  border: 2px solid rgb(7, 110, 7);
+  cursor: pointer;
+  height: 2rem;
+}

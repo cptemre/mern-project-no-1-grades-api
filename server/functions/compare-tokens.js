@@ -12,7 +12,7 @@ const compare_tokens = async (access_token, refresh_token) => {
     refresh_verify.surname === access_decode.surname &&
     refresh_verify.email === access_decode.email &&
     refresh_verify.password === access_decode.password &&
-    refresh_verify.user === access_decode.user;
+    refresh_verify.title === access_decode.title;
   return { isMatch, refresh_verify };
 };
 
