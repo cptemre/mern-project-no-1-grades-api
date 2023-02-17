@@ -17,8 +17,8 @@ const Options = () => {
   return (
     <section id="options">
       {state.title &&
-        options[state.title].map((option) => (
-          <article className="option">{option}</article>
+        options[state.title].map((option, i) => (
+          <article className="option" key={option + i}>{option}</article>
         ))}
     </section>
   );

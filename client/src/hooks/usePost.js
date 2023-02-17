@@ -3,9 +3,12 @@ import { useState, useEffect, useContext } from "react";
 import { Context } from "../components/Context";
 // NPMS
 import axios from "axios";
+import { useCookies } from "react-cookie";
 const usePost = async (url, body) => {
+  // COOKIE
+  const [cookies, setCookie] = useCookies(["refresh_token"]);
   // CONTEXT VALUES
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   // RETURN VARIABLES
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
@@ -23,6 +26,9 @@ const usePost = async (url, body) => {
   useEffect(() => {
     if (jwt && jwt.access_token) {
       dispatch({ type: "ACCESS_TOKEN", payload: jwt.access_token });
+    }
+    if (jwt && jwt.refresh_token) {
+      setCookie("refresh_token", jwt.refresh_token, { path: "/" });
     }
   }, [jwt]);
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE

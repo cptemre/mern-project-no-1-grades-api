@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // * NPMS
 import { useJwt } from "react-jwt";
-
+import { useCookies } from "react-cookie";
 // * CSS
 // MAIN
 import "./css/index.css";
@@ -21,8 +21,7 @@ import "./css/login/login.css";
 
 // NAVBAR
 import "./css/navbar/navbar.css";
-// MENU
-import "./css/menu/menu.css";
+
 // USER INFO
 import "./css/navbar/userInfo.css";
 // OPTIONS
@@ -38,7 +37,24 @@ import "./css/pages/teachers.css";
 const App = () => {
   // * REDUCER SETUP
   const [state, dispatch] = useReducer(reducer, defaultState);
-  const { decodedToken, isExpired } = useJwt(state.access_token);
+  // TOKEN SETUP
+  const [jwt, setJwt] = useState("");
+  const { decodedToken, isExpired } = useJwt(jwt);
+  // COOKIES
+  const [cookies, setCookie] = useCookies(["refresh_token"]);
+
+  // SET JWT TO ACCESS TOKEN WHEN IT IS CHANGED WHICH WILL DECODE WITH USEJWT
+  useEffect(() => {
+    if (state.access_token) {
+      setJwt(state.access_token);
+    }
+  }, [state.access_token]);
+  // IF IT IS EXPIRED AND THERE IS JWT SET ALREADY THEN SET JWT TO REFRESH TOKEN
+  useEffect(() => {
+    if (isExpired && jwt) {
+      setJwt(cookies.refresh_token);
+    }
+  }, [isExpired, cookies.refresh_token]);
 
   // DECODE THE TOKEN AND SET USER INFO TO STATE
   useEffect(() => {
