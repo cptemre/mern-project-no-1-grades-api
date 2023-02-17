@@ -55,7 +55,10 @@ const logout = async (req, res) => {
   // GET ACCESS TOKEN
   const access_token = authHeader.split(" ")[1];
   const refresh_token = authHeader.split(" ")[2];
-  await Blacklist.create({ token: refresh_token }, { token: access_token });
+  console.log('access' + access_token);
+    console.log('refresh' + refresh_token);
+
+  await Blacklist.create({ token: refresh_token });
   res.status(200).json({ msg: "SUCCESSFULLY LOGGED OUT" });
 };
 

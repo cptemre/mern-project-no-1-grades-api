@@ -1,5 +1,6 @@
 :root {
   --errorRed: rgb(197, 144, 144);
+  --loaderBlue: rgb(82, 177, 186)
 }
 
 * {

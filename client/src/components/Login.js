@@ -8,6 +8,7 @@ import homepageimg from "../assets/login/homepage.jpg";
 import $ from "jquery";
 // HOOKS
 import usePost from "../hooks/usePost";
+import useAuth from "../hooks/useAuth";
 const Login = () => {
   const { state } = useContext(Context);
   // RADIO KEYS
@@ -32,7 +33,6 @@ const Login = () => {
   const [body, setBody] = useState({});
   // POST URL
   const [url, setUrl] = useState("");
-  // MSG FROM THE SERVER
 
   const loginHandle = async () => {
     setUrl("/api/v1/user/log_in");
@@ -41,23 +41,14 @@ const Login = () => {
 
   // AXIOS POST HOOK
   usePost(url, body);
-
+  useAuth()
   useEffect(() => {
     if (state.msg && state.msg !== 'PAGE DOES NOT EXIST') {
       $('.msg').css('opacity', 1);
     }
   }, [state.msg]);
 
-  const wrong = () => {
-    $("#emailInput").css({
-      backgroundColor: "var(--errorRed)",
-    });
-    setTimeout(() => {
-      $("#emailInput").css({
-        backgroundColor: "white",
-      });
-    }, 1000);
-  };
+
   return (
     <section id="login">
       <figcaption id="loginImgContainer">

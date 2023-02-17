@@ -8,7 +8,7 @@ const usePost = async (url, body) => {
   // COOKIE
   const [cookies, setCookie] = useCookies(["refresh_token"]);
   // CONTEXT VALUES
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   // RETURN VARIABLES
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
@@ -26,6 +26,7 @@ const usePost = async (url, body) => {
   useEffect(() => {
     if (jwt && jwt.access_token) {
       dispatch({ type: "ACCESS_TOKEN", payload: jwt.access_token });
+      dispatch({ type: "isAuth", payload: true });
     }
     if (jwt && jwt.refresh_token) {
       setCookie("refresh_token", jwt.refresh_token, { path: "/" });
@@ -34,7 +35,11 @@ const usePost = async (url, body) => {
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
   const post = async () => {
     try {
-      const { data } = await axios.post(url, body);
+      const { data } = await axios.post(url, body, {
+        headers: {
+          Authorization: `Bearer ${state.access_token} ${cookies.refresh_token}`,
+        },
+      });
       setMsg(data.msg);
       setjwt(data.jwt);
     } catch (error) {

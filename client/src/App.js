@@ -3,6 +3,7 @@ import React, { useReducer, useEffect, useState } from "react";
 // NAVBAR
 import Login from "./components/Login";
 import Home from "./components/pages/Home";
+import Loading from "./components/loading/Loading";
 import { Context } from "./components/Context";
 // * DATA
 import { reducer, defaultState } from "./data/reducer";
@@ -15,6 +16,9 @@ import { useCookies } from "react-cookie";
 // * CSS
 // MAIN
 import "./css/index.css";
+
+// LOADING
+import "./css/loading/loading.css";
 
 // LOGIN
 import "./css/login/login.css";
@@ -38,23 +42,20 @@ const App = () => {
   // * REDUCER SETUP
   const [state, dispatch] = useReducer(reducer, defaultState);
   // TOKEN SETUP
-  const [jwt, setJwt] = useState("");
-  const { decodedToken, isExpired } = useJwt(jwt);
+  const { decodedToken, isExpired, reEvaluateToken } = useJwt("");
   // COOKIES
   const [cookies, setCookie] = useCookies(["refresh_token"]);
 
-  // SET JWT TO ACCESS TOKEN WHEN IT IS CHANGED WHICH WILL DECODE WITH USEJWT
+  // SET JWT TO REFRESH TOKEN IF COOKIES CHANGE
   useEffect(() => {
-    if (state.access_token) {
-      setJwt(state.access_token);
+    if (isExpired) {
+      reEvaluateToken(cookies.refresh_token);
     }
-  }, [state.access_token]);
-  // IF IT IS EXPIRED AND THERE IS JWT SET ALREADY THEN SET JWT TO REFRESH TOKEN
+  }, [cookies.refresh_token, isExpired]);
+
   useEffect(() => {
-    if (isExpired && jwt) {
-      setJwt(cookies.refresh_token);
-    }
-  }, [isExpired, cookies.refresh_token]);
+    dispatch({ type: "ISAUTH", payload: !isExpired });
+  }, [isExpired]);
 
   // DECODE THE TOKEN AND SET USER INFO TO STATE
   useEffect(() => {
@@ -74,25 +75,30 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {!isExpired ? (
-          <Route
-            path="/"
-            element={
-              <Context.Provider value={{ state, dispatch }}>
-                <Home />
-              </Context.Provider>
-            }
-          />
-        ) : (
-          <Route
-            path="/"
-            element={
-              <Context.Provider value={{ state, dispatch }}>
-                <Login />
-              </Context.Provider>
-            }
-          />
-        )}
+        <Route
+          path="/"
+          element={
+            <Context.Provider value={{ state, dispatch }}>
+              <Loading />
+            </Context.Provider>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Context.Provider value={{ state, dispatch }}>
+              <Login />
+            </Context.Provider>
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <Context.Provider value={{ state, dispatch }}>
+              <Home />
+            </Context.Provider>
+          }
+        />
       </Routes>
     </Router>
   );

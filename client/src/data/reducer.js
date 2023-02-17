@@ -20,6 +20,9 @@ const reducer = (state, action) => {
     if (action.type === "ACCESS_TOKEN") {
       return { ...state, access_token: action.payload };
     }
+  if (action.type === "ISAUTH") {
+    return { ...state, isAuth: action.payload };
+  }
     return state
 }
 
@@ -31,6 +34,7 @@ const defaultState = {
   title: "",
   msg: "",
   access_token: "",
+  isAuth: ''
 };
 
 export {reducer,defaultState}
