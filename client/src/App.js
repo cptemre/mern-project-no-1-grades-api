@@ -5,7 +5,6 @@ import Login from "./components/Login";
 import Home from "./components/pages/Home";
 import Loading from "./components/loading/Loading";
 import { Context } from "./components/Context";
-import Navbar from "./components/navbar/Navbar";
 // * DATA
 import { reducer, defaultState } from "./data/reducer";
 // * ROUTER
@@ -43,24 +42,23 @@ const App = () => {
 
   return (
     <Router>
-
       <Routes>
         <Route
           path="/"
-          element={
-            <Context.Provider value={{ state, dispatch }}>
-              <Loading />
-            </Context.Provider>
-          }
-        />
-        <Route
-          path="/home"
           element={
             <Context.Provider value={{ state, dispatch }}>
               <Home />
             </Context.Provider>
           }
         />
+        {/* <Route
+          path="/home"
+          element={
+            <Context.Provider value={{ state, dispatch }}>
+              <Home />
+            </Context.Provider>
+          }
+        /> */}
         <Route
           path="/login"
           element={

@@ -41,7 +41,7 @@ const teacherSchema = new mongoose.Schema(
 // SAVE THE PASSWORD AS HASHED
 teacherSchema.pre("save", async function () {
   this.email = this.name[0] + this.surname + "@ga.pl";
-  this.email.toLowerCase()
+  this.email.toLowerCase();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
@@ -54,7 +54,7 @@ teacherSchema.methods.genJWT = function () {
       name: this.name,
       surname: this.surname,
       email: this.email,
-      title: 'teacher'
+      title: "teacher",
     },
     process.env.ACCESS_SECRET,
     { expiresIn: "10s" }
@@ -68,7 +68,7 @@ teacherSchema.methods.genJWT = function () {
       title: "teacher",
     },
     process.env.REFRESH_SECRET,
-    { expiresIn: "180d" }
+    { expiresIn: "15s" }
   );
   return { access_token, refresh_token };
 };

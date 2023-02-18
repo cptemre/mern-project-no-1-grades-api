@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 // HOOKS
 import usePost from "../../hooks/usePost";
-import useAuth from "../../hooks/useInfo";
+import useAuth from "../../hooks/useAuth";
 
 // COMPONENTS
 import { Context } from "../Context";
@@ -15,21 +15,17 @@ const Logout = () => {
   const [url, setUrl] = useState("");
   const [body, setBody] = useState({});
   const { state, dispatch } = useContext(Context);
-  const [cookies, setCookie] = useCookies(["refresh_token"]);
+  const [cookies, setCookie] = useCookies(["refresh_token", "isAuth"]);
   const navigate = useNavigate();
 
-  const logout = async () => {
+  const logout = () => {
     setUrl("/api/v1/user/logout");
+    setCookie("refresh_token", "");
+    dispatch({ type: "ACCESS_TOKEN", payload: "" });
+    setCookie("isAuth", false);
   };
 
-  useEffect(() => {
-    dispatch({ type: "ACCESS_TOKEN", payload: "" });
-    dispatch({ type: "ISAUTH", payload: "" });
-    setCookie("refresh_token", "");
-  }, [state.isAuth]);
-
   usePost(url, body);
-
   return (
     <section id="logout" onClick={() => logout()}>
       LOGOUT

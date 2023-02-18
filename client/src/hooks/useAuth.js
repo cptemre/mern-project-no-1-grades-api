@@ -17,14 +17,14 @@ const useAuth = () => {
     "title",
     "isAuth",
   ]);
-  const { decodedToken, isExpired, reEvaluateToken } = useJwt("");
+  const { decodedToken, isExpired, reEvaluateToken } = useJwt(
+    cookies.refresh_token || ""
+  );
 
   // SET JWT TO REFRESH TOKEN IF COOKIES CHANGE
   useEffect(() => {
-    if (isExpired) {
-      reEvaluateToken(cookies.refresh_token);
-    }
-  }, [cookies.refresh_token, isExpired]);
+    reEvaluateToken(cookies.refresh_token);
+  }, [cookies.refresh_token]);
 
   // DECODE THE TOKEN AND SET USER INFO TO STATE
   useEffect(() => {
@@ -43,7 +43,7 @@ const useAuth = () => {
     } else {
       setCookie("isAuth", false);
     }
-  }, [decodedToken]);
+  }, [decodedToken, cookies.refresh_token, isExpired]);
 };
 
 export default useAuth;

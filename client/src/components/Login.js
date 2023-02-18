@@ -11,10 +11,12 @@ import { useCookies } from "react-cookie";
 
 // HOOKS
 import usePost from "../hooks/usePost";
-import useInfo from "../hooks/useInfo";
+import useInfo from "../hooks/useAuth";
+import useRedirect from "../hooks/useRedirect";
 const Login = () => {
   const { state } = useContext(Context);
   const navigate = useNavigate();
+  
   // RADIO KEYS
   const radioJSX = [
     {
@@ -37,26 +39,26 @@ const Login = () => {
   const [body, setBody] = useState({});
   // POST URL
   const [url, setUrl] = useState("");
-
-  const loginHandle = async () => {
+  useEffect(() => {
+    if (cookies.isAuth && cookies.isAuth === "true") {
+      navigate("/");
+    }
+  }, [cookies.isAuth]);
+  const loginHandle =  () => {
     setUrl("/api/v1/user/log_in");
     setBody({ email, password, title });
   };
   // AXIOS POST HOOK
   usePost(url, body);
   useInfo();
-  console.log(cookies.isAuth);
-  useEffect(() => {
-    if (cookies.isAuth === 'true') {
-      navigate("/");
-    }
-  }, [cookies.isAuth]);
-
+  useRedirect()
   useEffect(() => {
     if (state.msg && state.msg !== "PAGE DOES NOT EXIST") {
       $(".msg").css("opacity", 1);
     }
   }, [state.msg]);
+
+
 
   return (
     <section id="login">

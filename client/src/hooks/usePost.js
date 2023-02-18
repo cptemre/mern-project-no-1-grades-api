@@ -13,8 +13,10 @@ const usePost = async (url, body) => {
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
-    post();
-  }, [url, body]);
+    if (url) {
+      post();
+    }
+  }, [url, body, cookies.refresh_token, state.access_token]);
 
   // SET MSG TO STATE
   useEffect(() => {
@@ -29,9 +31,10 @@ const usePost = async (url, body) => {
     }
     if (jwt && jwt.refresh_token) {
       setCookie("refresh_token", jwt.refresh_token, { path: "/" });
-      console.log(jwt.refresh_token);
+      console.log(cookies.refresh_token);
     }
   }, [jwt]);
+  console.log(state.access_token);
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
   const post = async () => {
     try {
@@ -42,6 +45,7 @@ const usePost = async (url, body) => {
       });
       setMsg(data.msg);
       setjwt(data.jwt);
+      console.log(state.access_token + "Refresh " + cookies.refresh_token);
       dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
       setMsg(error.response.data.msg);

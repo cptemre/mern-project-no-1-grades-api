@@ -46,6 +46,7 @@ const auth = async (req, res, next) => {
       if (isMatch) {
         // CHECK IF REFRESH TOKEN IS IN THE BLACKLIST. IF SO DONT ALLOW TO AUTHORIZATION
         const blacklistToken = await Blacklist.find({ refresh_token });
+        console.log(blacklistToken);
         if (!blacklistToken.length) {
           // TEACHER'S VERIFIED INFORMATION
           const { ID, name, surname, email,title } = refresh_verify;
