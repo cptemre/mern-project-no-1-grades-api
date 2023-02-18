@@ -1,4 +1,4 @@
-import React, { useContext, useEffect,useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
 import Header from "../header/Header";
@@ -12,23 +12,34 @@ import useAuth from "../../hooks/useAuth";
 
 // NPMS
 import { useCookies } from "react-cookie";
+import { useParams } from "react-router-dom";
+import $ from "jquery";
+
 const Home = () => {
   const { state } = useContext(Context);
   const [cookies, setCookie] = useCookies(["isAuth"]);
-  const [isLoad, setIsLoad] = useState(false)
+  const [isLoad, setIsLoad] = useState(false);
+  const { component } = useParams();
   // SET AUTHORIZATION AND STATES
   useAuth();
 
   // UNTIL STATE OR ISLOAD GETS READ SHOW LOADING SCREEN THEN SHOW PAGE OR LOGIN DEPENDS ON AUTHORIZATION
   useEffect(() => {
-    load()
-  },[state])
+    load();
+  }, [state]);
   const load = () => {
     setTimeout(() => {
-      setIsLoad(true)
+      setIsLoad(true);
     }, 1000);
-  }
-  console.log(state, isLoad);
+  };
+
+  // SET SELECTED BUTTON COLOR
+  useEffect(() => {
+    if ((state.title, component, isLoad)) {
+      $(`#${component}Option`).css("background-color", "red");
+    }
+    console.log("trigger");
+  }, [state.title, component, isLoad]);
   return (
     <>
       {!state || !isLoad ? (
@@ -37,7 +48,11 @@ const Home = () => {
         <section id="home">
           <Navbar />
           <Header />
-          {state.title === 'admin' ? <Teachers /> : 'else'}
+          {state.title === "admin" && component === "teachers" ? (
+            <Teachers />
+          ) : (
+            "else"
+          )}
         </section>
       ) : (
         <Login />

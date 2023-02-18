@@ -35,6 +35,7 @@ import "./css/navbar/logout.css";
 // HOME
 import "./css/pages/home.css";
 import "./css/pages/teachers.css";
+import Teachers from "./components/pages/Teachers";
 
 const App = () => {
   // * REDUCER SETUP
@@ -51,16 +52,16 @@ const App = () => {
             </Context.Provider>
           }
         />
-        {/* <Route
-          path="/home"
+        <Route
+          path="/:component"
           element={
             <Context.Provider value={{ state, dispatch }}>
               <Home />
             </Context.Provider>
           }
-        /> */}
+        />
         <Route
-          path="/login"
+          path="*"
           element={
             <Context.Provider value={{ state, dispatch }}>
               <Login />

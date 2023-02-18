@@ -1,3 +1,30 @@
-#teachers {
-    grid-area: page;
+#table {
+  grid-area: page;
+  grid-template-rows: 2rem auto;
+  align-items: flex-start;
+      padding: 3rem 1rem;
+
+}
+
+#search {
+    grid-template-columns: 1fr 5rem;
+}
+
+#searchInput {
+    width: 100%;
+}
+
+#searchType {
+    justify-items: flex-start;
+    padding-left: 0.5rem;
+}
+
+td {
+  max-width: auto;
+}
+
+.tdInput {
+  text-align: center;
+  width: 100%;
+  background-color: transparent;
 }
