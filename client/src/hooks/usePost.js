@@ -26,10 +26,10 @@ const usePost = async (url, body) => {
   useEffect(() => {
     if (jwt && jwt.access_token) {
       dispatch({ type: "ACCESS_TOKEN", payload: jwt.access_token });
-      dispatch({ type: "isAuth", payload: true });
     }
     if (jwt && jwt.refresh_token) {
       setCookie("refresh_token", jwt.refresh_token, { path: "/" });
+      console.log(jwt.refresh_token);
     }
   }, [jwt]);
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
@@ -42,8 +42,10 @@ const usePost = async (url, body) => {
       });
       setMsg(data.msg);
       setjwt(data.jwt);
+      dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
       setMsg(error.response.data.msg);
+      dispatch({ type: "ISAUTH", payload: false });
     }
   };
 };

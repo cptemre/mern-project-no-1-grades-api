@@ -3,19 +3,21 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../Context";
 // NPMS
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+
 const Loading = () => {
   const navigate = useNavigate();
   const { state } = useContext(Context);
+  const [cookies, setCookie] = useCookies(["isAuth"]);
 
   useEffect(() => {
     console.log(state);
-    if (state.isAuth) {
-      navigate("/home");
-    } else {
+    if (cookies.isAuth === "false") {
       navigate("/login");
+    } else {
+      navigate("/home");
     }
-  }, [state.isAuth]);
-
+  }, [cookies.isAuth]);
   return <div id="loader"></div>;
 };
 

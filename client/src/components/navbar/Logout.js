@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 // HOOKS
 import usePost from "../../hooks/usePost";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/useInfo";
 
 // COMPONENTS
 import { Context } from "../Context";
@@ -26,7 +26,6 @@ const Logout = () => {
     dispatch({ type: "ACCESS_TOKEN", payload: "" });
     dispatch({ type: "ISAUTH", payload: "" });
     setCookie("refresh_token", "");
-    navigate("/login");
   }, [state.isAuth]);
 
   usePost(url, body);

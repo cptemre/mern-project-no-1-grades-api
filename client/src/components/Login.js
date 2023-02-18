@@ -6,11 +6,15 @@ import { Context } from "./Context";
 import homepageimg from "../assets/login/homepage.jpg";
 // NPMS
 import $ from "jquery";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+
 // HOOKS
 import usePost from "../hooks/usePost";
-import useAuth from "../hooks/useAuth";
+import useInfo from "../hooks/useInfo";
 const Login = () => {
   const { state } = useContext(Context);
+  const navigate = useNavigate();
   // RADIO KEYS
   const radioJSX = [
     {
@@ -24,7 +28,7 @@ const Login = () => {
       title: "student",
     },
   ];
-
+  const [cookies, setCookie] = useCookies(["isAuth"]);
   // EMAIL AND PASSWORD VALUES INITIAL
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,16 +42,21 @@ const Login = () => {
     setUrl("/api/v1/user/log_in");
     setBody({ email, password, title });
   };
-
   // AXIOS POST HOOK
   usePost(url, body);
-  useAuth()
+  useInfo();
+  console.log(cookies.isAuth);
   useEffect(() => {
-    if (state.msg && state.msg !== 'PAGE DOES NOT EXIST') {
-      $('.msg').css('opacity', 1);
+    if (cookies.isAuth === 'true') {
+      navigate("/");
+    }
+  }, [cookies.isAuth]);
+
+  useEffect(() => {
+    if (state.msg && state.msg !== "PAGE DOES NOT EXIST") {
+      $(".msg").css("opacity", 1);
     }
   }, [state.msg]);
-
 
   return (
     <section id="login">
@@ -92,9 +101,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div className="msg">
-            {state.msg}
-          </div>
+          <div className="msg">{state.msg}</div>
           <button onMouseDown={() => loginHandle()}>LOGIN</button>
         </form>
       </div>
