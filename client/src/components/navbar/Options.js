@@ -12,7 +12,6 @@ const Options = () => {
       "TEACHERS"
     ],
   });
-
   // ACCORDING TO STATE TITLE RETURN OPTIONS FROM OPTIONS VARIABLE WITH KEY
   return (
     <section id="options">

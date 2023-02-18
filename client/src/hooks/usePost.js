@@ -31,7 +31,6 @@ const usePost = async (url, body) => {
     }
     if (jwt && jwt.refresh_token) {
       setCookie("refresh_token", jwt.refresh_token, { path: "/" });
-      console.log(cookies.refresh_token);
     }
   }, [jwt]);
   console.log(state.access_token);

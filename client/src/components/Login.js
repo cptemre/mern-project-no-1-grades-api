@@ -11,8 +11,6 @@ import { useCookies } from "react-cookie";
 
 // HOOKS
 import usePost from "../hooks/usePost";
-import useInfo from "../hooks/useAuth";
-import useRedirect from "../hooks/useRedirect";
 const Login = () => {
   const { state } = useContext(Context);
   const navigate = useNavigate();
@@ -50,15 +48,11 @@ const Login = () => {
   };
   // AXIOS POST HOOK
   usePost(url, body);
-  useInfo();
-  useRedirect()
   useEffect(() => {
     if (state.msg && state.msg !== "PAGE DOES NOT EXIST") {
       $(".msg").css("opacity", 1);
     }
   }, [state.msg]);
-
-
 
   return (
     <section id="login">

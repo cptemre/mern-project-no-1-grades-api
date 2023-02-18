@@ -2,12 +2,11 @@ import { useEffect, useContext } from "react";
 // COMPONENTS
 import { Context } from "../components/Context";
 // NPMS
-import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useJwt } from "react-jwt";
 
 const useAuth = () => {
-  const navigate = useNavigate();
+  const {dispatch} = useContext(Context)
   const [cookies, setCookie] = useCookies([
     "refresh_token",
     "ID",
@@ -30,15 +29,16 @@ const useAuth = () => {
   useEffect(() => {
     if (decodedToken && !isExpired) {
       const { ID, name, surname, email, title } = decodedToken;
-      setCookie("ID", ID);
-      setCookie("name", name);
-      setCookie("surname", surname);
-      setCookie("email", email);
+
+      dispatch({ type: "ID", payload: ID });
+      dispatch({ type: "NAME", payload: name });
+      dispatch({ type: "SURNAME", payload: surname });
+      dispatch({ type: "EMAIL", payload: email });
       setCookie("isAuth", true);
       if (email === "admin@ga.pl") {
-        setCookie("title", "admin");
+        dispatch({ type: "TITLE", payload: "admin" });
       } else {
-        setCookie("ID", title);
+        dispatch({ type: "TITLE", payload: title });
       }
     } else {
       setCookie("isAuth", false);

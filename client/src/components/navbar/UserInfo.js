@@ -5,22 +5,14 @@ import { Context } from "../Context";
 import { useCookies } from "react-cookie";
 
 const UserInfo = () => {
-  const [cookies, setCookie] = useCookies([
-    "refresh_token",
-    "ID",
-    "name",
-    "surname",
-    "email",
-    "title",
-    "isAuth",
-  ]);
+  const {state} = useContext(Context)
   return (
     <section id="userInfo">
       <article id="userName">
-        {cookies.name} {cookies.surname}
+        {state.name} {state.surname}
       </article>
-      <article id="userTitle">{cookies.title}</article>
-      <article id="userEmail">{cookies.email}</article>
+      <article id="userTitle">{state.title}</article>
+      <article id="userEmail">{state.email}</article>
     </section>
   );
 };

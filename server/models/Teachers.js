@@ -68,7 +68,7 @@ teacherSchema.methods.genJWT = function () {
       title: "teacher",
     },
     process.env.REFRESH_SECRET,
-    { expiresIn: "15s" }
+    { expiresIn: "180d" }
   );
   return { access_token, refresh_token };
 };
