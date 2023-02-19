@@ -59,6 +59,8 @@ const auth = async (req, res, next) => {
           );
           // SEND THE INFORMATION TO THE NEXT
           req.user = { ID, access_token, email, title };
+            next();
+
         } else {
           throw new Unauthorized("AUTHORIZATION DENIED");
         }
@@ -67,10 +69,8 @@ const auth = async (req, res, next) => {
       }
     } catch (error) {
       console.log(error);
-      throw new Unauthorized("AUTHORIZATION DENIED");
     }
   }
-  next();
 };
 
 module.exports = auth;

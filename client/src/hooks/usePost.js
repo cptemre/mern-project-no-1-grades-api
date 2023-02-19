@@ -4,9 +4,9 @@ import { Context } from "../components/Context";
 // NPMS
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const usePost = async (url, body) => {
+const usePost = async (url, body, action) => {
   // COOKIE
-  const [cookies, setCookie] = useCookies(["refresh_token"]);
+  const [cookies, setCookie] = useCookies(['access_token',"refresh_token"]);
   // CONTEXT VALUES
   const { state, dispatch } = useContext(Context);
   // RETURN VARIABLES
@@ -14,9 +14,14 @@ const usePost = async (url, body) => {
   const [jwt, setjwt] = useState("");
   useEffect(() => {
     if (url) {
-      post();
+      if (action === "post") {
+        post();
+      }
+      if (action === "get") {
+        get();
+      }
     }
-  }, [url, body, cookies.refresh_token, state.access_token]);
+  }, [url, body, cookies.refresh_token, cookies.access_token, action]);
 
   // SET MSG TO STATE
   useEffect(() => {
@@ -27,24 +32,42 @@ const usePost = async (url, body) => {
   // SET ACCESS TOKEN TO STATE
   useEffect(() => {
     if (jwt && jwt.access_token) {
-      dispatch({ type: "ACCESS_TOKEN", payload: jwt.access_token });
+      setCookie("access_token", jwt.access_token, { path: "/" });
     }
     if (jwt && jwt.refresh_token) {
       setCookie("refresh_token", jwt.refresh_token, { path: "/" });
     }
   }, [jwt]);
-  console.log(state.access_token);
+
+  // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
+  const get = async () => {
+    try {
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
+        },
+      });
+      console.log(data);
+      setMsg(data.msg);
+      setjwt(data.jwt);
+      dispatch({ type: "ISAUTH", payload: true });
+      dispatch({ type: "DATA", payload: data });
+    } catch (error) {
+      setMsg(error.response.data.msg);
+      dispatch({ type: "ISAUTH", payload: false });
+    }
+  };
+
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
   const post = async () => {
     try {
       const { data } = await axios.post(url, body, {
         headers: {
-          Authorization: `Bearer ${state.access_token} ${cookies.refresh_token}`,
+          Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
         },
       });
       setMsg(data.msg);
       setjwt(data.jwt);
-      console.log(state.access_token + "Refresh " + cookies.refresh_token);
       dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
       setMsg(error.response.data.msg);

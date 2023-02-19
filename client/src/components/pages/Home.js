@@ -38,7 +38,6 @@ const Home = () => {
     if ((state.title, component, isLoad)) {
       $(`#${component}Option`).css("background-color", "red");
     }
-    console.log("trigger");
   }, [state.title, component, isLoad]);
   return (
     <>

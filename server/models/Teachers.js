@@ -40,8 +40,8 @@ const teacherSchema = new mongoose.Schema(
 
 // SAVE THE PASSWORD AS HASHED
 teacherSchema.pre("save", async function () {
-  this.email = this.name[0] + this.surname + "@ga.pl";
-  this.email.toLowerCase();
+  const tempEmail = this.name[0] + this.surname + "@ga.pl";
+  this.email = tempEmail.toLowerCase();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

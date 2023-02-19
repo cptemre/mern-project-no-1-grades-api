@@ -47,7 +47,7 @@ const Login = () => {
     setBody({ email, password, title });
   };
   // AXIOS POST HOOK
-  usePost(url, body);
+  usePost(url, body,'post');
   useEffect(() => {
     if (state.msg && state.msg !== "PAGE DOES NOT EXIST") {
       $(".msg").css("opacity", 1);

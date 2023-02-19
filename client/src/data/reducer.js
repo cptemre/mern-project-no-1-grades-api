@@ -17,11 +17,8 @@ const reducer = (state, action) => {
   if (action.type === "MSG") {
     return { ...state, msg: action.payload };
   }
-  if (action.type === "ACCESS_TOKEN") {
-    return { ...state, access_token: action.payload };
-  }
-  if (action.type === "ISAUTH") {
-    return { ...state, isAuth: action.payload };
+  if (action.type === "DATA") {
+    return { ...state, data: action.payload };
   }
   return state;
 };
@@ -33,8 +30,7 @@ const defaultState = {
   email: "",
   title: "",
   msg: "",
-  access_token: "",
-  isAuth: false,
+  data: ''
 };
 
 export { reducer, defaultState };

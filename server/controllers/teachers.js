@@ -34,11 +34,13 @@ const deleteTeacher = async (req, res) => {
 };
 
 const getAllTeachers = async (req, res) => {
-  const { email, access_token } = req.user;
+  const { email } = req.user;
+
   if (email === "admin@ga.pl") {
-    const teacher = await Teachers.find();
+    const teacher = await Teachers.find({}).select("-password");
+
     if (teacher.length) {
-      res.status(200).json({ teacher, access_token });
+      res.status(200).json(teacher);
     } else {
       throw new Bad_Request("THERE ARE NO TEACHERS IN DATABASE");
     }
