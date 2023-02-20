@@ -18,6 +18,13 @@
   padding-left: 0.5rem;
 }
 
+th:nth-child(2n) {
+  background-color: rgb(154, 143, 143);
+}
+th:nth-child(2n-1) {
+  background-color: rgb(216, 203, 203);
+}
+
 td {
   max-width: auto;
 }
@@ -26,4 +33,5 @@ td {
   text-align: center;
   width: 100%;
   background-color: transparent;
+  display: none;
 }
