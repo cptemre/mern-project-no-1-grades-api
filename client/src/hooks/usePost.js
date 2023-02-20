@@ -6,7 +6,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 const usePost = async (url, body, action) => {
   // COOKIE
-  const [cookies, setCookie] = useCookies(['access_token',"refresh_token"]);
+  const [cookies, setCookie] = useCookies(["access_token", "refresh_token"]);
   // CONTEXT VALUES
   const { state, dispatch } = useContext(Context);
   // RETURN VARIABLES
@@ -19,6 +19,9 @@ const usePost = async (url, body, action) => {
       }
       if (action === "get") {
         get();
+      }
+      if (action === "patch") {
+        patch();
       }
     }
   }, [url, body, cookies.refresh_token, cookies.access_token, action]);
@@ -47,7 +50,6 @@ const usePost = async (url, body, action) => {
           Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
         },
       });
-      console.log(data);
       setMsg(data.msg);
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
@@ -70,6 +72,25 @@ const usePost = async (url, body, action) => {
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
+      setMsg(error.response.data.msg);
+      dispatch({ type: "ISAUTH", payload: false });
+    }
+  };
+
+  // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
+  const patch = async () => {
+    try {
+      const { data } = await axios.patch(url, body, {
+        headers: {
+          Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
+        },
+      });
+      setMsg(data.msg);
+      setjwt(data.jwt);
+      console.log(data);
+      dispatch({ type: "ISAUTH", payload: true });
+    } catch (error) {
+      console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });
     }

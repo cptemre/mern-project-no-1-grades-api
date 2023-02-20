@@ -12,39 +12,49 @@ const Teachers = () => {
   const { state } = useContext(Context);
 
   // FETCH PART
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState("/api/v1/teachers");
   const [body, setBody] = useState("");
-
+  const [action, setAction] = useState("get");
   // INPUT VALUE
   const [value, setValue] = useState("");
 
-  useEffect(() => {
-    setUrl("/api/v1/teachers");
-  }, []);
-
+  // INPUT VALUE CHANGE
+  const changeHandle = (e) => {
+    setValue(e.target.value);
+  };
+  // CHANGE INPUT TO DIV  I
   const blurHandle = (e) => {
     const target = e.target;
     const value = e.target.value;
     const name = e.target.name;
-    setBody({ name: value });
+    const _id = $(target).parent().parent().attr("id");
+    setBody({ [name]: value });
+    setAction("patch");
+    setUrl(`/api/v1/teachers/${_id}`);
     $(target).siblings("div").css("display", "grid");
     $(target).css("display", "none");
     setValue("");
-  };
 
-  const changeHandle = (e) => {
-    setValue((old) => old + e.target.value);
+    // LOCAL DATA CHANGE
+    state.data.map((person) => {
+      if (person._id === _id) {
+        person[name] = value;
+      }
+    });
   };
-
+  // CHANGE DIV TO INPUT
   const clickHandle = (e) => {
     const target = e.target;
+    const className = $(target).parent().attr("class");
     const html = $(target).html();
     $(target).siblings("input").css("display", "initial").focus();
     $(target).css("display", "none");
-    setValue(html)
+    if (className !== "password") {
+      setValue(html);
+    }
   };
 
-  usePost(url, body, "get");
+  usePost(url, body, action);
 
   return (
     <section id="table">
@@ -69,9 +79,8 @@ const Teachers = () => {
           {state.data &&
             state.data.map((result) => {
               const { _id, name, surname, email, createdAt } = result;
-              console.log(result);
               return (
-                <tr className="row" key={_id}>
+                <tr className="row" key={_id} id={_id}>
                   <td className="new">&#x2716;</td>
                   <td className="name">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
@@ -116,13 +125,13 @@ const Teachers = () => {
                   </td>
                   <td className="password">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                      ***********
+                      ****
                     </div>
                     <input
                       className="tdInput"
-                      type="email"
+                      type="password"
                       value={value}
-                      name="email"
+                      name="password"
                       onBlur={(e) => blurHandle(e)}
                       onChange={(e) => changeHandle(e)}
                     />

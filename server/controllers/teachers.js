@@ -1,10 +1,18 @@
 const Teachers = require("../models/Teachers");
 const { Bad_Request, Unauthorized } = require("../errors");
-
+const bcrypt = require('bcryptjs');
 // ! TEACHER CAN UPDATE ITSELF BUT ADMIN CAN UPDATE ALL OF THEM
 const updateTeacher = async (req, res) => {
-  const { ID, access_token } = req.user;
-  const teacher = await Teachers.updateOne({ _id: ID }, req.body, {
+  const { access_token } = req.user;
+  const { _id } = req.params;
+  // CRYPT PASSWORD IF CHANGED
+  let { password } = req.body
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+    req.body.password = await password
+  }
+  const teacher = await Teachers.updateOne({_id}, req.body, {
     runValidators: true,
     new: true,
   });

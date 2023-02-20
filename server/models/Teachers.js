@@ -28,7 +28,7 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       required: [true, "PASSWORD IS REQUIRED"],
       minlength: [7, "PASSWORD IS TOO SHORT"],
-      maxlength: [30, "PASSWORD IS TOO LONG"],
+      maxlength: [60, "PASSWORD IS TOO LONG"],
     },
     branches: {
       type: Array,

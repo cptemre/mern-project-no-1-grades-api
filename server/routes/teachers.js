@@ -5,7 +5,7 @@ const {updateTeacher,deleteTeacher, getAllTeachers, getSingleTeacher} = require(
 
 router.get('/',getAllTeachers)
 router
-  .route("/:teacherEmail")
+  .route("/:_id")
   .delete(deleteTeacher)
   .get(getSingleTeacher)
   .patch(updateTeacher);

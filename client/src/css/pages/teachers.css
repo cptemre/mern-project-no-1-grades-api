@@ -27,6 +27,7 @@ th:nth-child(2n-1) {
 
 td {
   max-width: auto;
+  padding: 0 1rem;
 }
 
 .tdInput {
