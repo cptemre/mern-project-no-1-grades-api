@@ -18,6 +18,9 @@ const Teachers = () => {
   // INPUT VALUE
   const [value, setValue] = useState("");
 
+  // NEW TD
+  const [newTd, setNewTd] = useState(false)
+
   // INPUT VALUE CHANGE
   const changeHandle = (e) => {
     setValue(e.target.value);
@@ -54,6 +57,10 @@ const Teachers = () => {
     }
   };
 
+  const newRow = () => {
+    setNewTd(true)
+  }
+
   usePost(url, body, action);
 
   return (
@@ -68,20 +75,67 @@ const Teachers = () => {
       <table>
         <tbody>
           <tr>
-            <th>NEW</th>
-            <th>NAME</th>
-            <th>SURNAME</th>
-            <th>EMAIL</th>
-            <th>PASSWORD</th>
-            <th>DATE</th>
-            <th>DELETE</th>
+            <th className="new" onClick={() => newRow()}>
+              &#x2295;
+            </th>
+            <th className="name">NAME</th>
+            <th className="surname">SURNAME</th>
+            <th className="email">EMAIL</th>
+            <th className="password">PASSWORD</th>
+            <th className="date">DATE</th>
+            <th className="delete"></th>
           </tr>
+          {newTd && (
+            <tr className="row">
+              <td className="new">&#x2713;</td>
+              <td className="name">
+                <input
+                  className="tdInput newInput"
+                  type="text"
+                  value={value}
+                  name="name"
+                  onChange={(e) => changeHandle(e)}
+                />
+              </td>
+              <td className="surname">
+                <input
+                  className="tdInput newInput"
+                  type="text"
+                  value={value}
+                  name="surname"
+                  onChange={(e) => changeHandle(e)}
+                />
+              </td>
+              <td className="email">
+                <input
+                  className="tdInput newInput"
+                  type="email"
+                  value={value}
+                  name="email"
+                  onChange={(e) => changeHandle(e)}
+                />
+              </td>
+              <td className="password">
+                <input
+                  className="tdInput newInput"
+                  type="password"
+                  value={value}
+                  name="password"
+                  onChange={(e) => changeHandle(e)}
+                />
+              </td>
+              <td className="date"></td>
+              <td className="delete" onClick={() => setNewTd(false)}>
+                &#x2716;
+              </td>
+            </tr>
+          )}
           {state.data &&
             state.data.map((result) => {
               const { _id, name, surname, email, createdAt } = result;
               return (
                 <tr className="row" key={_id} id={_id}>
-                  <td className="new">&#x2716;</td>
+                  <td className="new"></td>
                   <td className="name">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
                       {name}
@@ -95,7 +149,6 @@ const Teachers = () => {
                       onChange={(e) => changeHandle(e)}
                     />
                   </td>
-
                   <td className="surname">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
                       {surname}

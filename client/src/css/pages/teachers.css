@@ -18,10 +18,14 @@
   padding-left: 0.5rem;
 }
 
-th:nth-child(2n) {
+th {
+  cursor: pointer;
+}
+
+th:nth-child(2n), td:nth-child(2n) {
   background-color: rgb(154, 143, 143);
 }
-th:nth-child(2n-1) {
+th:nth-child(2n-1), td:nth-child(2n-1) {
   background-color: rgb(216, 203, 203);
 }
 
@@ -35,4 +39,12 @@ td {
   width: 100%;
   background-color: transparent;
   display: none;
+}
+
+.newInput {
+  display: initial;
+}
+
+.new {
+  cursor: pointer;
 }
