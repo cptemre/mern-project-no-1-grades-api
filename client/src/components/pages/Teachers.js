@@ -7,10 +7,13 @@ import usePost from "../../hooks/usePost";
 
 // NPMS
 import $ from "jquery";
+import { useSearchParams } from "react-router-dom";
 
 const Teachers = () => {
+  // STATE
   const { state } = useContext(Context);
-
+  // USESEARCHPARAMS
+  const [searchParams, setSearchParams] = useSearchParams();
   // FETCH PART
   const [url, setUrl] = useState("/api/v1/teachers");
   const [body, setBody] = useState("");
@@ -28,7 +31,7 @@ const Teachers = () => {
 
   // GET NEW DATA ON MSG CHANGE
   useEffect(() => {
-    if (state.msg === "UPDATED" || "CREATED") {
+    if (state.msg === "UPDATED" || "CREATED" || "DELETED") {
       setAction("get");
       setUrl("/api/v1/teachers");
       setBody("");
@@ -94,7 +97,28 @@ const Teachers = () => {
   };
   //#endregion ADD NEW PERSON
 
-  usePost(url, body, action);
+  //#region DELETE PERSON
+
+  const deleteHandle = (e) => {
+    const target = e.target;
+    const _id = $(target).parent().attr("id");
+    setBody("");
+    setAction("delete");
+    setUrl(`/api/v1/teachers/${_id}`);
+  };
+
+  //#endregion DELETE PERSON
+
+  const sortHeader = (e) => {
+    const sortValue = e.target.innerHTML.toLowerCase();
+    setSearchParams((searchParams) => {
+      searchParams.set("sortValue", sortValue);
+      return searchParams;
+    });
+  };
+
+  // AXIOS CALL
+  usePost(url, body, action, searchParams);
 
   return (
     <section id="table">
@@ -111,8 +135,12 @@ const Teachers = () => {
             <th className="new" onClick={() => newRow()}>
               &#x2295;
             </th>
-            <th className="name">NAME</th>
-            <th className="surname">SURNAME</th>
+            <th className="name" onClick={(e) => sortHeader(e)}>
+              NAME
+            </th>
+            <th className="surname" onClick={(e) => sortHeader(e)}>
+              SURNAME
+            </th>
             <th className="email">EMAIL</th>
             <th className="password">PASSWORD</th>
             <th className="date">DATE</th>
@@ -221,7 +249,9 @@ const Teachers = () => {
                       01.01.2023
                     </div>
                   </td>
-                  <td className="delete">&#x2716;</td>
+                  <td className="delete" onClick={(e) => deleteHandle(e)}>
+                    &#x2716;
+                  </td>
                 </tr>
               );
             })}

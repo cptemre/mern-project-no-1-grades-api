@@ -1,18 +1,18 @@
 const Teachers = require("../models/Teachers");
 const { Bad_Request, Unauthorized } = require("../errors");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 // ! TEACHER CAN UPDATE ITSELF BUT ADMIN CAN UPDATE ALL OF THEM
 const updateTeacher = async (req, res) => {
   const { access_token } = req.user;
   const { _id } = req.params;
   // CRYPT PASSWORD IF CHANGED
-  let { password } = req.body
+  let { password } = req.body;
   if (password) {
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
-    req.body.password = await password
+    req.body.password = await password;
   }
-  const teacher = await Teachers.updateOne({_id}, req.body, {
+  const teacher = await Teachers.updateOne({ _id }, req.body, {
     runValidators: true,
     new: true,
   });
@@ -25,13 +25,11 @@ const updateTeacher = async (req, res) => {
 
 const deleteTeacher = async (req, res) => {
   const { email, access_token } = req.user;
-  const { teacherEmail } = req.params;
+  const { _id } = req.params;
   if (email === "admin@ga.pl") {
-    const teacher = await Teachers.deleteOne({ email: teacherEmail });
+    const teacher = await Teachers.deleteOne({ _id });
     if (teacher.deletedCount) {
-      res
-        .status(200)
-        .json({ msg: "TEACHER SUCCESSFULLY DELETED", access_token });
+      res.status(200).json({ msg: "DELETED", access_token });
     } else {
       throw new Bad_Request("TEACHER COULD NOT DELETED");
     }
@@ -43,9 +41,36 @@ const deleteTeacher = async (req, res) => {
 
 const getAllTeachers = async (req, res) => {
   const { email } = req.user;
+  // IF THERE IS A QUERY ADD IT TO QUERY OBJECT TO FIND
+  const { name, surname, teacherEmail, branches, createdAt, sortValue, pageValue } =
+    req.query;
+  const query = {};
+
+  if (name) {
+    query.name = name;
+  }
+  if (surname) {
+    query.surname = surname;
+  }
+  if (teacherEmail) {
+    query.teacherEmail = teacherEmail;
+  }
+  if (branches) {
+    query.branches = branches;
+  }
+  if (createdAt) {
+    query.createdAt = createdAt;
+  }
 
   if (email === "admin@ga.pl") {
-    const teacher = await Teachers.find({}).select("-password");
+    const accounts = Teachers.find(query).select("-password");
+
+    // CREATE SORT AND SKIP VARIABLES
+    const sort = sortValue || "createdAt";
+    const page = pageValue || 0
+    const skip = page * 10
+
+    const teacher = await accounts.sort(sort).skip(skip);
 
     if (teacher.length) {
       res.status(200).json(teacher);

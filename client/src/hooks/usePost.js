@@ -4,7 +4,7 @@ import { Context } from "../components/Context";
 // NPMS
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const usePost = async (url, body, action) => {
+const usePost = async (url, body, action, params) => {
   // COOKIE
   const [cookies, setCookie] = useCookies(["access_token", "refresh_token"]);
   // CONTEXT VALUES
@@ -23,6 +23,9 @@ const usePost = async (url, body, action) => {
       }
       if (action === "patch") {
         patch();
+      }
+      if (action === "delete") {
+        deleteF();
       }
     }
   }, [url, body, cookies.refresh_token, cookies.access_token, action]);
@@ -50,6 +53,7 @@ const usePost = async (url, body, action) => {
         headers: {
           Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
         },
+        params
       });
       setMsg(data.msg);
       setjwt(data.jwt);
@@ -79,10 +83,27 @@ const usePost = async (url, body, action) => {
     }
   };
 
-  // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
+  // AXIOS PATCH FUNCTION TO CALL WHEN URL OR BODY CHANGE
   const patch = async () => {
     try {
       const { data } = await axios.patch(url, body, {
+        headers: {
+          Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
+        },
+      });
+      setMsg(data.msg);
+      setjwt(data.jwt);
+      dispatch({ type: "ISAUTH", payload: true });
+    } catch (error) {
+      setMsg(error.response.data.msg);
+      dispatch({ type: "ISAUTH", payload: false });
+    }
+  };
+
+  // AXIOS DELETE FUNCTION
+  const deleteF = async () => {
+    try {
+      const { data } = await axios.delete(url, {
         headers: {
           Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
         },
