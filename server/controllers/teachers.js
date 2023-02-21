@@ -17,7 +17,7 @@ const updateTeacher = async (req, res) => {
     new: true,
   });
   if (teacher.modifiedCount) {
-    res.status(200).json({ msg: "TEACHER SUCCESSFULLY UPDATED", access_token });
+    res.status(200).json({ msg: "UPDATED", access_token });
   } else {
     throw new Bad_Request("TEACHER COULD NOT UPDATED");
   }

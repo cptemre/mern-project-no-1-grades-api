@@ -89,10 +89,8 @@ const usePost = async (url, body, action) => {
       });
       setMsg(data.msg);
       setjwt(data.jwt);
-      console.log(data);
       dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
-      console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });
     }

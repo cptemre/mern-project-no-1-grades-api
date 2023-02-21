@@ -37,14 +37,17 @@ const Teachers = () => {
     $(target).siblings("div").css("display", "grid");
     $(target).css("display", "none");
     setValue("");
-
-    // LOCAL DATA CHANGE
-    state.data.map((person) => {
-      if (person._id === _id) {
-        person[name] = value;
-      }
-    });
   };
+
+  // GET NEW DATA
+  useEffect(() => {
+    if (state.msg === "UPDATED") {
+      setAction("get");
+      setUrl("/api/v1/teachers");
+      setBody("");
+    }
+  }, [state.msg, url]);
+
   // CHANGE DIV TO INPUT
   const clickHandle = (e) => {
     const target = e.target;
@@ -61,6 +64,11 @@ const Teachers = () => {
     setNewTd(true)
   }
 
+  const newPerson = (e) => {
+    const target = e.target
+    const name = $(target).siblings('td').children('input').val();
+    console.log(name);
+  }
   usePost(url, body, action);
 
   return (
@@ -80,6 +88,7 @@ const Teachers = () => {
             </th>
             <th className="name">NAME</th>
             <th className="surname">SURNAME</th>
+            <th className="branches">BRANCHES</th>
             <th className="email">EMAIL</th>
             <th className="password">PASSWORD</th>
             <th className="date">DATE</th>
@@ -87,7 +96,9 @@ const Teachers = () => {
           </tr>
           {newTd && (
             <tr className="row">
-              <td className="new">&#x2713;</td>
+              <td className="new" onClick={(e) => newPerson(e)}>
+                &#x2713;
+              </td>
               <td className="name">
                 <input
                   className="tdInput newInput"
@@ -132,7 +143,7 @@ const Teachers = () => {
           )}
           {state.data &&
             state.data.map((result) => {
-              const { _id, name, surname, email, createdAt } = result;
+              const { _id, name, surname, email, branches, createdAt } = result;
               return (
                 <tr className="row" key={_id} id={_id}>
                   <td className="new"></td>
@@ -162,7 +173,22 @@ const Teachers = () => {
                       onChange={(e) => changeHandle(e)}
                     />
                   </td>
-
+                  <td className="branches">
+                    <div
+                      className="branchesDiv"
+                      onClick={(e) => clickHandle(e)}
+                    >
+                      {branches}
+                    </div>
+                    <input
+                      className="tdInput"
+                      type="text"
+                      value={value}
+                      name="name"
+                      onBlur={(e) => blurHandle(e)}
+                      onChange={(e) => changeHandle(e)}
+                    />
+                  </td>
                   <td className="email">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
                       {email}
