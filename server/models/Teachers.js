@@ -26,9 +26,9 @@ const teacherSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "PASSWORD IS REQUIRED"],
       minlength: [7, "PASSWORD IS TOO SHORT"],
       maxlength: [60, "PASSWORD IS TOO LONG"],
+      default: 'secretsecret'
     },
     branches: {
       type: Array,

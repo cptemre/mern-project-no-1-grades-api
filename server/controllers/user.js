@@ -6,19 +6,12 @@ const { Bad_Request } = require("../errors");
 const validator = require("validator");
 
 const sign_in = async (req, res) => {
-  const { name, surname, email, password, branches } = req.body;
-  if (validator.isEmail(email)) {
-    await Teachers.create({
-      name,
-      surname,
-      email,
-      password,
-      branches,
-    });
-    res.status(200).json({ msg: `ACCOUNT FOR ${name} ${surname} IS CREATED` });
-  } else {
-    throw new Bad_Request("EMAIL IS NOT VALID");
-  }
+  const { name, surname } = req.body;
+  await Teachers.create({
+    name,
+    surname,
+  });
+  res.status(200).json({ msg: `CREATED` });
 };
 const login = async (req, res) => {
   const { email, password, title } = req.body;
@@ -55,8 +48,6 @@ const logout = async (req, res) => {
   // GET ACCESS TOKEN
   const access_token = authHeader.split(" ")[1];
   const refresh_token = authHeader.split(" ")[2];
-  console.log('access' + access_token);
-    console.log('refresh' + refresh_token);
 
   await Blacklist.create({ token: refresh_token });
   res.status(200).json({ msg: "SUCCESSFULLY LOGGED OUT" });

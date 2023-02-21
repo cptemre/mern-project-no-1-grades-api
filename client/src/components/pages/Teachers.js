@@ -19,13 +19,41 @@ const Teachers = () => {
   const [value, setValue] = useState("");
 
   // NEW TD
-  const [newTd, setNewTd] = useState(false)
+  const [newTd, setNewTd] = useState(false);
 
   // INPUT VALUE CHANGE
   const changeHandle = (e) => {
     setValue(e.target.value);
   };
-  // CHANGE INPUT TO DIV  I
+
+  // GET NEW DATA ON MSG CHANGE
+  useEffect(() => {
+    if (state.msg === "UPDATED" || "CREATED") {
+      setAction("get");
+      setUrl("/api/v1/teachers");
+      setBody("");
+    }
+  }, [state.msg, url]);
+
+  //#region UPDATE
+
+  // CHANGE DIV TO INPUT
+  const clickHandle = (e) => {
+    const target = e.target;
+    const className = $(target).parent().attr("class");
+    const html = $(target).html();
+    $(target).siblings("input").css("display", "initial").focus();
+    $(target).css("display", "none");
+    if ($(target).html() === "----") {
+      setValue("");
+    } else {
+      if (className !== "password") {
+        setValue(html);
+      }
+    }
+  };
+
+  // CHANGE INPUT TO DIV
   const blurHandle = (e) => {
     const target = e.target;
     const value = e.target.value;
@@ -39,36 +67,33 @@ const Teachers = () => {
     setValue("");
   };
 
-  // GET NEW DATA
-  useEffect(() => {
-    if (state.msg === "UPDATED") {
-      setAction("get");
-      setUrl("/api/v1/teachers");
-      setBody("");
-    }
-  }, [state.msg, url]);
+  //#endregion UPDATE
 
-  // CHANGE DIV TO INPUT
-  const clickHandle = (e) => {
-    const target = e.target;
-    const className = $(target).parent().attr("class");
-    const html = $(target).html();
-    $(target).siblings("input").css("display", "initial").focus();
-    $(target).css("display", "none");
-    if (className !== "password") {
-      setValue(html);
-    }
-  };
+  //#region ADD NEW PERSON
 
+  // ADD NEW ROW TO TABLE
   const newRow = () => {
-    setNewTd(true)
-  }
-
+    setNewTd(true);
+  };
+  // INPUT FOCUS OUT FUNCTION
+  const newBlurHandle = (e) => {
+    const target = e.target;
+    $(target).siblings("div").css("display", "grid");
+    $(target).siblings("div").html(target.value);
+    $(target).css("display", "none");
+  };
+  // ADD NEW PERSON BUTTON FUNCTION
   const newPerson = (e) => {
-    const target = e.target
-    const name = $(target).siblings('td').children('input').val();
-    console.log(name);
-  }
+    const target = e.target;
+    const name = $(target).siblings(".name").children("div").html();
+    const surname = $(target).siblings(".surname").children("div").html();
+    setUrl("/api/v1/user/sign_in");
+    setBody({ name, surname });
+    setAction("post");
+    setNewTd(false);
+  };
+  //#endregion ADD NEW PERSON
+
   usePost(url, body, action);
 
   return (
@@ -88,53 +113,44 @@ const Teachers = () => {
             </th>
             <th className="name">NAME</th>
             <th className="surname">SURNAME</th>
-            <th className="branches">BRANCHES</th>
             <th className="email">EMAIL</th>
             <th className="password">PASSWORD</th>
             <th className="date">DATE</th>
             <th className="delete"></th>
           </tr>
           {newTd && (
-            <tr className="row">
+            <tr className="row newRow">
               <td className="new" onClick={(e) => newPerson(e)}>
                 &#x2713;
               </td>
               <td className="name">
+                <div className="nameDiv" onClick={(e) => clickHandle(e)}>
+                  ----
+                </div>
                 <input
-                  className="tdInput newInput"
+                  className="tdInput"
                   type="text"
                   value={value}
                   name="name"
                   onChange={(e) => changeHandle(e)}
+                  onBlur={(e) => newBlurHandle(e)}
                 />
               </td>
               <td className="surname">
+                <div className="nameDiv" onClick={(e) => clickHandle(e)}>
+                  ----
+                </div>
                 <input
-                  className="tdInput newInput"
+                  className="tdInput"
                   type="text"
                   value={value}
                   name="surname"
                   onChange={(e) => changeHandle(e)}
+                  onBlur={(e) => newBlurHandle(e)}
                 />
               </td>
-              <td className="email">
-                <input
-                  className="tdInput newInput"
-                  type="email"
-                  value={value}
-                  name="email"
-                  onChange={(e) => changeHandle(e)}
-                />
-              </td>
-              <td className="password">
-                <input
-                  className="tdInput newInput"
-                  type="password"
-                  value={value}
-                  name="password"
-                  onChange={(e) => changeHandle(e)}
-                />
-              </td>
+              <td className="email"></td>
+              <td className="password"></td>
               <td className="date"></td>
               <td className="delete" onClick={() => setNewTd(false)}>
                 &#x2716;
@@ -173,22 +189,7 @@ const Teachers = () => {
                       onChange={(e) => changeHandle(e)}
                     />
                   </td>
-                  <td className="branches">
-                    <div
-                      className="branchesDiv"
-                      onClick={(e) => clickHandle(e)}
-                    >
-                      {branches}
-                    </div>
-                    <input
-                      className="tdInput"
-                      type="text"
-                      value={value}
-                      name="name"
-                      onBlur={(e) => blurHandle(e)}
-                      onChange={(e) => changeHandle(e)}
-                    />
-                  </td>
+
                   <td className="email">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
                       {email}

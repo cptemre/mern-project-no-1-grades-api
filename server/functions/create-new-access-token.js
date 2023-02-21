@@ -10,7 +10,6 @@ const create_new_access_token = async (ID, name, surname, email) => {
       return access_token;
     }
   } else {
-    console.log(ID, name, surname, email);
     const teacher = await Teachers.findOne({
       ID,
     });
@@ -18,7 +17,6 @@ const create_new_access_token = async (ID, name, surname, email) => {
       const { access_token } = teacher.genJWT();
       return access_token;
     }
-    console.log(teacher);
   }
 };
 

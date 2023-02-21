@@ -13,6 +13,7 @@ const usePost = async (url, body, action) => {
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
+    console.log(url, body, action);
     if (url) {
       if (action === "post") {
         post();
@@ -60,8 +61,6 @@ const usePost = async (url, body, action) => {
     }
   };
 
-  
-
   // AXIOS POST FUNCTION TO CALL WHEN URL OR BODY CHANGE
   const post = async () => {
     try {
@@ -74,6 +73,7 @@ const usePost = async (url, body, action) => {
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
+      console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });
     }
