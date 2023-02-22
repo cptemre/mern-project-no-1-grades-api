@@ -30,7 +30,11 @@ const defaultState = {
   email: "",
   title: "",
   msg: "",
-  data: ''
+  data: "",
+  url: {
+    teachers: "/api/v1/teachers",
+    user: { sign_in: "/api/v1/user/sign_in" },
+  },
 };
 
 export { reducer, defaultState };

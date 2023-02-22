@@ -12,17 +12,41 @@ import { useSearchParams } from "react-router-dom";
 const Teachers = () => {
   // STATE
   const { state } = useContext(Context);
+
+  // TABLE HEADERS FOR TH
+  const headers = {
+    new: "NEW",
+    name: "NAME",
+    surname: "SURNAME",
+    email: "EMAIL",
+    password: "PASSWORD",
+    date: "DATE",
+    delete: "",
+  };
+
   // USESEARCHPARAMS
   const [searchParams, setSearchParams] = useSearchParams();
-  // FETCH PART
-  const [url, setUrl] = useState("/api/v1/teachers");
-  const [body, setBody] = useState("");
-  const [action, setAction] = useState("get");
+  // FETCH VARIABLES
+  const [fetchVars, setFetchVars] = useState({
+    url: "",
+    body: "",
+    action: "",
+    searchParams,
+  });
   // INPUT VALUE
   const [value, setValue] = useState("");
 
   // NEW TD
   const [newTd, setNewTd] = useState(false);
+
+  useEffect(() => {
+    setFetchVars({
+      url: state.url.teachers,
+      body: "",
+      action: "get",
+      searchParams,
+    });
+  }, [state.url]);
 
   // INPUT VALUE CHANGE
   const changeHandle = (e) => {
@@ -32,11 +56,14 @@ const Teachers = () => {
   // GET NEW DATA ON MSG CHANGE
   useEffect(() => {
     if (state.msg === "UPDATED" || "CREATED" || "DELETED") {
-      setAction("get");
-      setUrl("/api/v1/teachers");
-      setBody("");
+      setFetchVars({
+        url: state.url.teachers,
+        body: "",
+        action: "get",
+        searchParams,
+      });
     }
-  }, [state.msg, url]);
+  }, [state.msg, state.url]);
 
   //#region UPDATE
 
@@ -62,9 +89,12 @@ const Teachers = () => {
     const value = e.target.value;
     const name = e.target.name;
     const _id = $(target).parent().parent().attr("id");
-    setBody({ [name]: value });
-    setAction("patch");
-    setUrl(`/api/v1/teachers/${_id}`);
+    setFetchVars({
+      url: `${state.url.teachers}/${_id}`,
+      body: { [name]: value },
+      action: "patch",
+      searchParams,
+    });
     $(target).siblings("div").css("display", "grid");
     $(target).css("display", "none");
     setValue("");
@@ -90,9 +120,12 @@ const Teachers = () => {
     const target = e.target;
     const name = $(target).siblings(".name").children("div").html();
     const surname = $(target).siblings(".surname").children("div").html();
-    setUrl("/api/v1/user/sign_in");
-    setBody({ name, surname });
-    setAction("post");
+    setFetchVars({
+      url: state.url.user.sign_in,
+      body: { name, surname },
+      action: "post",
+      searchParams,
+    });
     setNewTd(false);
   };
   //#endregion ADD NEW PERSON
@@ -102,9 +135,12 @@ const Teachers = () => {
   const deleteHandle = (e) => {
     const target = e.target;
     const _id = $(target).parent().attr("id");
-    setBody("");
-    setAction("delete");
-    setUrl(`/api/v1/teachers/${_id}`);
+    setFetchVars({
+      url: `${state.url.teachers}/${_id}`,
+      body: "",
+      action: "delete",
+      searchParams,
+    });
   };
 
   //#endregion DELETE PERSON
@@ -118,8 +154,14 @@ const Teachers = () => {
   };
 
   // AXIOS CALL
-  usePost(url, body, action, searchParams);
+  usePost(
+    fetchVars.url,
+    fetchVars.body,
+    fetchVars.action,
+    fetchVars.searchParams
+  );
 
+  console.log(searchParams.get("sortValue"));
   return (
     <section id="table">
       <div id="searchDiv">
@@ -132,19 +174,32 @@ const Teachers = () => {
       <table>
         <tbody>
           <tr>
-            <th className="new" onClick={() => newRow()}>
-              &#x2295;
-            </th>
-            <th className="name" onClick={(e) => sortHeader(e)}>
-              NAME
-            </th>
-            <th className="surname" onClick={(e) => sortHeader(e)}>
-              SURNAME
-            </th>
-            <th className="email">EMAIL</th>
-            <th className="password">PASSWORD</th>
-            <th className="date">DATE</th>
-            <th className="delete"></th>
+            {headers &&
+              Object.keys(headers).map((key) => {
+                if (key === "new") {
+                  return (
+                    <th key={key} className={key} onClick={() => newRow()}>
+                      {headers[key]}
+                    </th>
+                  );
+                } else if (key === "delete") {
+                  return (
+                    <th key={key} className={key}>
+                      {headers[key]}
+                    </th>
+                  );
+                } else {
+                  return (
+                    <th
+                      key={key}
+                      className={key}
+                      onClick={(e) => sortHeader(e)}
+                    >
+                      {headers[key]}
+                    </th>
+                  );
+                }
+              })}
           </tr>
           {newTd && (
             <tr className="row newRow">

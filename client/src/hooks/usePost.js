@@ -4,7 +4,7 @@ import { Context } from "../components/Context";
 // NPMS
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const usePost = async (url, body, action, params) => {
+const usePost = async (url, body='', action, params='') => {
   // COOKIE
   const [cookies, setCookie] = useCookies(["access_token", "refresh_token"]);
   // CONTEXT VALUES
@@ -13,7 +13,7 @@ const usePost = async (url, body, action, params) => {
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
-    console.log(url, body, action);
+    console.log(url, 'body:' + body, 'action:'+action);
     if (url) {
       if (action === "post") {
         post();
