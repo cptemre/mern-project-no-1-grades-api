@@ -4,8 +4,13 @@ import React, { useState, useContext, useEffect } from "react";
 // CONTEXT
 import { Context } from "../Context";
 
+// NPMS
+import { useNavigate } from "react-router-dom";
+
 const Options = () => {
   const { state } = useContext(Context);
+  // NAVIGATE
+  const navigate = useNavigate();
   const [options, setOptions] = useState({
     admin: ["TEACHERS", "STUDENTS"],
   });
@@ -18,6 +23,7 @@ const Options = () => {
             id={option.toLowerCase() + "Option"}
             className="option"
             key={option + i}
+            onClick={() => navigate(`/${option.toLowerCase()}`)}
           >
             {option}
           </article>

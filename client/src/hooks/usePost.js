@@ -4,7 +4,7 @@ import { Context } from "../components/Context";
 // NPMS
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const usePost = async (url, body='', action, params='') => {
+const usePost = async (url='', body='', action='', params='', isFetch='') => {
   // COOKIE
   const [cookies, setCookie] = useCookies(["access_token", "refresh_token"]);
   // CONTEXT VALUES
@@ -13,7 +13,6 @@ const usePost = async (url, body='', action, params='') => {
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
-    console.log(url, 'body:' + body, 'action:'+action);
     if (url) {
       if (action === "post") {
         post();
@@ -28,7 +27,7 @@ const usePost = async (url, body='', action, params='') => {
         deleteF();
       }
     }
-  }, [url, body, cookies.refresh_token, cookies.access_token, action]);
+  }, [url, body, cookies.refresh_token, cookies.access_token, action, params]);
 
   // SET MSG TO STATE
   useEffect(() => {
@@ -77,7 +76,6 @@ const usePost = async (url, body='', action, params='') => {
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
     } catch (error) {
-      console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });
     }

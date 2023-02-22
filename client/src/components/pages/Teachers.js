@@ -2,16 +2,23 @@ import React, { useEffect, useState, useContext } from "react";
 
 // COMPONENTS
 import { Context } from "../../components/Context";
+import Loading from "../loading/Loading";
 // HOOKS
 import usePost from "../../hooks/usePost";
 
 // NPMS
 import $ from "jquery";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams, useNavigate } from "react-router-dom";
 
 const Teachers = () => {
   // STATE
   const { state } = useContext(Context);
+  // PARAMS
+  const { component } = useParams();
+  // LOCATION
+  const navigate = useNavigate();
+  const [isLoad, setIsLoad] = useState(false);
+  const [isFetch, setIsFetch] = useState(true);
 
   // TABLE HEADERS FOR TH
   const headers = {
@@ -21,7 +28,7 @@ const Teachers = () => {
     email: "EMAIL",
     password: "PASSWORD",
     date: "DATE",
-    delete: "",
+    delete: "DELETE",
   };
 
   // USESEARCHPARAMS
@@ -39,6 +46,33 @@ const Teachers = () => {
   // NEW TD
   const [newTd, setNewTd] = useState(false);
 
+  // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
+  useEffect(() => {
+    if (!component) {
+      navigate("/teachers");
+    }
+  }, [component]);
+
+  // UNTIL STATE OR ISLOAD GETS READ SHOW LOADING SCREEN THEN SHOW PAGE OR LOGIN DEPENDS ON AUTHORIZATION
+  useEffect(() => {
+    if (!isLoad) {
+      load();
+    }
+  }, [isLoad]);
+  const load = () => {
+    setTimeout(() => {
+      setIsLoad(true);
+    }, 1000);
+  };
+
+  // SET SELECTED BUTTON COLOR
+  useEffect(() => {
+    if ((state.title, component, isLoad)) {
+      $('.option').css("background-color", "white");
+      $(`#${component}Option`).css("background-color", "red");
+    }
+  }, [state.title, component, isLoad]);
+
   useEffect(() => {
     setFetchVars({
       url: state.url.teachers,
@@ -46,24 +80,13 @@ const Teachers = () => {
       action: "get",
       searchParams,
     });
-  }, [state.url]);
+    setIsLoad(false)
+  }, [state.url, isFetch]);
 
   // INPUT VALUE CHANGE
   const changeHandle = (e) => {
     setValue(e.target.value);
   };
-
-  // GET NEW DATA ON MSG CHANGE
-  useEffect(() => {
-    if (state.msg === "UPDATED" || "CREATED" || "DELETED") {
-      setFetchVars({
-        url: state.url.teachers,
-        body: "",
-        action: "get",
-        searchParams,
-      });
-    }
-  }, [state.msg, state.url]);
 
   //#region UPDATE
 
@@ -95,6 +118,8 @@ const Teachers = () => {
       action: "patch",
       searchParams,
     });
+    setIsFetch(!isFetch);
+
     $(target).siblings("div").css("display", "grid");
     $(target).css("display", "none");
     setValue("");
@@ -126,6 +151,7 @@ const Teachers = () => {
       action: "post",
       searchParams,
     });
+    setIsFetch(!isFetch);
     setNewTd(false);
   };
   //#endregion ADD NEW PERSON
@@ -141,16 +167,25 @@ const Teachers = () => {
       action: "delete",
       searchParams,
     });
+    setIsFetch(!isFetch);
   };
 
   //#endregion DELETE PERSON
 
   const sortHeader = (e) => {
     const sortValue = e.target.innerHTML.toLowerCase();
+    // SET QUERY TO BE ABLE TO SORT FROM SERVER SIDE
+    let sortNumber = -1;
+    if (
+      !searchParams.get("sortValue") ||
+      searchParams.get("sortValue").endsWith(-1)
+    )
+      sortNumber = 1;
     setSearchParams((searchParams) => {
-      searchParams.set("sortValue", sortValue);
+      searchParams.set("sortValue", `${sortValue}_${sortNumber}`);
       return searchParams;
     });
+    setIsFetch(!isFetch);
   };
 
   // AXIOS CALL
@@ -158,161 +193,230 @@ const Teachers = () => {
     fetchVars.url,
     fetchVars.body,
     fetchVars.action,
-    fetchVars.searchParams
+    fetchVars.searchParams,
+    isFetch
   );
 
-  console.log(searchParams.get("sortValue"));
   return (
-    <section id="table">
-      <div id="searchDiv">
-        <div id="searchOptions"></div>
-        <div id="search">
-          <input type="text" id="searchInput" />
-          <div id="searchType">NAME</div>
-        </div>
-      </div>
-      <table>
-        <tbody>
-          <tr>
-            {headers &&
-              Object.keys(headers).map((key) => {
-                if (key === "new") {
-                  return (
-                    <th key={key} className={key} onClick={() => newRow()}>
-                      {headers[key]}
-                    </th>
-                  );
-                } else if (key === "delete") {
-                  return (
-                    <th key={key} className={key}>
-                      {headers[key]}
-                    </th>
-                  );
-                } else {
-                  return (
-                    <th
-                      key={key}
-                      className={key}
-                      onClick={(e) => sortHeader(e)}
-                    >
-                      {headers[key]}
-                    </th>
-                  );
-                }
-              })}
-          </tr>
-          {newTd && (
-            <tr className="row newRow">
-              <td className="new" onClick={(e) => newPerson(e)}>
-                &#x2713;
-              </td>
-              <td className="name">
-                <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                  ----
-                </div>
-                <input
-                  className="tdInput"
-                  type="text"
-                  value={value}
-                  name="name"
-                  onChange={(e) => changeHandle(e)}
-                  onBlur={(e) => newBlurHandle(e)}
-                />
-              </td>
-              <td className="surname">
-                <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                  ----
-                </div>
-                <input
-                  className="tdInput"
-                  type="text"
-                  value={value}
-                  name="surname"
-                  onChange={(e) => changeHandle(e)}
-                  onBlur={(e) => newBlurHandle(e)}
-                />
-              </td>
-              <td className="email"></td>
-              <td className="password"></td>
-              <td className="date"></td>
-              <td className="delete" onClick={() => setNewTd(false)}>
-                &#x2716;
-              </td>
-            </tr>
-          )}
-          {state.data &&
-            state.data.map((result) => {
-              const { _id, name, surname, email, branches, createdAt } = result;
-              return (
-                <tr className="row" key={_id} id={_id}>
-                  <td className="new"></td>
+    <>
+      {!state.data || !isLoad ? (
+        <Loading />
+      ) : (
+        <section id="table">
+          <div id="searchDiv">
+            <div id="searchOptions"></div>
+            <div id="search">
+              <input type="text" id="searchInput" />
+              <div id="searchType">NAME</div>
+            </div>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                {headers &&
+                  Object.keys(headers).map((key) => {
+                    if (key === "new") {
+                      return (
+                        <th key={key} className={key} onClick={() => newRow()}>
+                          {headers[key]}
+                        </th>
+                      );
+                    } else if (key === "delete") {
+                      return (
+                        <th key={key} className={key}>
+                          {headers[key]}
+                        </th>
+                      );
+                    } else {
+                      return (
+                        <th
+                          key={key}
+                          className={key}
+                          onClick={(e) => sortHeader(e)}
+                        >
+                          {headers[key]}
+                        </th>
+                      );
+                    }
+                  })}
+              </tr>
+              {newTd && (
+                <tr className="row newRow">
+                  <td className="new" onClick={(e) => newPerson(e)}>
+                    &#x2713;
+                  </td>
                   <td className="name">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                      {name}
+                      ----
                     </div>
                     <input
                       className="tdInput"
                       type="text"
                       value={value}
                       name="name"
-                      onBlur={(e) => blurHandle(e)}
                       onChange={(e) => changeHandle(e)}
+                      onBlur={(e) => newBlurHandle(e)}
                     />
                   </td>
                   <td className="surname">
                     <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                      {surname}
+                      ----
                     </div>
                     <input
                       className="tdInput"
                       type="text"
                       value={value}
                       name="surname"
-                      onBlur={(e) => blurHandle(e)}
                       onChange={(e) => changeHandle(e)}
+                      onBlur={(e) => newBlurHandle(e)}
                     />
                   </td>
-
-                  <td className="email">
-                    <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                      {email}
-                    </div>
-                    <input
-                      className="tdInput"
-                      type="email"
-                      value={value}
-                      name="email"
-                      onBlur={(e) => blurHandle(e)}
-                      onChange={(e) => changeHandle(e)}
-                    />
-                  </td>
-                  <td className="password">
-                    <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                      ****
-                    </div>
-                    <input
-                      className="tdInput"
-                      type="password"
-                      value={value}
-                      name="password"
-                      onBlur={(e) => blurHandle(e)}
-                      onChange={(e) => changeHandle(e)}
-                    />
-                  </td>
-                  <td className="date">
-                    <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-                      01.01.2023
-                    </div>
-                  </td>
-                  <td className="delete" onClick={(e) => deleteHandle(e)}>
+                  <td className="email"></td>
+                  <td className="password"></td>
+                  <td className="date"></td>
+                  <td className="delete" onClick={() => setNewTd(false)}>
                     &#x2716;
                   </td>
                 </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </section>
+              )}
+              {state.data &&
+                state.data.map((result) => {
+                  const { _id, name, surname, email, branches, createdAt } =
+                    result;
+                  const date = new Date(createdAt);
+                  const dateM = date.getMonth() + 1;
+                  const dateVal =
+                    date.getDate() + "-" + dateM + "-" + date.getFullYear();
+                  return (
+                    <tr className="row" key={_id} id={_id}>
+                      {Object.keys(headers).map((key, i) => {
+                        if (key === "new") {
+                          return <td key={_id + key} className={key}></td>;
+                        } else if (key === "delete") {
+                          return (
+                            <td
+                              key={_id + key}
+                              className="delete"
+                              onClick={(e) => deleteHandle(e)}
+                            >
+                              &#x2716;
+                            </td>
+                          );
+                        } else {
+                          return (
+                            <td key={_id + key} className={key}>
+                              <div
+                                className={key + "Div"}
+                                onClick={(e) => clickHandle(e)}
+                              >
+                                {key === "password"
+                                  ? "----"
+                                  : key === "date"
+                                  ? dateVal
+                                  : result[key]}
+                              </div>
+                              <input
+                                className="tdInput"
+                                type="text"
+                                value={value}
+                                name={key === "date" ? "createdAt" : key}
+                                onBlur={(e) => blurHandle(e)}
+                                onChange={(e) => changeHandle(e)}
+                              />
+                            </td>
+                          );
+                        }
+                      })}
+                    </tr>
+                  );
+
+                  // return (
+                  //   <tr className="row" key={_id} id={_id}>
+                  //     <td className="new"></td>
+                  //     <td className="name">
+                  //       <div
+                  //         className="nameDiv"
+                  //         onClick={(e) => clickHandle(e)}
+                  //       >
+                  //         {name}
+                  //       </div>
+                  //       <input
+                  //         className="tdInput"
+                  //         type="text"
+                  //         value={value}
+                  //         name="name"
+                  //         onBlur={(e) => blurHandle(e)}
+                  //         onChange={(e) => changeHandle(e)}
+                  //       />
+                  //     </td>
+                  //     <td className="surname">
+                  //       <div
+                  //         className="nameDiv"
+                  //         onClick={(e) => clickHandle(e)}
+                  //       >
+                  //         {surname}
+                  //       </div>
+                  //       <input
+                  //         className="tdInput"
+                  //         type="text"
+                  //         value={value}
+                  //         name="surname"
+                  //         onBlur={(e) => blurHandle(e)}
+                  //         onChange={(e) => changeHandle(e)}
+                  //       />
+                  //     </td>
+
+                  //     <td className="email">
+                  //       <div
+                  //         className="nameDiv"
+                  //         onClick={(e) => clickHandle(e)}
+                  //       >
+                  //         {email}
+                  //       </div>
+                  //       <input
+                  //         className="tdInput"
+                  //         type="email"
+                  //         value={value}
+                  //         name="email"
+                  //         onBlur={(e) => blurHandle(e)}
+                  //         onChange={(e) => changeHandle(e)}
+                  //       />
+                  //     </td>
+                  //     <td className="password">
+                  //       <div
+                  //         className="nameDiv"
+                  //         onClick={(e) => clickHandle(e)}
+                  //       >
+                  //         ****
+                  //       </div>
+                  //       <input
+                  //         className="tdInput"
+                  //         type="password"
+                  //         value={value}
+                  //         name="password"
+                  //         onBlur={(e) => blurHandle(e)}
+                  //         onChange={(e) => changeHandle(e)}
+                  //       />
+                  //     </td>
+                  //     <td className="date">
+                  //       <div
+                  //         className="nameDiv"
+                  //         onClick={(e) => clickHandle(e)}
+                  //       >
+                  //         01.01.2023
+                  //       </div>
+                  //     </td>
+                  //     <td className="delete" onClick={(e) => deleteHandle(e)}>
+                  //       &#x2716;
+                  //     </td>
+                  //   </tr>
+                  // );
+                })}
+            </tbody>
+          </table>
+        </section>
+      )}
+    </>
   );
 };
 

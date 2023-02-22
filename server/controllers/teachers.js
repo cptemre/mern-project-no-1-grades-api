@@ -42,10 +42,16 @@ const deleteTeacher = async (req, res) => {
 const getAllTeachers = async (req, res) => {
   const { email } = req.user;
   // IF THERE IS A QUERY ADD IT TO QUERY OBJECT TO FIND
-  const { name, surname, teacherEmail, branches, createdAt, sortValue, pageValue } =
-    req.query;
+  const {
+    name,
+    surname,
+    teacherEmail,
+    branches,
+    createdAt,
+    sortValue,
+    pageValue,
+  } = req.query;
   const query = {};
-
   if (name) {
     query.name = name;
   }
@@ -65,10 +71,19 @@ const getAllTeachers = async (req, res) => {
   if (email === "admin@ga.pl") {
     const accounts = Teachers.find(query).select("-password");
 
-    // CREATE SORT AND SKIP VARIABLES
-    const sort = sortValue || "createdAt";
-    const page = pageValue || 0
-    const skip = page * 10
+    let sortSplit;
+    if (sortValue) {
+      sortSplit = sortValue.split("_");
+    }
+    if (sortSplit && sortSplit[0] === "date") sortSplit[0] = "createdAt";
+
+    if (sortSplit) {
+      sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
+    }
+    console.log(sortSplit);
+    const sort = sortSplit || { createdAt: 1 };
+    const page = pageValue || 0;
+    const skip = page * 10;
 
     const teacher = await accounts.sort(sort).skip(skip);
 
