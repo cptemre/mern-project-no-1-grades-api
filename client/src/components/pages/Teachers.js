@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 // COMPONENTS
 import { Context } from "../../components/Context";
 import Loading from "../loading/Loading";
+import Search from '../search/Search'
 // HOOKS
 import usePost from "../../hooks/usePost";
 
@@ -68,7 +69,7 @@ const Teachers = () => {
   // SET SELECTED BUTTON COLOR
   useEffect(() => {
     if ((state.title, component, isLoad)) {
-      $('.option').css("background-color", "white");
+      $(".option").css("background-color", "white");
       $(`#${component}Option`).css("background-color", "red");
     }
   }, [state.title, component, isLoad]);
@@ -80,7 +81,7 @@ const Teachers = () => {
       action: "get",
       searchParams,
     });
-    setIsLoad(false)
+    setIsLoad(false);
   }, [state.url, isFetch]);
 
   // INPUT VALUE CHANGE
@@ -203,13 +204,7 @@ const Teachers = () => {
         <Loading />
       ) : (
         <section id="table">
-          <div id="searchDiv">
-            <div id="searchOptions"></div>
-            <div id="search">
-              <input type="text" id="searchInput" />
-              <div id="searchType">NAME</div>
-            </div>
-          </div>
+          <Search/>
           <table>
             <tbody>
               <tr>

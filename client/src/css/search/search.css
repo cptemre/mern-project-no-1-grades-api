@@ -1,0 +1,12 @@
+#searchOptions {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.searchOption {
+  background-color: lightcoral;
+  border: 2px solid black;
+}
+
+#search {
+  grid-template-columns: 1fr 1fr;
+}

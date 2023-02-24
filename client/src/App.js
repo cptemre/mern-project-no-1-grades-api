@@ -3,13 +3,11 @@ import React, { useReducer, useEffect, useState } from "react";
 // NAVBAR
 import Login from "./components/Login";
 import Home from "./components/pages/Home";
-import Loading from "./components/loading/Loading";
 import { Context } from "./components/Context";
 // * DATA
 import { reducer, defaultState } from "./data/reducer";
 // * ROUTER
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 
 // * CSS
 // MAIN
@@ -17,6 +15,9 @@ import "./css/index.css";
 
 // LOADING
 import "./css/loading/loading.css";
+
+// SEARCH
+import "./css/search/search.css";
 
 // LOGIN
 import "./css/login/login.css";
