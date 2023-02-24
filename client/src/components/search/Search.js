@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 
 // COMPONENTS
-import { Context } from "../Context";
+import { Context } from "../../data/Context";
 
 // NPMS
 import { useSearchParams } from "react-router-dom";

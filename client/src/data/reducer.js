@@ -37,6 +37,7 @@ const defaultState = {
   url: {
     teachers: "/api/v1/teachers",
     user: { sign_in: "/api/v1/user/sign_in" },
+    students: "/api/v1/students",
   },
   searchOptions: { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" },
 };

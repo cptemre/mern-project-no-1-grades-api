@@ -44,23 +44,23 @@ const getStudent = async (req, res) => {
     user: { ID, access_token },
     params: { id: studentID },
   } = req;
-  let student = await Students.findOne({ _id: studentID });
+  let result = await Students.findOne({ _id: studentID });
   let lessons = {};
-  if (student && student.lessons !== {}) {
-    for (let i = 0; i < Object.keys(student.lessons).length; i++) {
+  if (result && result.lessons !== {}) {
+    for (let i = 0; i < Object.keys(result.lessons).length; i++) {
       // LESSON NAME
-      const lesson = Object.keys(student.lessons)[i];
+      const lesson = Object.keys(result.lessons)[i];
       // CHECK IF THE LESSON IS CREATED BY THE THEACER
       if (
-        student.lessons[lesson].createdBy &&
-        student.lessons[lesson].createdBy === ID
+        result.lessons[lesson].createdBy &&
+        result.lessons[lesson].createdBy === ID
       ) {
         // SET LESSONS KEY TO MATCHED LESSON VALUES
-        lessons[lesson] = student.lessons[lesson];
+        lessons[lesson] = result.lessons[lesson];
       }
     }
-    student.lessons = lessons;
-    res.status(200).json({ student, access_token });
+    result.lessons = lessons;
+    res.status(200).json({ result, access_token });
   } else {
     throw new Bad_Request("STUDENT IS NOT EXIST");
   }
@@ -77,24 +77,24 @@ const getAll = async (req, res) => {
   const limit = 9;
   const skip = (page - 1) * limit;
 
-  search = await search.skip(skip).sort({ updatedAt: 1 });
+  result = await search.skip(skip).sort({ updatedAt: 1 });
 
-  if (search.length) {
+  if (result.length) {
     // ! IF THIS IS NOT ADMIN THEN FILTER
     // ! IF IT IS ADMIN THEN SEND ALL WITHOUT ANY FILTER
     if (email !== "admin@gmail.com") {
       // * DELETE EVERY LESSON WHICH TEACHER DIDNT MARK FOR THE STUDENT
       // * CLIENT WILL GET ONLY RELATED LESSONS BUT DB WILL KEEP ALL
-      for (let i = 0; i < search.length; i++) {
-        for (const lessonKey in search[i]["lessons"]) {
-          const lesson = search[i]["lessons"][lessonKey];
+      for (let i = 0; i < result.length; i++) {
+        for (const lessonKey in result[i]["lessons"]) {
+          const lesson = result[i]["lessons"][lessonKey];
           if (lesson.createdBy && lesson.createdBy !== ID) {
-            delete search[i].lessons[lessonKey];
+            delete result[i].lessons[lessonKey];
           }
         }
       }
     }
-    res.status(200).json({ search, access_token });
+    res.status(200).json({ result, access_token });
   } else {
     throw new Bad_Request("THERE ARE NO STUDENT RECORDED");
   }
@@ -104,15 +104,17 @@ const getAll = async (req, res) => {
 // SEND MSG IF DELETED
 // THROW AN ERROR IF NOT DELETED
 const deleteStudent = async (req, res) => {
-  const { id: studentID, email } = req.params;
+  const { access_token, email } = req.user;
+
+  const { _id } = req.params;
   if (email === "admin@ga.pl") {
-    const { access_token } = req.user;
-    const student = await Students.deleteOne({ _id: studentID });
+    const student = await Students.deleteOne({ _id });
     console.log(student);
     if (student.deletedCount) {
       res.status(200).json({ msg: "STUDENT IS DELETED", access_token });
+    } else {
+      throw new Bad_Request("STUDENT IS NOT DELETED");
     }
-    throw new Bad_Request("STUDENT IS NOT DELETED");
   }
 };
 

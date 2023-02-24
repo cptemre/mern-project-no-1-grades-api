@@ -1,20 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
 // COMPONENTS
-import Header from "./header/Header";
-import { Context } from "./Context";
+import Header from "../header/Header";
+import { Context } from "../../data/Context";
 // IMAGE
-import homepageimg from "../assets/login/homepage.jpg";
+import homepageimg from "../../assets/login/homepage.jpg";
 // NPMS
 import $ from "jquery";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 // HOOKS
-import usePost from "../hooks/usePost";
+import useFetch from "../../hooks/useFetch";
 const Login = () => {
   const { state } = useContext(Context);
   const navigate = useNavigate();
-  
+
   // RADIO KEYS
   const radioJSX = [
     {
@@ -42,12 +42,12 @@ const Login = () => {
       navigate("/");
     }
   }, [cookies.isAuth]);
-  const loginHandle =  () => {
+  const loginHandle = () => {
     setUrl("/api/v1/user/log_in");
     setBody({ email, password, title });
   };
   // AXIOS POST HOOK
-  usePost(url, body,'post');
+  useFetch(url, body, "post");
   useEffect(() => {
     if (state.msg && state.msg !== "PAGE DOES NOT EXIST") {
       $(".msg").css("opacity", 1);

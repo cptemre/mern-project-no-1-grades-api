@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect, useState } from "react";
 // * COMPONENTS
 // NAVBAR
-import Login from "./components/Login";
+import Login from "./components/login/Login";
 import Home from "./components/pages/Home";
-import { Context } from "./components/Context";
+import { Context } from "./data/Context";
 // * DATA
 import { reducer, defaultState } from "./data/reducer";
 // * ROUTER
@@ -36,7 +36,6 @@ import "./css/navbar/logout.css";
 // HOME
 import "./css/pages/home.css";
 import "./css/pages/teachers.css";
-import Teachers from "./components/pages/Teachers";
 
 const App = () => {
   // * REDUCER SETUP
@@ -61,6 +60,7 @@ const App = () => {
             </Context.Provider>
           }
         />
+        
         <Route
           path="*"
           element={

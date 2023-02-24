@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 // COMPONENTS
-import { Context } from "../Context";
+import { Context } from "../../data/Context";
 // NPMS
 import { useCookies } from "react-cookie";
 
 const UserInfo = () => {
-  const {state} = useContext(Context)
+  const { state } = useContext(Context);
   return (
     <section id="userInfo">
       <article id="userName">

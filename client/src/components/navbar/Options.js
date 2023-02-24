@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 
 // * COMPONENTS
 // CONTEXT
-import { Context } from "../Context";
+import { Context } from "../../data/Context";
 
 // NPMS
 import { useNavigate } from "react-router-dom";

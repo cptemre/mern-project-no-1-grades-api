@@ -100,9 +100,9 @@ const getAllTeachers = async (req, res) => {
     const page = pageValue || 0;
     const skip = page * 10;
 
-    const teacher = await accounts.sort(sort).skip(skip);
+    const result = await accounts.sort(sort).skip(skip);
 
-    res.status(200).json(teacher);
+    res.status(200).json(result);
   } else {
     throw new Unauthorized("AUTHORIZATION DENIED");
   }
@@ -113,8 +113,8 @@ const getSingleTeacher = async (req, res) => {
   const { teacherEmail } = req.params;
   if (email === "admin@ga.pl") {
     const teacher = await Teachers.findOne({ email: teacherEmail });
-    if (teacher) {
-      res.status(200).json({ teacher, access_token });
+    if (result) {
+      res.status(200).json({ result, access_token });
     } else {
       throw new Bad_Request(`${teacherEmail} IS NOT IN OUR DATABASE`);
     }

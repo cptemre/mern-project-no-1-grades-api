@@ -1,12 +1,12 @@
 import { useEffect, useContext } from "react";
 // COMPONENTS
-import { Context } from "../components/Context";
+import { Context } from "../data/Context";
 // NPMS
 import { useCookies } from "react-cookie";
 import { useJwt } from "react-jwt";
 
 const useAuth = () => {
-  const {dispatch} = useContext(Context)
+  const { dispatch } = useContext(Context);
   const [cookies, setCookie] = useCookies([
     "refresh_token",
     "ID",

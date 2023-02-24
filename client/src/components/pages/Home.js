@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
 import Header from "../header/Header";
-import Admin from "./Teachers";
-import Login from "../Login";
-import Loading from "../loading/Loading";
-import { Context } from "../Context";
+import Admin from "./Admin";
+import Login from "../login/Login";
+import { Context } from "../../data/Context";
 
 // HOOKS
 import useAuth from "../../hooks/useAuth";

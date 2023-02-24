@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 
 // COMPONENTS
-import { Context } from "../../components/Context";
+import { Context } from "../../data/Context";
 import Loading from "../loading/Loading";
-import Search from '../search/Search'
+import Search from "../search/Search";
 
 // ERROR
-import NoData from '../../errors/NoData'
+import NoData from "../../errors/NoData";
 // HOOKS
-import usePost from "../../hooks/usePost";
+import usePost from "../../hooks/useFetch";
 
 // NPMS
 import $ from "jquery";
 import { useSearchParams, useParams, useNavigate } from "react-router-dom";
+import WrongPage from "../../errors/WrongPage";
 
 const Teachers = () => {
   // STATE
@@ -21,9 +22,11 @@ const Teachers = () => {
   const { component } = useParams();
   // LOCATION
   const navigate = useNavigate();
+  // SHOULD I LOAD?
   const [isLoad, setIsLoad] = useState(false);
+  // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
-
+  const [componentURL, setComponentURL] = useState("");
   // TABLE HEADERS FOR TH
   const headers = {
     new: "NEW",
@@ -55,6 +58,7 @@ const Teachers = () => {
     if (!component) {
       navigate("/teachers");
     }
+    setComponentURL(component);
   }, [component]);
 
   // UNTIL STATE OR ISLOAD GETS READ SHOW LOADING SCREEN THEN SHOW PAGE OR LOGIN DEPENDS ON AUTHORIZATION
@@ -78,14 +82,16 @@ const Teachers = () => {
   }, [state.title, component, isLoad]);
 
   useEffect(() => {
-    setFetchVars({
-      url: state.url.teachers,
-      body: "",
-      action: "get",
-      searchParams,
-    });
-    setIsLoad(false);
-  }, [state.url, isFetch,searchParams]);
+    if (componentURL) {
+      setFetchVars({
+        url: state.url[componentURL],
+        body: "",
+        action: "get",
+        searchParams,
+      });
+      setIsLoad(false);
+    }
+  }, [state.url, isFetch, searchParams, componentURL]);
 
   // INPUT VALUE CHANGE
   const changeHandle = (e) => {
@@ -117,7 +123,7 @@ const Teachers = () => {
     const name = e.target.name;
     const _id = $(target).parent().parent().attr("id");
     setFetchVars({
-      url: `${state.url.teachers}/${_id}`,
+      url: `${state.url[componentURL]}/${_id}`,
       body: { [name]: value },
       action: "patch",
       searchParams,
@@ -166,7 +172,7 @@ const Teachers = () => {
     const target = e.target;
     const _id = $(target).parent().attr("id");
     setFetchVars({
-      url: `${state.url.teachers}/${_id}`,
+      url: `${state.url[componentURL]}/${_id}`,
       body: "",
       action: "delete",
       searchParams,
@@ -202,9 +208,11 @@ const Teachers = () => {
   );
   return (
     <>
-      {!state.data || !isLoad ? (
+      {component !== "teachers" && component !== "students" ? (
+        <WrongPage />
+      ) : !state.data && !isLoad ? (
         <Loading />
-      ) : state.data ? (
+      ) : !state.data ? (
         <NoData />
       ) : (
         <section id="table">
@@ -328,88 +336,6 @@ const Teachers = () => {
                       })}
                     </tr>
                   );
-
-                  // return (
-                  //   <tr className="row" key={_id} id={_id}>
-                  //     <td className="new"></td>
-                  //     <td className="name">
-                  //       <div
-                  //         className="nameDiv"
-                  //         onClick={(e) => clickHandle(e)}
-                  //       >
-                  //         {name}
-                  //       </div>
-                  //       <input
-                  //         className="tdInput"
-                  //         type="text"
-                  //         value={value}
-                  //         name="name"
-                  //         onBlur={(e) => blurHandle(e)}
-                  //         onChange={(e) => changeHandle(e)}
-                  //       />
-                  //     </td>
-                  //     <td className="surname">
-                  //       <div
-                  //         className="nameDiv"
-                  //         onClick={(e) => clickHandle(e)}
-                  //       >
-                  //         {surname}
-                  //       </div>
-                  //       <input
-                  //         className="tdInput"
-                  //         type="text"
-                  //         value={value}
-                  //         name="surname"
-                  //         onBlur={(e) => blurHandle(e)}
-                  //         onChange={(e) => changeHandle(e)}
-                  //       />
-                  //     </td>
-
-                  //     <td className="email">
-                  //       <div
-                  //         className="nameDiv"
-                  //         onClick={(e) => clickHandle(e)}
-                  //       >
-                  //         {email}
-                  //       </div>
-                  //       <input
-                  //         className="tdInput"
-                  //         type="email"
-                  //         value={value}
-                  //         name="email"
-                  //         onBlur={(e) => blurHandle(e)}
-                  //         onChange={(e) => changeHandle(e)}
-                  //       />
-                  //     </td>
-                  //     <td className="password">
-                  //       <div
-                  //         className="nameDiv"
-                  //         onClick={(e) => clickHandle(e)}
-                  //       >
-                  //         ****
-                  //       </div>
-                  //       <input
-                  //         className="tdInput"
-                  //         type="password"
-                  //         value={value}
-                  //         name="password"
-                  //         onBlur={(e) => blurHandle(e)}
-                  //         onChange={(e) => changeHandle(e)}
-                  //       />
-                  //     </td>
-                  //     <td className="date">
-                  //       <div
-                  //         className="nameDiv"
-                  //         onClick={(e) => clickHandle(e)}
-                  //       >
-                  //         01.01.2023
-                  //       </div>
-                  //     </td>
-                  //     <td className="delete" onClick={(e) => deleteHandle(e)}>
-                  //       &#x2716;
-                  //     </td>
-                  //   </tr>
-                  // );
                 })}
             </tbody>
           </table>

@@ -12,5 +12,5 @@ const {
 const teacherAuth = require('../middlewares/teacherAuth');
 
 router.route("/").get(teacherAuth,getAll).post(teacherAuth,createStudent);
-router.route("/:id").get(getStudent).patch(teacherAuth,updateStudent).delete(teacherAuth,deleteStudent);
+router.route("/:_id").get(getStudent).patch(teacherAuth,updateStudent).delete(teacherAuth,deleteStudent);
 module.exports = router;

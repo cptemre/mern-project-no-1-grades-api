@@ -1,22 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 
 // HOOKS
-import usePost from "../../hooks/usePost";
-import useAuth from "../../hooks/useAuth";
+import useFetch from "../../hooks/useFetch";
 
 // COMPONENTS
-import { Context } from "../Context";
+import { Context } from "../../data/Context";
 
 // NPMS
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
   const [url, setUrl] = useState("");
   const [body, setBody] = useState({});
   const { state, dispatch } = useContext(Context);
   const [cookies, setCookie] = useCookies(["refresh_token", "isAuth"]);
-  const navigate = useNavigate();
 
   const logout = () => {
     setUrl("/api/v1/user/logout");
@@ -25,7 +22,7 @@ const Logout = () => {
     setCookie("isAuth", false);
   };
 
-  usePost(url, body);
+  useFetch(url, body);
   return (
     <section id="logout" onClick={() => logout()}>
       LOGOUT

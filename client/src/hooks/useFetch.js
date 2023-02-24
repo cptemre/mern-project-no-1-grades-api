@@ -1,10 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 // COMPONENTS
-import { Context } from "../components/Context";
+import { Context } from "../data/Context";
 // NPMS
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const usePost = async (url='', body='', action='', params='', isFetch='') => {
+const usePost = async (
+  url = "",
+  body = "",
+  action = "",
+  params = "",
+  isFetch = ""
+) => {
   // COOKIE
   const [cookies, setCookie] = useCookies(["access_token", "refresh_token"]);
   // CONTEXT VALUES
@@ -13,6 +19,7 @@ const usePost = async (url='', body='', action='', params='', isFetch='') => {
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
+    console.log(url,action);
     if (url) {
       if (action === "post") {
         post();
@@ -52,12 +59,12 @@ const usePost = async (url='', body='', action='', params='', isFetch='') => {
         headers: {
           Authorization: `Bearer ${cookies.access_token} ${cookies.refresh_token}`,
         },
-        params
+        params,
       });
       setMsg(data.msg);
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
-      dispatch({ type: "DATA", payload: data });
+      dispatch({ type: "DATA", payload: data.result || data });
     } catch (error) {
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });
