@@ -4,6 +4,9 @@ import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../../components/Context";
 import Loading from "../loading/Loading";
 import Search from '../search/Search'
+
+// ERROR
+import NoData from '../../errors/NoData'
 // HOOKS
 import usePost from "../../hooks/usePost";
 
@@ -82,7 +85,7 @@ const Teachers = () => {
       searchParams,
     });
     setIsLoad(false);
-  }, [state.url, isFetch]);
+  }, [state.url, isFetch,searchParams]);
 
   // INPUT VALUE CHANGE
   const changeHandle = (e) => {
@@ -197,14 +200,15 @@ const Teachers = () => {
     fetchVars.searchParams,
     isFetch
   );
-
   return (
     <>
       {!state.data || !isLoad ? (
         <Loading />
+      ) : state.data ? (
+        <NoData />
       ) : (
         <section id="table">
-          <Search/>
+          <Search />
           <table>
             <tbody>
               <tr>

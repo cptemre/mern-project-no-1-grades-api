@@ -65,7 +65,23 @@ const getAllTeachers = async (req, res) => {
     query.branches = branches;
   }
   if (createdAt) {
-    query.createdAt = createdAt;
+    // CREATE 24H DATE SPACE TO FIND
+    let splitDate = createdAt.split("-");
+
+    if (splitDate.length === 2) {
+      splitDate = splitDate[2] + "," + splitDate[1] + "," + splitDate[0];
+    }
+    const dateStart = new Date(
+      Number(splitDate[2]),
+      Number(splitDate[1]) - 1,
+      Number(splitDate[0])
+    );
+    const dateEnd = new Date(
+      Number(splitDate[2]),
+      Number(splitDate[1]) - 1,
+      Number(splitDate[0]) + 1
+    );
+    query.createdAt = { $gte: dateStart, $lte: dateEnd };
   }
 
   if (email === "admin@ga.pl") {
@@ -80,18 +96,13 @@ const getAllTeachers = async (req, res) => {
     if (sortSplit) {
       sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
     }
-    console.log(sortSplit);
     const sort = sortSplit || { createdAt: 1 };
     const page = pageValue || 0;
     const skip = page * 10;
 
     const teacher = await accounts.sort(sort).skip(skip);
 
-    if (teacher.length) {
-      res.status(200).json(teacher);
-    } else {
-      throw new Bad_Request("THERE ARE NO TEACHERS IN DATABASE");
-    }
+    res.status(200).json(teacher);
   } else {
     throw new Unauthorized("AUTHORIZATION DENIED");
   }

@@ -20,6 +20,9 @@ const reducer = (state, action) => {
   if (action.type === "DATA") {
     return { ...state, data: action.payload };
   }
+  if (action.type === "SEARCH_OPTIONS") {
+    return { ...state, searchOptions: action.payload };
+  }
   return state;
 };
 
@@ -35,6 +38,7 @@ const defaultState = {
     teachers: "/api/v1/teachers",
     user: { sign_in: "/api/v1/user/sign_in" },
   },
+  searchOptions: { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" },
 };
 
 export { reducer, defaultState };

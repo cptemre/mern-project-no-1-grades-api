@@ -6,7 +6,3 @@
   background-color: lightcoral;
   border: 2px solid black;
 }
-
-#search {
-  grid-template-columns: 1fr 1fr;
-}
