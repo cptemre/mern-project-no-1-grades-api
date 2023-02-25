@@ -1,5 +1,4 @@
 #table {
-  grid-area: page;
   grid-template-rows: 2rem auto;
   align-items: flex-start;
   padding: 3rem 1rem;

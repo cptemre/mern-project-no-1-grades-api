@@ -76,8 +76,14 @@ const Teachers = () => {
   // SET SELECTED BUTTON COLOR
   useEffect(() => {
     if ((state.title, component, isLoad)) {
-      $(".option").css("background-color", "white");
-      $(`#${component}Option`).css("background-color", "red");
+      $(".option").css({
+        backgroundColor: "white",
+        color: "black",
+      });
+      $(`#${component}Option`).css({
+        backgroundColor: "var(--inputBorder)",
+        color: "white",
+      });
     }
   }, [state.title, component, isLoad]);
 

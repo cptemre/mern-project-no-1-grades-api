@@ -25,7 +25,7 @@ const Logout = () => {
   useFetch(url, body);
   return (
     <section id="logout" onClick={() => logout()}>
-      LOGOUT
+      <button id="logoutBtn">LOG OUT</button>
     </section>
   );
 };

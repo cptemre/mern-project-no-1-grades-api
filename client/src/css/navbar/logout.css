@@ -1,13 +1,16 @@
 #logout {
     height: auto;
     width: auto;
-    border: 2px solid black;
     padding: 0.5rem;
     letter-spacing: 1px;
-    background-color: rgb(186, 80, 80);
-    color: white;
-    position: absolute;
-    bottom: 2rem;
-    left: 1rem;
-    cursor: pointer;
+    align-items: flex-end;
+}
+
+#logoutBtn {
+    background-color: white;
+    font-weight: bold;
+}
+#logoutBtn:hover {
+  background-color: var(--inputBorder);
+  color: white;
 }

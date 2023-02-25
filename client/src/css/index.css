@@ -1,6 +1,10 @@
 :root {
-  --errorRed: rgb(197, 144, 144);
-  --loaderBlue: rgb(82, 177, 186)
+  --errorRed: rgb(204, 75, 75);
+  --loaderBlue: rgb(82, 177, 186);
+  --iconBg: rgb(46, 50, 155);
+  --inputBorder: rgb(24, 46, 95);
+  --btnBg: rgb(119, 165, 218);
+  --headerBg: rgb(50, 88, 194);
 }
 
 * {
@@ -40,6 +44,7 @@ input,
 button {
   border: none;
   outline: none;
+  transition: 0.2s;
 }
 
 input {
@@ -47,10 +52,15 @@ input {
 }
 
 button {
-  background-color: rgb(119, 218, 119);
+  background-color: var(--btnBg);
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   letter-spacing: 1px;
   border: 2px solid black;
   cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--inputBorder);
+  color: white;
 }

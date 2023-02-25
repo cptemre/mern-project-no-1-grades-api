@@ -1,8 +1,4 @@
 #home {
-  grid-template-columns: auto 1fr;
-  grid-template-areas:
-    "navbar menu"
-    "navbar page";
   grid-template-rows: 5rem 1fr;
   background-color: rgb(165, 165, 213);
 }

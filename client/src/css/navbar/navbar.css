@@ -1,8 +1,10 @@
 nav {
-  position: relative;
+  position: fixed;
+  left: 0;
   width: 10rem;
   height: 100vh;
-  background-color: rgb(104, 195, 104);
-  border-right: 5px solid green;
-  grid-area: navbar;
+  background-color: rgb(79, 117, 171);
+  border-right: 2px solid black;
+  display: grid;
+  grid-template-rows: 7rem 10rem auto;
 }

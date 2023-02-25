@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faUser,faKey);
+library.add(faUser, faKey);
 
 const Login = () => {
   const { state } = useContext(Context);
@@ -60,29 +60,25 @@ const Login = () => {
       "PASSWORD IS WRONG",
       "EMAIL IS WRONG",
     ];
-    // SHOW MESSAGE IF IT INCLUDES ABOVE
-    if (messages.includes(state.msg)) {
-      $(".msg").css("opacity", 1);
-    }
 
     // INPUT ANIMATION AND CHANGES DEPENDS ON ERROR MESSAGE
     if (state.msg.includes("EMAIL")) {
-      $("#emailInput").css({
-        borderColor: "red",
+      $("#emailIcon").css({
+        backgroundColor: "var(--errorRed)",
       });
       // TURN BACK THE PASSWORD TO INITIAL
-      $("#passwordInput").css({
-        borderColor: "black",
+      $("#passwordIcon").css({
+        backgroundColor: "var(--iconBg)",
       });
     }
 
     if (state.msg.includes("PASSWORD")) {
-      $("#passwordInput").css({
-        borderColor: "red",
+      $("#passwordIcon").css({
+        backgroundColor: "var(--errorRed)",
       });
       // TURN BACK THE EMAIL TO INITIAL
-      $("#emailInput").css({
-        borderColor: "black",
+      $("#emailIcon").css({
+        backgroundColor: "var(--iconBg)",
       });
     }
   };
@@ -96,35 +92,47 @@ const Login = () => {
         <img id="homepageimg" src={homepageimg} alt="Home Page" />
       </figcaption>
       <div id="loginContainer">
-        <Header />
         <form id="loginForm" onSubmit={(e) => e.preventDefault()}>
-          <div id="emailDiv" className="inputContainer">
-            <FontAwesomeIcon icon="fa-user" />
-            <input
-              placeholder="EMAIL"
-              type="email"
-              id="emailInput"
-              name="email"
-              className="loginInput"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <div className="universityName" id="loginHeader">
+            LOGIN
           </div>
-          <div id="passwordDiv" className="inputContainer">
-            <FontAwesomeIcon icon="fa-key" />
-            <input
-              placeholder="PASSWORD"
-              type="password"
-              id="passwordInput"
-              name="password"
-              className="loginInput"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <div id="inputContainer">
+            <div id="emailDiv" className="inputContainer">
+              <div className="iconContainer" id="emailIcon">
+                <FontAwesomeIcon icon="fa-user" className="icon" />
+              </div>
+              <input
+                placeholder="EMAIL"
+                type="email"
+                id="emailInput"
+                name="email"
+                className="loginInput"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div id="passwordDiv" className="inputContainer">
+              <div className="iconContainer" id="passwordIcon">
+                <FontAwesomeIcon icon="fa-key" className="icon" />
+              </div>
+              <input
+                placeholder="PASSWORD"
+                type="password"
+                id="passwordInput"
+                name="password"
+                className="loginInput"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
           </div>
 
-          <div className="msg">{state.msg}</div>
-          <button onMouseDown={() => loginHandle()}>LOGIN</button>
+          <div id="btnContainer">
+            <button onMouseDown={() => loginHandle()}>LOGIN</button>
+          </div>
+          <div className="universityName" id="loginFooter">
+            GRADES-API
+          </div>
         </form>
       </div>
     </section>

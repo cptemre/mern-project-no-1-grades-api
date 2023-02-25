@@ -35,7 +35,7 @@ import "./css/navbar/logout.css";
 // PAGES
 // HOME
 import "./css/pages/home.css";
-import "./css/pages/teachers.css";
+import "./css/pages/admin.css";
 
 const App = () => {
   // * REDUCER SETUP
