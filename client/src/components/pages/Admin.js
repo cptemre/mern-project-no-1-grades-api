@@ -77,12 +77,14 @@ const Teachers = () => {
   useEffect(() => {
     if ((state.title, component, isLoad)) {
       $(".option").css({
-        backgroundColor: "white",
+        backgroundColor: "var(--optionBg)",
         color: "black",
+        transform: "translateX(-10px)"
       });
       $(`#${component}Option`).css({
         backgroundColor: "var(--inputBorder)",
         color: "white",
+        transform: "translateX(-3px)",
       });
     }
   }, [state.title, component, isLoad]);

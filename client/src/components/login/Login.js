@@ -108,7 +108,7 @@ const Login = () => {
                 name="email"
                 className="loginInput"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.trim())}
               />
             </div>
             <div id="passwordDiv" className="inputContainer">

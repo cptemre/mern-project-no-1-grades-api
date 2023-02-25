@@ -3,8 +3,10 @@
   --loaderBlue: rgb(82, 177, 186);
   --iconBg: rgb(46, 50, 155);
   --inputBorder: rgb(24, 46, 95);
+  --navbarBg: rgb(79, 117, 171);
   --btnBg: rgb(119, 165, 218);
   --headerBg: rgb(50, 88, 194);
+  --optionBg: rgb(200, 223, 214);
 }
 
 * {

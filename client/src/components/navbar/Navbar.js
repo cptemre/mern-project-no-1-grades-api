@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 
 // * Components
+import NavBtn from "./NavBtn";
 import UserInfo from "./UserInfo";
 import Options from "./Options";
 import Logout from "./Logout";
@@ -11,6 +12,7 @@ const Navbar = () => {
 
   return (
     <nav>
+      <NavBtn/>
       <UserInfo />
       <Options />
       <Logout />

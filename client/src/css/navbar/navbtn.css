@@ -1,0 +1,25 @@
+#navBtnContainer {
+  grid-area: navBtnContainer;
+  background-color: transparent;
+  position: relative;
+}
+
+#navBtn {
+  position: absolute;
+  right: -1.8rem;
+  top: 0;
+  width: 1.8rem;
+  height: 2rem;
+  font-size: 1.5rem;
+  border-radius: 0 5px 10px 0;
+  background-color: var(--inputBorder);
+  color: white;
+  border-left: 2px solid black;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#navBtn:hover {
+  background-color: var(--navbarBg);
+  color: black;
+}

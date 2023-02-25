@@ -4,6 +4,7 @@
   grid-row-gap: 0.2rem;
   font-family: "Michroma", sans-serif;
   padding-left: 1px;
+  grid-area: userInfo;
 }
 
 #userInfo > article {

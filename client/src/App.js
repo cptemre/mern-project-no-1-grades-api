@@ -26,6 +26,8 @@ import "./css/login/login.css";
 import "./css/navbar/navbar.css";
 
 // USER INFO
+import "./css/navbar/navbtn.css";
+// USER INFO
 import "./css/navbar/userInfo.css";
 // OPTIONS
 import "./css/navbar/options.css";

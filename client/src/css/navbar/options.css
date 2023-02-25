@@ -5,12 +5,16 @@
   letter-spacing: 1px;
   color: black;
   margin-top: 5rem;
+    grid-area: options;
+
 }
 
 .option {
-  background-color: rgb(200, 223, 214);
+  background-color: var(--optionBg);
   font-size: 1rem;
   cursor: pointer;
   height: 2rem;
   border-radius: 0 10px 10px 0rem;
+  transform: translateX(-10px);
+  transition: 0.2s;
 }
