@@ -24,7 +24,13 @@ const Home = () => {
         <section id="home">
           <Navbar />
           <Header />
-          {state.title === "admin" ? <Admin /> : "else"}
+          {state.title === "admin" ? (
+            <Admin />
+          ) : state.title === "teacher" ? (
+            "teacher"
+          ) : (
+            "student"
+          )}
         </section>
       ) : (
         <Login />

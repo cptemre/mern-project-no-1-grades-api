@@ -23,16 +23,6 @@
   font-family: "Zeyada", cursive;
 }
 
-#radioContainer {
-  height: 3rem;
-}
-
-.radioDiv {
-  grid-template-columns: auto auto;
-  width: 10rem;
-  font-weight: bold;
-}
-
 .loginInput {
   height: 3rem;
   width: 90%;
@@ -49,4 +39,8 @@
   border-radius: 0.5rem;
   opacity: 0;
   transition: 0.4s;
+}
+
+.inputContainer {
+  grid-template-columns: 2rem 1fr;
 }

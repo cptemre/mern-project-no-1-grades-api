@@ -13,6 +13,7 @@ const Options = () => {
   const navigate = useNavigate();
   const [options, setOptions] = useState({
     admin: ["TEACHERS", "STUDENTS"],
+    teacher: ['MY LESSONS','a']
   });
   // ACCORDING TO STATE TITLE RETURN OPTIONS FROM OPTIONS VARIABLE WITH KEY
   return (

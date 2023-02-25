@@ -22,8 +22,14 @@ const login = async (req, res) => {
   } else {
     account = await Students.findOne({ email });
   }
-  if (!title) {
-    throw new Bad_Request("CHOOSE A TITLE");
+  if (!email) {
+        throw new Bad_Request("EMAIL IS REQUIRED");
+  }
+    if (!password) {
+      throw new Bad_Request("PASSWORD IS REQUIRED");
+    }
+  if (title !== 'teacher' && 'student') {
+    throw new Bad_Request("EMAIL IS NOT ACCEPTED");
   }
   if (account) {
     const decoded = await bcrypt.compare(password, account.password);

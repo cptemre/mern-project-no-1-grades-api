@@ -9,11 +9,6 @@ const useAuth = () => {
   const { dispatch } = useContext(Context);
   const [cookies, setCookie] = useCookies([
     "refresh_token",
-    "ID",
-    "name",
-    "surname",
-    "email",
-    "title",
     "isAuth",
   ]);
   const { decodedToken, isExpired, reEvaluateToken } = useJwt(
