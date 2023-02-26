@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+
+// COMPONENTS
+import { Context } from "../../data/Context";
 
 // NPMS
 import $ from "jquery";
 
 const NavBtn = () => {
-  const [isClicked, setIsClicked] = useState(false);
+  const {state,dispatch} = useContext(Context)
   useEffect(() => {
-    if (isClicked) {
+    if (state.isNavbar) {
       $("nav").css("transform", "translateX(0)");
     } else {
       $("nav").css("transform", "translateX(-10rem)");
     }
-  }, [isClicked]);
+  }, [state.isNavbar]);
+  
   const clickHandle = () => {
-    setIsClicked(!isClicked);
+    dispatch({type:'IS_NAVBAR', payload: !state.isNavbar})
   };
 
   return (

@@ -25,7 +25,7 @@ const Login = () => {
   // EMAIL AND PASSWORD VALUES INITIAL
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [title, setTitle] = useState("");
+  const title = ''
   // POST BODY
   const [body, setBody] = useState({});
   // POST URL
@@ -39,13 +39,7 @@ const Login = () => {
   const loginHandle = () => {
     setUrl("/api/v1/user/log_in");
     setBody({ email, password, title });
-    if (email.endsWith("@ga.pl")) {
-      setTitle("teacher");
-    } else if (email.endsWith("@edu.ga.pl")) {
-      setTitle("student");
-    }
   };
-
   useEffect(() => {
     msgHandle();
   }, [state.msg]);

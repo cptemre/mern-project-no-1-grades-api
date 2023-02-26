@@ -17,7 +17,7 @@ import WrongPage from "../../errors/WrongPage";
 
 const Teachers = () => {
   // STATE
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   // PARAMS
   const { component } = useParams();
   // LOCATION
@@ -27,6 +27,7 @@ const Teachers = () => {
   // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
   const [componentURL, setComponentURL] = useState("");
+
   // TABLE HEADERS FOR TH
   const headers = {
     new: "NEW",
@@ -223,7 +224,10 @@ const Teachers = () => {
       ) : !state.data ? (
         <NoData />
       ) : (
-        <section id="table">
+        <section
+          id="table"
+          onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
+        >
           <Search />
           <table>
             <tbody>
@@ -232,7 +236,12 @@ const Teachers = () => {
                   Object.keys(headers).map((key) => {
                     if (key === "new") {
                       return (
-                        <th key={key} className={key} onClick={() => newRow()}>
+                        <th
+                          key={key}
+                          className={key}
+                          id="newBtn"
+                          onClick={() => newRow()}
+                        >
                           {headers[key]}
                         </th>
                       );
@@ -296,8 +305,7 @@ const Teachers = () => {
               )}
               {state.data &&
                 state.data.map((result) => {
-                  const { _id, name, surname, email, branches, createdAt } =
-                    result;
+                  const { _id, createdAt } = result;
                   const date = new Date(createdAt);
                   const dateM = date.getMonth() + 1;
                   const dateVal =
@@ -308,7 +316,7 @@ const Teachers = () => {
                         if (key === "new") {
                           return (
                             <td key={_id + key} className={key}>
-                              <div className="newDiv">&#x208A;</div>
+                              <div className="newDiv">&#8862;</div>
                             </td>
                           );
                         } else if (key === "delete") {

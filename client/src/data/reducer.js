@@ -23,6 +23,9 @@ const reducer = (state, action) => {
   if (action.type === "SEARCH_OPTIONS") {
     return { ...state, searchOptions: action.payload };
   }
+  if (action.type === "IS_NAVBAR") {
+    return { ...state, isNavbar: action.payload };
+  }
   return state;
 };
 
@@ -40,6 +43,7 @@ const defaultState = {
     students: "/api/v1/students",
   },
   searchOptions: { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" },
+  isNavbar: false,
 };
 
 export { reducer, defaultState };

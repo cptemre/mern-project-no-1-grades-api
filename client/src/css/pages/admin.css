@@ -5,8 +5,7 @@
 
 table {
   margin-top: 2rem;
-    width: 100vw;
-
+  width: 100vw;
 }
 
 #searchType {
@@ -18,12 +17,16 @@ tr {
   height: 2rem;
 }
 
+th,
+td {
+  border: 2px solid transparent;
+}
+
 th {
   cursor: pointer;
 }
 
-th:nth-child(2n),
-td:nth-child(2n) {
+th:nth-child(2n) {
   background-color: var(--inputBorder);
   color: white;
 }
@@ -32,12 +35,24 @@ td:nth-child(2n) {
   background-color: var(--headerBg);
   color: white;
 }
+
+th:nth-child(2n):hover,
+td:nth-child(2n):hover {
+  border: 2px solid white;
+}
+
 th:nth-child(2n-1) {
   background-color: var(--optionBg);
 }
 td:nth-child(2n-1) {
   background-color: white;
 }
+
+th:nth-child(2n-1):hover,
+td:nth-child(2n-1):hover {
+  border: 2px solid var(--inputBorder);
+}
+
 td {
   max-width: auto;
   padding: 0 1rem;
@@ -52,6 +67,14 @@ td {
 
 .new {
   cursor: pointer;
+}
+
+#newBtn {
+  background-color: lightgreen;
+}
+
+.newDiv {
+  font-size: 1.2rem;
 }
 
 #banner {

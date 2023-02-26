@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
 import Admin from "./Admin";
+import Teacher from "./Teacher";
 import Login from "../login/Login";
 import { Context } from "../../data/Context";
 
@@ -12,7 +13,7 @@ import useAuth from "../../hooks/useAuth";
 import { useCookies } from "react-cookie";
 
 const Home = () => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [cookies, setCookie] = useCookies(["isAuth"]);
   // SET AUTHORIZATION AND STATES
   useAuth();
@@ -22,13 +23,17 @@ const Home = () => {
       {cookies.isAuth === "true" ? (
         <section id="home">
           <Navbar />
-          <div className="universityName" id="banner">
+          <div
+            className="universityName"
+            id="banner"
+            onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
+          >
             {state.title.toUpperCase()} PANEL
           </div>
           {state.title === "admin" ? (
             <Admin />
           ) : state.title === "teacher" ? (
-            "teacher"
+            <Teacher />
           ) : (
             "student"
           )}
