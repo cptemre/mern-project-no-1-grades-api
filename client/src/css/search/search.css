@@ -1,8 +1,46 @@
+#searchDiv {
+  grid-row-gap: 0.5rem;
+  height: 6rem;
+}
+
 #searchOptions {
   grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 1rem;
 }
 
 .searchOption {
-  background-color: lightcoral;
+  background-color: var(--inputBorder);
+  color: white;
   border: 2px solid black;
+  width: 50%;
+  height: 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.searchOption:hover {
+  background-color: var(--optionBg);
+  color: black;
+}
+
+.searchResult {
+  background-color: var(--optionBg);
+  color: black;
+}
+
+#search {
+  width: 50vw;
+}
+
+#searchInput {
+  background-color: var(--optionBg);
+  height: 2rem;
+    width: 100%;
+
+}
+#searchInput:focus {
+  background-color: var(--inputBorder);
+  border-left-color: var(--optionBg);
+  color: white;
 }

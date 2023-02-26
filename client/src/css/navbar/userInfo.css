@@ -1,17 +1,20 @@
 #userInfo {
-  height: auto;
+  height: 7rem;
   margin-top: 2rem;
   grid-row-gap: 0.2rem;
-  font-family: "Michroma", sans-serif;
-  padding-left: 1px;
+  padding: 10px 5px;
   grid-area: userInfo;
+  transform: translateY(-2rem);
+  background-color: rgb(58, 82, 112);
+  color: white;
+
 }
 
 #userInfo > article {
   justify-items: flex-start;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
 }
 
-#userTitle,#userName {
+#userTitle,#userName, #userSurname {
     font-weight: bold;
 }

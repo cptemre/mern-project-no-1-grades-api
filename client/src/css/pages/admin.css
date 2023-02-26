@@ -1,19 +1,12 @@
 #table {
-  grid-template-rows: 2rem auto;
+  grid-template-rows: 6rem auto;
   align-items: flex-start;
-  padding: 3rem 1rem;
 }
 
 table {
   margin-top: 2rem;
-}
+    width: 100vw;
 
-#search {
-  grid-template-columns: 1fr 5rem;
-}
-
-#searchInput {
-  width: 100%;
 }
 
 #searchType {
@@ -21,17 +14,30 @@ table {
   padding-left: 0.5rem;
 }
 
+tr {
+  height: 2rem;
+}
+
 th {
   cursor: pointer;
 }
 
-th:nth-child(2n), td:nth-child(2n) {
-  background-color: rgb(154, 143, 143);
-}
-th:nth-child(2n-1), td:nth-child(2n-1) {
-  background-color: rgb(216, 203, 203);
+th:nth-child(2n),
+td:nth-child(2n) {
+  background-color: var(--inputBorder);
+  color: white;
 }
 
+td:nth-child(2n) {
+  background-color: var(--headerBg);
+  color: white;
+}
+th:nth-child(2n-1) {
+  background-color: var(--optionBg);
+}
+td:nth-child(2n-1) {
+  background-color: white;
+}
 td {
   max-width: auto;
   padding: 0 1rem;
@@ -44,7 +50,12 @@ td {
   display: none;
 }
 
-
 .new {
   cursor: pointer;
+}
+
+#banner {
+  color: white;
+  border: none;
+  border-bottom: 2px solid black;
 }

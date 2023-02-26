@@ -79,7 +79,7 @@ const Teachers = () => {
       $(".option").css({
         backgroundColor: "var(--optionBg)",
         color: "black",
-        transform: "translateX(-10px)"
+        transform: "translateX(-10px)",
       });
       $(`#${component}Option`).css({
         backgroundColor: "var(--inputBorder)",
@@ -306,7 +306,11 @@ const Teachers = () => {
                     <tr className="row" key={_id} id={_id}>
                       {Object.keys(headers).map((key, i) => {
                         if (key === "new") {
-                          return <td key={_id + key} className={key}></td>;
+                          return (
+                            <td key={_id + key} className={key}>
+                              <div className="newDiv">&#x208A;</div>
+                            </td>
+                          );
                         } else if (key === "delete") {
                           return (
                             <td
@@ -314,7 +318,7 @@ const Teachers = () => {
                               className="delete"
                               onClick={(e) => deleteHandle(e)}
                             >
-                              &#x2716;
+                              <div className="deleteDiv">&#x2716;</div>
                             </td>
                           );
                         } else {

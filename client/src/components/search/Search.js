@@ -29,6 +29,7 @@ const Search = () => {
     const key = $(target).html();
     // SET QUERY IF THERE IS AN INPUT VALUE
     if (value) {
+      setValue('')
       setSearchParams((searchParams) => {
         if (key === "DATE") {
           searchParams.set("createdAt", value);
@@ -40,8 +41,19 @@ const Search = () => {
     }
   };
 
+  // RESULT FUNCTIONS
+
+  const mouseenterHandle = (e) => {
+    $(e.target).css('opacity', 0.5);
+    $(e.target).html('REMOVE');
+  }
+
+  const mouseleaveHandle = (e) => {
+    $(e.target).css("opacity", 1);
+    $(e.target).html(state.searchOptions[e.target.id]);
+  };
+
   const removeHandle = (e) => {
-    const html = $(e.target).html();
     const id = e.target.id;
     let tempSearch = state.searchOptions;
     tempSearch[id] = "";
@@ -69,22 +81,31 @@ const Search = () => {
             </div>
           ))}
         {state.searchOptions &&
-          Object.keys(state.searchOptions).map((option) => (
-            <div
-              id={option}
-              className="searchOption"
-              key={option + "SearchOption"}
-              onClick={(e) => removeHandle(e)}
-            >
-              {state.searchOptions[option]}
-            </div>
-          ))}
+          Object.keys(state.searchOptions).map((option) => 
+          {
+            if (state.searchOptions[option]) {
+              return (
+                <div
+                  id={option}
+                  className="searchOption searchResult"
+                  key={option + "SearchOption"}
+                  onMouseEnter={(e) => mouseenterHandle(e)}
+                  onMouseLeave={(e) => mouseleaveHandle(e)}
+                  onClick={(e) => removeHandle(e)}
+                >
+                  {state.searchOptions[option]}
+                </div>
+              );
+            }
+            }
+          )}
       </div>
       <div id="search">
         <input
           value={value}
           type="text"
           id="searchInput"
+          className="loginInput"
           onChange={(e) => setValue(e.target.value)}
         />
       </div>

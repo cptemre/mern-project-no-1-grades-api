@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
-import Header from "../header/Header";
 import Admin from "./Admin";
 import Login from "../login/Login";
 import { Context } from "../../data/Context";
@@ -23,7 +22,9 @@ const Home = () => {
       {cookies.isAuth === "true" ? (
         <section id="home">
           <Navbar />
-          <Header />
+          <div className="universityName" id="banner">
+            {state.title.toUpperCase()} PANEL
+          </div>
           {state.title === "admin" ? (
             <Admin />
           ) : state.title === "teacher" ? (

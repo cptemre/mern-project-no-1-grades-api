@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 // COMPONENTS
 
-import Header from "../header/Header";
 import { Context } from "../../data/Context";
 // IMAGE
 import homepageimg from "../../assets/login/homepage.jpg";

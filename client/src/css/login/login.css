@@ -30,6 +30,7 @@
 .loginInput:focus {
   background-color: var(--inputBorder);
   color: white;
+  border-left-color: var(--optionBg);
 }
 
 .iconContainer {
@@ -64,10 +65,8 @@
   border-bottom: 2px solid black;
 }
 
-
 #btnContainer {
   justify-content: flex-end;
   align-items: flex-start;
   padding-right: 1rem;
 }
-
