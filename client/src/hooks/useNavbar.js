@@ -1,12 +1,17 @@
-import {useEffect} from 'react'
+import { useEffect, useContext } from "react";
+
+// COMPONENTS
+import { Context } from "../data/Context";
 
 // NPMS
-import $ from 'jquery'
+import $ from "jquery";
 
-const useNavbar = (title, component,isLoad) => {
+const useNavbar = (component, isLoad) => {
+  // CONTEXT
+  const {state} = useContext(Context)
   // SET SELECTED BUTTON COLOR
   useEffect(() => {
-    if ((title, component, isLoad)) {
+    if ((state.title, component, isLoad)) {
       $(".option").css({
         backgroundColor: "var(--optionBg)",
         color: "black",
@@ -18,7 +23,7 @@ const useNavbar = (title, component,isLoad) => {
         transform: "translateX(-3px)",
       });
     }
-  }, [title, component, isLoad]);
-}
+  }, [state.title, component, isLoad]);
+};
 
-export default useNavbar
+export default useNavbar;

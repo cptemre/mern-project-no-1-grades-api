@@ -110,16 +110,12 @@ const getAllTeachers = async (req, res) => {
 
 const getSingleTeacher = async (req, res) => {
   const { email, access_token } = req.user;
-  const { teacherEmail } = req.params;
-  if (email === "admin@ga.pl") {
-    const teacher = await Teachers.findOne({ email: teacherEmail });
-    if (result) {
-      res.status(200).json({ result, access_token });
-    } else {
-      throw new Bad_Request(`${teacherEmail} IS NOT IN OUR DATABASE`);
-    }
+  const { _id } = req.params;
+  const result = await Teachers.findOne({ _id }).select('-password');
+  if (result) {
+    res.status(200).json({ result, access_token, teacher: true });
   } else {
-    throw new Unauthorized("AUTHORIZATION DENIED");
+    throw new Bad_Request(`${_id} IS NOT IN OUR DATABASE`);
   }
 };
 

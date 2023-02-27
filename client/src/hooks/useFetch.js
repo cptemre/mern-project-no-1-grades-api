@@ -19,9 +19,9 @@ const usePost = async (
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
-    console.log(url, action);
+    console.log(url, action, body);
     if (url) {
-      if (body) {
+      if (body && body.email) {
         if (body.email.endsWith("@ga.pl")) {
           body.title = "teacher";
         } else if (body.email.endsWith("@edu.ga.pl")) {
@@ -71,7 +71,11 @@ const usePost = async (
       setMsg(data.msg);
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
-      dispatch({ type: "DATA", payload: data.result || data });
+      if (data.teacher) {
+        dispatch({ type: "TEACHER_DATA", payload: data.result || data });
+      } else {
+        dispatch({ type: "DATA", payload: data.result || data });
+      }
     } catch (error) {
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });

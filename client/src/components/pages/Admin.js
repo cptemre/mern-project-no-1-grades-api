@@ -15,19 +15,17 @@ import useNavbar from "../../hooks/useNavbar";
 
 // NPMS
 import $ from "jquery";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import WrongPage from "../../errors/WrongPage";
 
 const Admin = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
-  // PARAMS
-  const { component } = useParams();
+
   // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
-  const componentURL = useComponent();
+  const component = useComponent();
   // SHOULD I LOAD?
   const isLoad = useLoad();
-
   // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
 
@@ -58,23 +56,18 @@ const Admin = () => {
   const [newTd, setNewTd] = useState(false);
 
   // SET SELECTED BUTTON COLOR
-  useNavbar(state.title, component, isLoad);
+  useNavbar(component, isLoad);
 
   useEffect(() => {
-    if (componentURL) {
+    if (component) {
       setFetchVars({
-        url: state.url[componentURL],
+        url: state.url[component],
         body: "",
         action: "get",
         searchParams,
       });
     }
-  }, [state.url, isFetch, searchParams, componentURL]);
-
-  // INPUT VALUE CHANGE
-  const changeHandle = (e) => {
-    setValue(e.target.value);
-  };
+  }, [state.url, isFetch, searchParams, component]);
 
   //#region UPDATE
 
@@ -101,7 +94,7 @@ const Admin = () => {
     const name = e.target.name;
     const _id = $(target).parent().parent().attr("id");
     setFetchVars({
-      url: `${state.url[componentURL]}/${_id}`,
+      url: `${state.url[component]}/${_id}`,
       body: { [name]: value },
       action: "patch",
       searchParams,
@@ -150,7 +143,7 @@ const Admin = () => {
     const target = e.target;
     const _id = $(target).parent().attr("id");
     setFetchVars({
-      url: `${state.url[componentURL]}/${_id}`,
+      url: `${state.url[component]}/${_id}`,
       body: "",
       action: "delete",
       searchParams,
@@ -247,7 +240,7 @@ const Admin = () => {
                       type="text"
                       value={value}
                       name="name"
-                      onChange={(e) => changeHandle(e)}
+                      onChange={(e) => setValue(e.target.value)}
                       onBlur={(e) => newBlurHandle(e)}
                     />
                   </td>
@@ -260,7 +253,7 @@ const Admin = () => {
                       type="text"
                       value={value}
                       name="surname"
-                      onChange={(e) => changeHandle(e)}
+                      onChange={(e) => setValue(e.target.value)}
                       onBlur={(e) => newBlurHandle(e)}
                     />
                   </td>
@@ -317,7 +310,7 @@ const Admin = () => {
                                 value={value}
                                 name={key === "date" ? "createdAt" : key}
                                 onBlur={(e) => blurHandle(e)}
-                                onChange={(e) => changeHandle(e)}
+                                onChange={(e) => setValue(e.target.value)}
                               />
                             </td>
                           );

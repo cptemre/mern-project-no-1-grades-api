@@ -1,0 +1,39 @@
+#lessonsSection {
+  align-items: flex-start;
+  padding: 1.5rem;
+  align-items: flex-start;
+}
+#lessonContainer {
+  height: auto;
+}
+.lessons {
+  grid-template-columns: 1fr 3rem;
+  height: 3rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  font-family: "Times New Roman", Times, serif;
+  letter-spacing: 1px;
+  border: 2px solid black;
+}
+
+.lessonName {
+  background-color: var(--inputBorder);
+  color: white;
+}
+
+.slideDown {
+  border-left: 2px solid black;
+  background-color: var(--optionBg);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.slideDown:hover {
+  background-color: var(--inputBorder);
+  color: white;
+}
+
+.downIcon {
+  transition: 0.2s;
+  color: black;
+}
