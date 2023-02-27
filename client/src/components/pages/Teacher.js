@@ -8,6 +8,7 @@ import { Context } from "../../data/Context";
 
 // NPMS
 import $ from "jquery";
+import { useSearchParams } from "react-router-dom";
 
 // HOOKS
 import useFetch from "../../hooks/useFetch";
@@ -25,7 +26,6 @@ library.add(faChevronDown);
 const Teacher = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
-  console.log(state.data);
   // IS LOAD
   const isLoad = useLoad();
   // COMPONENT
@@ -39,22 +39,58 @@ const Teacher = () => {
     action: "",
     searchParams: "",
   });
+  // SELECTED LESSON
+  const [lesson, setLesson] = useState("");
+  // QUERY
+  const [searchParams, setSearchParams] = useSearchParams();
+  // LESSON STUDENTS
+  const [students, setStudents] = useState("");
   useEffect(() => {
     if (component) {
       setFetchVars({
         url: `${state.url.teachers}/${state.ID}`,
         body: "",
         action: "get",
-        searchParams: "",
+        searchParams,
       });
     }
   }, [state.url, isFetch, component, state.ID]);
-  console.log(state.teacherData);
+
   // SET SELECTED BUTTON COLOR
   useNavbar(component, isLoad);
 
-  // TODO - ADD FUNCTION ON COMPONENT CLICK HIDE NAVBAR FROM STATE ISNAVBAR
-  // TODO - ADD LOADING FUNCTION
+  const clickHandle = (e) => {
+    const query = $(e.currentTarget)
+      .siblings(".lessonName")
+      .html()
+      .replace(/ /g, "_");
+    // SET QUERY
+    setSearchParams((searchParams) => {
+      searchParams.set("lesson", query);
+      return searchParams;
+    });
+    // GET STUDENTS
+    setFetchVars({
+      url: state.url.students,
+      body: "",
+      action: "get",
+      searchParams,
+    });
+  };
+
+  // SET LESSON RELATED STUDENTS
+  useEffect(() => {
+    if (state.studentData) {
+      const lessonStudents = state.studentData.map((student) => {
+        if (student.lessons && student.lessons[lesson]) {
+          return student;
+        }
+      });
+      setStudents(lessonStudents);
+    }
+  }, [state.studentData]);
+  console.log(state.students);
+
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -80,20 +116,35 @@ const Teacher = () => {
             {state.teacherData.branches ? (
               state.teacherData.branches.map((branch) => (
                 <article className="lessons" key={branch}>
-                  <div className="lessonName">{branch}</div>
-                  <div
-                    className="slideDown"
-                    onMouseEnter={(e) =>
-                      $(e.target).children().css("color", "white")
-                    }
-                    onMouseLeave={(e) =>
-                      $(e.target).children().css("color", "black")
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon="fa-chevron-down"
-                      className="icon downIcon"
-                    />
+                  <div className="lessonDiv">
+                    <div className="lessonName">{branch}</div>
+                    <div
+                      className="slideDown"
+                      onMouseEnter={(e) =>
+                        $(e.target).children().css("color", "white")
+                      }
+                      onMouseLeave={(e) =>
+                        $(e.target).children().css("color", "black")
+                      }
+                      onClick={(e) => clickHandle(e)}
+                    >
+                      <FontAwesomeIcon
+                        icon="fa-chevron-down"
+                        className="icon downIcon"
+                      />
+                    </div>
+                  </div>
+                  <div className="studentsDiv">
+                    <div id="addNewStudent"></div>
+                    {students ? (
+                      students.map((student, i) => (
+                        <div key={i} className="studentsDiv">
+                          {student}
+                        </div>
+                      ))
+                    ) : (
+                      <div id="addStudent"></div>
+                    )}
                   </div>
                 </article>
               ))

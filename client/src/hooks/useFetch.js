@@ -73,6 +73,8 @@ const usePost = async (
       dispatch({ type: "ISAUTH", payload: true });
       if (data.teacher) {
         dispatch({ type: "TEACHER_DATA", payload: data.result || data });
+      } else if (data.student) {
+        dispatch({ type: "STUDENT_DATA", payload: data.result || data });
       } else {
         dispatch({ type: "DATA", payload: data.result || data });
       }

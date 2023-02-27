@@ -23,6 +23,9 @@ const reducer = (state, action) => {
   if (action.type === "TEACHER_DATA") {
     return { ...state, teacherData: action.payload };
   }
+  if (action.type === "STUDENT_DATA") {
+    return { ...state, studentData: action.payload };
+  }
   if (action.type === "SEARCH_OPTIONS") {
     return { ...state, searchOptions: action.payload };
   }
@@ -40,7 +43,8 @@ const defaultState = {
   title: "",
   msg: "",
   data: "",
-  teacherData: '',
+  teacherData: "",
+  studentData: "",
   url: {
     teachers: "/api/v1/teachers",
     user: { sign_in: "/api/v1/user/sign_in" },

@@ -67,37 +67,21 @@ const getStudent = async (req, res) => {
 };
 
 // * GET ALL STUDENTS RELATED TO THE TEACHER
-// ! CLIENT MUST FILTER EMPTY LESSON OBJECT INDEXES TO NOT SHOW TO TEACHER
 const getAll = async (req, res) => {
-  const { ID, access_token, email } = req.user;
+  const { access_token } = req.user;
+  let { lesson } = req.query;
+  lesson = lesson.replace(/_/g, ' ')
+  console.log(lesson);
   // FIND RAW RESULT
-  let search = Students.find();
+  let search = Students.find({lessons: {lesson}});
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
   const page = Number(req.query.page) || 1;
   const limit = 9;
   const skip = (page - 1) * limit;
 
-  result = await search.skip(skip).sort({ updatedAt: 1 });
-
-  if (result.length) {
-    // ! IF THIS IS NOT ADMIN THEN FILTER
-    // ! IF IT IS ADMIN THEN SEND ALL WITHOUT ANY FILTER
-    if (email !== "admin@gmail.com") {
-      // * DELETE EVERY LESSON WHICH TEACHER DIDNT MARK FOR THE STUDENT
-      // * CLIENT WILL GET ONLY RELATED LESSONS BUT DB WILL KEEP ALL
-      for (let i = 0; i < result.length; i++) {
-        for (const lessonKey in result[i]["lessons"]) {
-          const lesson = result[i]["lessons"][lessonKey];
-          if (lesson.createdBy && lesson.createdBy !== ID) {
-            delete result[i].lessons[lessonKey];
-          }
-        }
-      }
-    }
-    res.status(200).json({ result, access_token });
-  } else {
-    throw new Bad_Request("THERE ARE NO STUDENT RECORDED");
-  }
+  result = await search.skip(skip).sort({ createdAt: 1 });
+  console.log(result);
+  res.status(200).json({ result, access_token, student: true });
 };
 
 // * DELETE STUDENT COMPLETLY FROM DB
