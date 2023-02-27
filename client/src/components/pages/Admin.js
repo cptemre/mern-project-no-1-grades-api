@@ -8,25 +8,28 @@ import Search from "../search/Search";
 // ERROR
 import NoData from "../../errors/NoData";
 // HOOKS
-import usePost from "../../hooks/useFetch";
+import useFetch from "../../hooks/useFetch";
+import useComponent from "../../hooks/useComponent";
+import useLoad from "../../hooks/useLoad";
+import useNavbar from "../../hooks/useNavbar";
 
 // NPMS
 import $ from "jquery";
-import { useSearchParams, useParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 import WrongPage from "../../errors/WrongPage";
 
-const Teachers = () => {
+const Admin = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
   // PARAMS
   const { component } = useParams();
-  // LOCATION
-  const navigate = useNavigate();
+  // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
+  const componentURL = useComponent();
   // SHOULD I LOAD?
-  const [isLoad, setIsLoad] = useState(false);
+  const isLoad = useLoad();
+
   // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
-  const [componentURL, setComponentURL] = useState("");
 
   // TABLE HEADERS FOR TH
   const headers = {
@@ -54,41 +57,8 @@ const Teachers = () => {
   // NEW TD
   const [newTd, setNewTd] = useState(false);
 
-  // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
-  useEffect(() => {
-    if (!component) {
-      navigate("/teachers");
-    }
-    setComponentURL(component);
-  }, [component]);
-
-  // UNTIL STATE OR ISLOAD GETS READ SHOW LOADING SCREEN THEN SHOW PAGE OR LOGIN DEPENDS ON AUTHORIZATION
-  useEffect(() => {
-    if (!isLoad) {
-      load();
-    }
-  }, [isLoad]);
-  const load = () => {
-    setTimeout(() => {
-      setIsLoad(true);
-    }, 1000);
-  };
-
   // SET SELECTED BUTTON COLOR
-  useEffect(() => {
-    if ((state.title, component, isLoad)) {
-      $(".option").css({
-        backgroundColor: "var(--optionBg)",
-        color: "black",
-        transform: "translateX(-10px)",
-      });
-      $(`#${component}Option`).css({
-        backgroundColor: "var(--inputBorder)",
-        color: "white",
-        transform: "translateX(-3px)",
-      });
-    }
-  }, [state.title, component, isLoad]);
+  useNavbar(state.title, component, isLoad);
 
   useEffect(() => {
     if (componentURL) {
@@ -98,7 +68,6 @@ const Teachers = () => {
         action: "get",
         searchParams,
       });
-      setIsLoad(false);
     }
   }, [state.url, isFetch, searchParams, componentURL]);
 
@@ -208,7 +177,7 @@ const Teachers = () => {
   };
 
   // AXIOS CALL
-  usePost(
+  useFetch(
     fetchVars.url,
     fetchVars.body,
     fetchVars.action,
@@ -365,4 +334,4 @@ const Teachers = () => {
   );
 };
 
-export default Teachers;
+export default Admin;

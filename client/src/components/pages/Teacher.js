@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 // COMPONENTS
 import WrongPage from "../../errors/WrongPage";
@@ -9,13 +9,18 @@ import { Context } from "../../data/Context";
 // NPMS
 import { useParams } from "react-router-dom";
 
+// HOOKS
+import useLoad from "../../hooks/useLoad";
+import useComponent from "../../hooks/useComponent";
+
 const Teacher = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
-  // PARAM
+  // PARAMS
   const { component } = useParams();
   // IS LOAD
-  const [isLoad, setIsLoad] = useState(false);
+  const isLoad = useLoad();
+
   // TODO - ADD FUNCTION ON COMPONENT CLICK HIDE NAVBAR FROM STATE ISNAVBAR
   // TODO - ADD LOADING FUNCTION
 
