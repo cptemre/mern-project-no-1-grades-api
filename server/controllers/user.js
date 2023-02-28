@@ -3,15 +3,21 @@ const Students = require("../models/Students");
 const Blacklist = require("../models/Blacklist");
 const bcrypt = require("bcryptjs");
 const { Bad_Request } = require("../errors");
-const validator = require("validator");
 
 const sign_in = async (req, res) => {
   const { name, surname } = req.body;
-  await Teachers.create({
-    name,
-    surname,
-  });
-  res.status(200).json({ msg: `CREATED` });
+  const email = name[0] + surname + "@ga.pl";
+  const teacher = await Teachers.findOne({ email });
+  console.log(email);
+  if (!teacher) {
+    await Teachers.create({
+      name,
+      surname,
+    });
+    res.status(200).json({ msg: `CREATED` });
+  } else {
+    throw new Bad_Request("TEACHER EXISTS");
+  }
 };
 const login = async (req, res) => {
   const { email, password, title } = req.body;
@@ -23,12 +29,12 @@ const login = async (req, res) => {
     account = await Students.findOne({ email });
   }
   if (!email) {
-        throw new Bad_Request("EMAIL IS REQUIRED");
+    throw new Bad_Request("EMAIL IS REQUIRED");
   }
-    if (!password) {
-      throw new Bad_Request("PASSWORD IS REQUIRED");
-    }
-  if (title !== 'teacher' && 'student') {
+  if (!password) {
+    throw new Bad_Request("PASSWORD IS REQUIRED");
+  }
+  if (title !== "teacher" && "student") {
     throw new Bad_Request("EMAIL IS NOT ACCEPTED");
   }
   if (account) {

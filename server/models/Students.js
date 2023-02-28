@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const StudentsSchema = new mongoose.Schema(
   {
     studentNo: {
-      type: String,
+      type: Number,
       required: [true, "STUDENT NO IS REQUIRED"],
       minlength: [6, "STUDENT NO IS TOO SHORT"],
       maxlength: [10, "STUDENT NO IS TOO LONG"],
@@ -35,8 +35,8 @@ const StudentsSchema = new mongoose.Schema(
       maxlength: [30, "PASSWORD IS TOO LONG"],
     },
     lessons: {
-      type: Object,
-      default: {},
+      type: Array,
+      default: [],
     },
   },
   { timestamps: true }

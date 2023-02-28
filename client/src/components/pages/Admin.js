@@ -51,7 +51,7 @@ const Admin = () => {
   });
   // INPUT VALUE
   const [value, setValue] = useState("");
-
+  console.log(state);
   // NEW TD
   const [newTd, setNewTd] = useState(false);
 

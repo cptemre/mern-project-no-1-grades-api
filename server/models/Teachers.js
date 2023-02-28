@@ -28,7 +28,7 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       minlength: [7, "PASSWORD IS TOO SHORT"],
       maxlength: [60, "PASSWORD IS TOO LONG"],
-      default: 'secretsecret'
+      default: "secretsecret",
     },
     branches: {
       type: Array,
@@ -40,8 +40,7 @@ const teacherSchema = new mongoose.Schema(
 
 // SAVE THE PASSWORD AS HASHED
 teacherSchema.pre("save", async function () {
-  const tempEmail = this.name[0] + this.surname + "@ga.pl";
-  this.email = tempEmail.toLowerCase();
+  this.email = this.name[0].toLowerCase() + this.surname.toLowerCase() + "@ga.pl";
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

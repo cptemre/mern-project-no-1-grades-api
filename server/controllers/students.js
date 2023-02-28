@@ -70,10 +70,18 @@ const getStudent = async (req, res) => {
 const getAll = async (req, res) => {
   const { access_token } = req.user;
   let { lesson } = req.query;
-  lesson = lesson.replace(/_/g, ' ')
-  console.log(lesson);
+  let student = false;
+  const query = {};
+  // IF THERE IS LESSON QUERY REPLACE _ WITH SPACES AND SET STUDENT TRUE TO SEND DATA TO STATE.STUDENTS
+  if (lesson) {
+    lesson = lesson.replace(/_/g, " ");
+    query.lesson = { "lessons.lesson": lesson };
+    student = true;
+  }
+
+  console.log(student);
   // FIND RAW RESULT
-  let search = Students.find({lessons: {lesson}});
+  let search = Students.find({ query });
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
   const page = Number(req.query.page) || 1;
   const limit = 9;
@@ -81,7 +89,7 @@ const getAll = async (req, res) => {
 
   result = await search.skip(skip).sort({ createdAt: 1 });
   console.log(result);
-  res.status(200).json({ result, access_token, student: true });
+  res.status(200).json({ result, access_token, student });
 };
 
 // * DELETE STUDENT COMPLETLY FROM DB

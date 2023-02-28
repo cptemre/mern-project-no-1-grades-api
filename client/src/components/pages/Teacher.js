@@ -77,7 +77,7 @@ const Teacher = () => {
       searchParams,
     });
   };
-
+  
   // SET LESSON RELATED STUDENTS
   useEffect(() => {
     if (state.studentData) {
