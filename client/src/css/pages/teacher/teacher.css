@@ -2,10 +2,19 @@
   align-items: flex-start;
   padding: 1.5rem;
   align-items: flex-start;
+  grid-template-rows: 2rem auto;
+  grid-row-gap: 1rem;
 }
 #lessonContainer {
-  height: auto;
+  align-items: flex-start;
+  grid-row-gap: 2rem;
 }
+
+.lessons {
+    height: auto;
+}
+
+
 .lessonDiv {
   grid-template-columns: 1fr 3rem;
   height: 3rem;

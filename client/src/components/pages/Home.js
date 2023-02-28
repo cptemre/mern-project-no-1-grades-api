@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
 import Admin from "./Admin";
-import Teacher from "./Teacher";
+import Teacher from "./teacher/Teacher";
 import Login from "../login/Login";
 import { Context } from "../../data/Context";
 
@@ -18,6 +18,11 @@ const Home = () => {
   // SET AUTHORIZATION AND STATES
   useAuth();
 
+  const bannerHandle = () => {
+    dispatch({ type: "IS_NAVBAR", payload: false });
+    dispatch({ type: "IS_SEMESTER", payload: false });
+  };
+
   return (
     <>
       {cookies.isAuth === "true" ? (
@@ -26,7 +31,7 @@ const Home = () => {
           <div
             className="universityName"
             id="banner"
-            onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
+            onClick={() => bannerHandle()}
           >
             {state.title.toUpperCase()} PANEL
           </div>

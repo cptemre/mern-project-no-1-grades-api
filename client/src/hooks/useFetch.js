@@ -71,9 +71,11 @@ const usePost = async (
       setMsg(data.msg);
       setjwt(data.jwt);
       dispatch({ type: "ISAUTH", payload: true });
+      console.log(data);
       if (data.teacher) {
         dispatch({ type: "TEACHER_DATA", payload: data.result || data });
       } else if (data.student) {
+        console.log("a");
         dispatch({ type: "STUDENT_DATA", payload: data.result || data });
       } else {
         dispatch({ type: "DATA", payload: data.result || data });

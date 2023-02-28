@@ -69,7 +69,7 @@ const getStudent = async (req, res) => {
 // * GET ALL STUDENTS RELATED TO THE TEACHER
 const getAll = async (req, res) => {
   const { access_token } = req.user;
-  let { lesson } = req.query;
+  let { lesson, semester } = req.query;
   let student = false;
   const query = {};
   // IF THERE IS LESSON QUERY REPLACE _ WITH SPACES AND SET STUDENT TRUE TO SEND DATA TO STATE.STUDENTS
