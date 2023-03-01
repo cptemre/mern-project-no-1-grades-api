@@ -6,6 +6,7 @@ import NoData from "../../../errors/NoData";
 import Loading from "../../loading/Loading";
 import { Context } from "../../../data/Context";
 import Semester from "./Semester";
+import StudentGrade from "./StudentGrade";
 
 // NPMS
 import $ from "jquery";
@@ -71,6 +72,7 @@ const Teacher = () => {
       action: "get",
       searchParams,
     });
+    // ! IS FETCH SET MAYBE
   };
 
   console.log(state.studentData);
@@ -128,18 +130,7 @@ const Teacher = () => {
                           />
                         </div>
                       </div>
-                      <div className="studentsDiv">
-                        <div id="addNewStudent"></div>
-                        {state.studentData ? (
-                          state.studentData.map((student, i) => (
-                            <div key={i} className="studentsDiv">
-                              {student}
-                            </div>
-                          ))
-                        ) : (
-                          <div id="addStudent"></div>
-                        )}
-                      </div>
+                      <StudentGrade />
                     </article>
                   );
                 }

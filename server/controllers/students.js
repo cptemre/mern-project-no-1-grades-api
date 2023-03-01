@@ -16,23 +16,20 @@ const createStudent = async (req, res) => {
 // * THEN UPDATE THE WHOLE GRADE BY REQ.BODY
 const updateStudent = async (req, res) => {
   const { ID, access_token } = req.user;
-  const createdBy = ID;
+  const { _id, update } = req.body;
+
+  console.log(req.body);
+
   // * SET CREATED BY TO LESSON
   // ! ONLY CHANGE THE ONE SENT FROM THE CLIENT NOT ALL
-  // LESSON KEY
-  const lesson = Object.keys(req.body.lessons)[
-    Object.keys(req.body.lessons).length - 1
-  ];
-  // CHANGE LESSON'S VALUE FOR CREATEDBY
-  req.body.lessons[lesson] = { ...req.body.lessons[lesson], createdBy };
-  const { id: studentID } = req.params;
-  const student = await Students.updateOne(
-    { _id: studentID, createdBy: ID },
-    { ...req.body },
+
+  const result = await Students.updateOne(
+    { _id },
+    { lessons: update },
     { runValidators: true, new: true }
   );
-  if (student.modifiedCount) {
-    res.status(200).json({ msg: "STUDENT IS UPDATED", access_token });
+  if (result.modifiedCount) {
+    res.status(200).json({ result, access_token, student: true });
   } else {
     throw new Bad_Request("UPDATE FAILED");
   }

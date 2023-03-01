@@ -53,6 +53,12 @@ input {
   border-radius: 8px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 button {
   background-color: var(--btnBg);
   padding: 0.5rem 1rem;

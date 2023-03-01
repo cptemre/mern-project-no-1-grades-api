@@ -1,0 +1,13 @@
+.studentDiv {
+  grid-template-columns: 1fr 3.1rem;
+  height: 2rem;
+}
+
+.studentName {
+  background-color: white;
+}
+
+.studentGrade {
+  background-color: var(--headerBg);
+  border: 2px solid black;
+}
