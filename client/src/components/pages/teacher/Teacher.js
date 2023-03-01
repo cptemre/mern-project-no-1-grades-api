@@ -99,7 +99,8 @@ const Teacher = () => {
       ) : !state.teacherData ? (
         <NoData />
       ) : (
-        <section id="teacherSection"
+        <section
+          id="teacherSection"
           onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
         >
           <Semester />

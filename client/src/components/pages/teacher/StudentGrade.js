@@ -89,62 +89,55 @@ const StudentGrade = () => {
     fetchVars.searchParams,
     isFetch
   );
+  console.log("a");
   return (
     <section className="studentsDiv">
-      {state.studentData &&
+      {state.studentData ? (
         state.studentData.map((student) => {
           let grade;
           student.lessons.map((lessonObj) => {
             if (lessonObj.lesson === lesson && lessonObj.grade) {
-              console.log(true);
               grade = lessonObj.grade;
             }
           });
           return (
-            <>
-              {!state.studentData && !isLoad ? (
-                <Loading />
-              ) : !state.studentData ? (
-                <NoData />
-              ) : (
-                <div key={student.name + student.surname + lesson}>
-                  {grade && (
-                    <>
-                      <article className="studentDiv" id={student._id}>
-                        <div className="studentName">
-                          {student.name} {student.surname}
-                        </div>
-                        <div className="studentGrade">
-                          <div
-                            className="gradeDiv"
-                            onClick={(e) => clickHandle(e)}
-                            style={{
-                              backgroundColor: !grade
-                                ? "var(--inputBorder)"
-                                : grade > 2
-                                ? "green"
-                                : "red",
-                            }}
-                          >
-                            {grade !== undefined ? grade : "----"}
-                          </div>
-                          <input
-                            className="tdInput"
-                            type="number"
-                            value={value}
-                            name="grade"
-                            onChange={(e) => setValue(e.target.value)}
-                            onBlur={(e) => blurHandle(e)}
-                          />
-                        </div>
-                      </article>
-                    </>
-                  )}
-                </div>
+            <div key={student.name + student.surname + lesson}>
+              {grade && (
+                <article className="studentDiv" id={student._id}>
+                  <div className="studentName">
+                    {student.name} {student.surname}
+                  </div>
+                  <div className="studentGrade">
+                    <div
+                      className="gradeDiv"
+                      onClick={(e) => clickHandle(e)}
+                      style={{
+                        backgroundColor: !grade
+                          ? "var(--inputBorder)"
+                          : grade > 2
+                          ? "green"
+                          : "red",
+                      }}
+                    >
+                      {grade !== undefined ? grade : "----"}
+                    </div>
+                    <input
+                      className="tdInput"
+                      type="number"
+                      value={value}
+                      name="grade"
+                      onChange={(e) => setValue(e.target.value)}
+                      onBlur={(e) => blurHandle(e)}
+                    />
+                  </div>
+                </article>
               )}
-            </>
+            </div>
           );
-        })}
+        })
+      ) : (
+        <Loading />
+      )}
     </section>
   );
 };

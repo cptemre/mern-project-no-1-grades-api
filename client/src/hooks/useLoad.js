@@ -1,4 +1,4 @@
-import {useEffect,useState} from 'react'
+import { useEffect, useState } from "react";
 
 const useLoad = () => {
   // SHOULD I LOAD?
@@ -14,7 +14,7 @@ const useLoad = () => {
       setIsLoad(true);
     }, 1000);
   };
-    return isLoad
-}
+  return isLoad;
+};
 
-export default useLoad
+export default useLoad;
