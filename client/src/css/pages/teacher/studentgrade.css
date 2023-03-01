@@ -5,9 +5,18 @@
 
 .studentName {
   background-color: white;
+  padding: 7px;
+  border: 2px solid black;
+  border-right: none;
 }
 
 .studentGrade {
-  background-color: var(--headerBg);
+  background-color: var(--inputBorder);
   border: 2px solid black;
+  cursor: text;
+  color: var(--optionBg);
+}
+
+.gradeDiv {
+  padding: 7px;
 }

@@ -66,11 +66,12 @@ const Semester = () => {
 
   // CHANGE SEMESTER
   const hiddenHandle = (e) => {
+    $(".studentsDiv").css("display", "none");
     const value = $(e.currentTarget).children(".semesterNumber").html();
     let filtered = [...semesters, state.selectedSemester];
     filtered = filtered.filter((semester) => semester != value);
     setSemesters(filtered.sort());
-    dispatch({type: 'SELECTED_SEMESTER', payload: value})
+    dispatch({ type: "SELECTED_SEMESTER", payload: value });
   };
   return (
     <div id="semesterDiv">
@@ -83,7 +84,9 @@ const Semester = () => {
         }
       >
         <span className="semesterSpan">SEMESTER</span>
-        <span className="semesterNumber">{state.selectedSemester && state.selectedSemester}</span>
+        <span className="semesterNumber">
+          {state.selectedSemester && state.selectedSemester}
+        </span>
         <FontAwesomeIcon
           icon="fa-chevron-down"
           id="semesterIcon"

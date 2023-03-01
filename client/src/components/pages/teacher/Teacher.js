@@ -72,6 +72,8 @@ const Teacher = () => {
       action: "get",
       searchParams,
     });
+    $(".studentsDiv").css("display", "none");
+    $(e.currentTarget).parent().siblings(".studentsDiv").css("display", "grid");
     // ! IS FETCH SET MAYBE
   };
 
@@ -97,48 +99,49 @@ const Teacher = () => {
       ) : !state.teacherData ? (
         <NoData />
       ) : (
-        <section
-          id="lessonsSection"
+        <section id="teacherSection"
           onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
         >
           <Semester />
-          <article
-            id="lessonContainer"
+          <div
+            id="lessonsSection"
             onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
           >
-            {state.teacherData.branches && state.selectedSemester ? (
-              state.teacherData.branches.map((branch) => {
-                const { lesson, semester } = branch;
-                if (semester == state.selectedSemester) {
-                  return (
-                    <article className="lessons" key={lesson}>
-                      <div className="lessonDiv">
-                        <div className="lessonName">{lesson}</div>
-                        <div
-                          className="slideDown"
-                          onMouseEnter={(e) =>
-                            $(e.target).children().css("color", "white")
-                          }
-                          onMouseLeave={(e) =>
-                            $(e.target).children().css("color", "black")
-                          }
-                          onClick={(e) => clickHandle(e)}
-                        >
-                          <FontAwesomeIcon
-                            icon="fa-chevron-down"
-                            className="icon downIcon"
-                          />
+            <article id="lessonContainer">
+              {state.teacherData.branches && state.selectedSemester ? (
+                state.teacherData.branches.map((branch) => {
+                  const { lesson, semester } = branch;
+                  if (semester == state.selectedSemester) {
+                    return (
+                      <article className="lessons" key={lesson + semester}>
+                        <div className="lessonDiv">
+                          <div className="lessonName">{lesson}</div>
+                          <div
+                            className="slideDown"
+                            onMouseEnter={(e) =>
+                              $(e.target).children().css("color", "white")
+                            }
+                            onMouseLeave={(e) =>
+                              $(e.target).children().css("color", "black")
+                            }
+                            onClick={(e) => clickHandle(e)}
+                          >
+                            <FontAwesomeIcon
+                              icon="fa-chevron-down"
+                              className="icon downIcon"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <StudentGrade />
-                    </article>
-                  );
-                }
-              })
-            ) : (
-              <div>CONTACT WITH ADMIN TO ADD LESSONS</div>
-            )}
-          </article>
+                        <StudentGrade />
+                      </article>
+                    );
+                  }
+                })
+              ) : (
+                <div>CONTACT WITH ADMIN TO ADD LESSONS</div>
+              )}
+            </article>
+          </div>
         </section>
       )}
     </>
