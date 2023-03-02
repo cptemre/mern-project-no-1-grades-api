@@ -1,11 +1,12 @@
 #table {
-  grid-template-rows: 6rem auto;
+  grid-template-rows: 6rem auto 4rem;
   align-items: flex-start;
 }
 
 table {
   margin-top: 2rem;
   width: 100vw;
+  max-height: 50vh;
 }
 
 #searchType {

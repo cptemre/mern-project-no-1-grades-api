@@ -17,10 +17,13 @@ const Search = () => {
 
   useEffect(() => {
     let tempParams = { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" };
+    const keys = ["name", "surname", "email", "createdAt"];
     searchParams.forEach((value, key) => {
-      tempParams[key.toUpperCase()] = value;
+      if (keys.includes(key)) {
+        tempParams[key.toUpperCase()] = value;
+        dispatch({ type: "SEARCH_OPTIONS", payload: tempParams });
+      }
     });
-    dispatch({ type: "SEARCH_OPTIONS", payload: tempParams });
   }, [searchParams]);
 
   // ADDS NEW QUERY TO SEARCH
@@ -29,7 +32,7 @@ const Search = () => {
     const key = $(target).html();
     // SET QUERY IF THERE IS AN INPUT VALUE
     if (value) {
-      setValue('')
+      setValue("");
       setSearchParams((searchParams) => {
         if (key === "DATE") {
           searchParams.set("createdAt", value);
@@ -44,9 +47,9 @@ const Search = () => {
   // RESULT FUNCTIONS
 
   const mouseenterHandle = (e) => {
-    $(e.target).css('opacity', 0.5);
-    $(e.target).html('REMOVE');
-  }
+    $(e.target).css("opacity", 0.5);
+    $(e.target).html("REMOVE");
+  };
 
   const mouseleaveHandle = (e) => {
     $(e.target).css("opacity", 1);
@@ -81,8 +84,7 @@ const Search = () => {
             </div>
           ))}
         {state.searchOptions &&
-          Object.keys(state.searchOptions).map((option) => 
-          {
+          Object.keys(state.searchOptions).map((option) => {
             if (state.searchOptions[option]) {
               return (
                 <div
@@ -97,8 +99,7 @@ const Search = () => {
                 </div>
               );
             }
-            }
-          )}
+          })}
       </div>
       <div id="search">
         <input

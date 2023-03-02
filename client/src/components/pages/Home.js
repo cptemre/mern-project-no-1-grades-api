@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
-import Admin from "./Admin";
+import Admin from "../pages/admin/Admin";
 import Teacher from "./teacher/Teacher";
 import Login from "../login/Login";
 import { Context } from "../../data/Context";

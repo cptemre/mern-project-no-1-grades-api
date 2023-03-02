@@ -97,11 +97,13 @@ const getAllTeachers = async (req, res) => {
       sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
     }
     const sort = sortSplit || { createdAt: 1 };
-    const page = pageValue || 0;
-    const skip = page * 10;
-
-    const result = await accounts.sort(sort).skip(skip);
-
+    const page = pageValue || 1;
+    let limit;
+    if (page) {
+      limit = 10;
+    }
+    const skip = (page - 1) * 10;
+    const result = await accounts.sort(sort).skip(skip).limit(skip);
     res.status(200).json(result);
   } else {
     throw new Unauthorized("AUTHORIZATION DENIED");
@@ -109,9 +111,9 @@ const getAllTeachers = async (req, res) => {
 };
 
 const getSingleTeacher = async (req, res) => {
-  const { email, access_token } = req.user;
+  const { access_token } = req.user;
   const { _id } = req.params;
-  const result = await Teachers.findOne({ _id }).select('-password');
+  const result = await Teachers.findOne({ _id }).select("-password");
   if (result) {
     res.status(200).json({ result, access_token, teacher: true });
   } else {

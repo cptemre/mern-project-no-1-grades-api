@@ -94,9 +94,9 @@ const Teacher = () => {
     <>
       {component !== "lessons" && component !== "account" ? (
         <WrongPage />
-      ) : !state.teacherData && !isLoad ? (
+      ) : !state.teachersData && !isLoad ? (
         <Loading />
-      ) : !state.teacherData ? (
+      ) : !state.teachersData ? (
         <NoData />
       ) : (
         <section
@@ -109,8 +109,8 @@ const Teacher = () => {
             onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
           >
             <article id="lessonContainer">
-              {state.teacherData.branches && state.selectedSemester ? (
-                state.teacherData.branches.map((branch) => {
+              {state.teachersData.branches && state.selectedSemester ? (
+                state.teachersData.branches.map((branch) => {
                   const { lesson, semester } = branch;
                   if (semester == state.selectedSemester) {
                     return (

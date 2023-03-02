@@ -73,10 +73,14 @@ const usePost = async (
       dispatch({ type: "ISAUTH", payload: true });
       console.log(data);
       if (data.teacher) {
-        dispatch({ type: "TEACHER_DATA", payload: data.result || data });
+        dispatch({ type: "TEACHERS_DATA", payload: data.result || data });
       } else if (data.student) {
         console.log("a");
-        dispatch({ type: "STUDENT_DATA", payload: data.result || data });
+        dispatch({ type: "STUDENTS_DATA", payload: data.result || data });
+      } else if (data.teachersLength) {
+        dispatch({ type: "TEACHERS_LENGTH", payload: data.result || data });
+      } else if (data.studentsLength) {
+        dispatch({ type: "STUDENTS_LENGTH", payload: data.result || data });
       } else {
         dispatch({ type: "DATA", payload: data.result || data });
       }

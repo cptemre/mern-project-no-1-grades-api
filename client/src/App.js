@@ -33,7 +33,6 @@ import "./css/navbar/userInfo.css";
 import "./css/navbar/options.css";
 // LOGOUT
 import "./css/navbar/logout.css";
-
 // PAGES
 // HOME
 import "./css/pages/home.css";
@@ -42,7 +41,8 @@ import "./css/pages/admin.css";
 import "./css/pages/teacher/teacher.css";
 import "./css/pages/teacher/semester.css";
 import "./css/pages/teacher/studentgrade.css";
-
+// PAGINATION
+import "./css/pagination/pagination.css";
 const App = () => {
   // * REDUCER SETUP
   const [state, dispatch] = useReducer(reducer, defaultState);
@@ -66,7 +66,7 @@ const App = () => {
             </Context.Provider>
           }
         />
-        
+
         <Route
           path="*"
           element={

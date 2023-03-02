@@ -1,0 +1,27 @@
+#paginationSection {
+  justify-content: center;
+  grid-template-columns: 2rem auto 2rem;
+}
+
+#numbers {
+  max-width: 15rem;
+  min-width: 2rem;
+  grid-template-columns: repeat(6, auto);
+}
+
+#earlierPageContainer {
+  grid-template-columns: auto auto auto;
+}
+
+#furtherPageContainer {
+  grid-template-columns: auto auto;
+}
+
+.numbers {
+  width: 1rem;
+}
+
+.dots {
+  width: 1.7rem;
+  letter-spacing: 2px;
+}

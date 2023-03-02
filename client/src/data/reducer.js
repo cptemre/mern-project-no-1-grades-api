@@ -20,11 +20,14 @@ const reducer = (state, action) => {
   if (action.type === "DATA") {
     return { ...state, data: action.payload };
   }
-  if (action.type === "TEACHER_DATA") {
-    return { ...state, teacherData: action.payload };
+  if (action.type === "TEACHERS_DATA") {
+    return { ...state, teachersData: action.payload };
   }
-  if (action.type === "STUDENT_DATA") {
-    return { ...state, studentData: action.payload };
+  if (action.type === "TEACHERS_LENGTH") {
+    return { ...state, teacherLength: action.payload };
+  }
+  if (action.type === "STUDENTS_DATA") {
+    return { ...state, studentsData: action.payload };
   }
   if (action.type === "SEARCH_OPTIONS") {
     return { ...state, searchOptions: action.payload };
@@ -49,10 +52,12 @@ const defaultState = {
   title: "",
   msg: "",
   data: "",
-  teacherData: "",
-  studentData: "",
+  teachersData: "",
+  teachersLength: "",
+  studentsData: "",
   url: {
     teachers: "/api/v1/teachers",
+    teachersLength: "/api/v1/length/teachersLength",
     user: { sign_in: "/api/v1/user/sign_in" },
     students: "/api/v1/students",
   },

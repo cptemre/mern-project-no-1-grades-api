@@ -1,22 +1,23 @@
 import React, { useEffect, useState, useContext } from "react";
 
 // COMPONENTS
-import { Context } from "../../data/Context";
-import Loading from "../loading/Loading";
-import Search from "../search/Search";
+import { Context } from "../../../data/Context";
+import Loading from "../../loading/Loading";
+import Search from "../../search/Search";
+import Pagination from "../../pagination/Pagination";
 
 // ERROR
-import NoData from "../../errors/NoData";
+import NoData from "../../../errors/NoData";
 // HOOKS
-import useFetch from "../../hooks/useFetch";
-import useComponent from "../../hooks/useComponent";
-import useLoad from "../../hooks/useLoad";
-import useNavbar from "../../hooks/useNavbar";
+import useFetch from "../../../hooks/useFetch";
+import useComponent from "../../../hooks/useComponent";
+import useLoad from "../../../hooks/useLoad";
+import useNavbar from "../../../hooks/useNavbar";
 
 // NPMS
 import $ from "jquery";
 import { useSearchParams } from "react-router-dom";
-import WrongPage from "../../errors/WrongPage";
+import WrongPage from "../../../errors/WrongPage";
 
 const Admin = () => {
   // STATE
@@ -51,7 +52,6 @@ const Admin = () => {
   });
   // INPUT VALUE
   const [value, setValue] = useState("");
-  console.log(state);
   // NEW TD
   const [newTd, setNewTd] = useState(false);
 
@@ -321,6 +321,7 @@ const Admin = () => {
                 })}
             </tbody>
           </table>
+          <Pagination />
         </section>
       )}
     </>
