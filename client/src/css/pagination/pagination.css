@@ -4,24 +4,62 @@
 }
 
 #numbers {
-  max-width: 15rem;
+  max-width: 22rem;
   min-width: 2rem;
-  grid-template-columns: repeat(6, auto);
-}
-
-#earlierPageContainer {
-  grid-template-columns: auto auto auto;
-}
-
-#furtherPageContainer {
-  grid-template-columns: auto auto;
+  grid-template-columns: repeat(10, auto);
 }
 
 .numbers {
-  width: 1rem;
+  width: 2.2rem;
+  height: 2rem;
+  background-color: var(--headerBg);
+  border: 2px solid black;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin: 0 3px;
+  transition: 0.2s;
+}
+
+.numbers:hover {
+  background-color: var(--inputBorder);
+  border: 2px solid var(--optionBg);
 }
 
 .dots {
-  width: 1.7rem;
+  width: 2.2rem;
+  height: 2rem;
   letter-spacing: 2px;
+}
+
+.buttonIcons {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 5px;
+  color: rgb(230, 235, 250);
+  cursor: pointer;
+  margin: 0 3px;
+
+  transition: 0.2s;
+}
+.buttonIcons:hover {
+  color: var(--inputBorder);
+}
+
+#leftIcon,
+#rigthIcon {
+  font-size: 1.8rem;
+}
+
+#leftContainer {
+  margin-right: 1rem;
+}
+#rightContainer {
+  margin-left: 1rem;
+}
+
+#selectedPage {
+  background-color: var(--inputBorder);
+  border: 2px solid var(--optionBg);
+  margin: 0 3px;
 }
