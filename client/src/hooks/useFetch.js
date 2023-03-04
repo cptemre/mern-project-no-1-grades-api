@@ -22,10 +22,10 @@ const usePost = async (
     console.log(url, action, body);
     if (url) {
       if (body && body.email) {
-        if (body.email.endsWith("@ga.pl")) {
-          body.title = "teacher";
-        } else if (body.email.endsWith("@edu.ga.pl")) {
+        if (body.email.endsWith("@edu.ga.pl")) {
           body.title = "student";
+        } else if (body.email.endsWith("@ga.pl")) {
+          body.title = "teacher";
         }
       }
       if (action === "post") {

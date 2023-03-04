@@ -39,7 +39,7 @@ const updateStudent = async (req, res) => {
 const getStudent = async (req, res) => {
   const {
     user: { ID, access_token },
-    params: { id: studentID },
+    params: { _id: studentID },
   } = req;
   let result = await Students.findOne({ _id: studentID });
   let lessons = {};
@@ -57,7 +57,7 @@ const getStudent = async (req, res) => {
       }
     }
     result.lessons = lessons;
-    res.status(200).json({ result, access_token });
+    res.status(200).json({ result, access_token, student: true });
   } else {
     throw new Bad_Request("STUDENT IS NOT EXIST");
   }

@@ -66,7 +66,6 @@ const App = () => {
             </Context.Provider>
           }
         />
-
         <Route
           path="*"
           element={

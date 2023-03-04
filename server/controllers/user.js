@@ -23,6 +23,7 @@ const login = async (req, res) => {
   const { email, password, title } = req.body;
   // FIND THE TEACHER, COMPARE PASSWORD AND SEND RESPOND OR ERROR ACCORDING TO PASSWORD
   let account;
+  console.log(email, title);
   if (title === "teacher") {
     account = await Teachers.findOne({ email });
   } else {
@@ -34,7 +35,7 @@ const login = async (req, res) => {
   if (!password) {
     throw new Bad_Request("PASSWORD IS REQUIRED");
   }
-  if (title !== "teacher" && "student") {
+  if (title !== "teacher" && title !== "student") {
     throw new Bad_Request("EMAIL IS NOT ACCEPTED");
   }
   if (account) {

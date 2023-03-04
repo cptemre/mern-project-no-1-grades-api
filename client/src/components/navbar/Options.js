@@ -17,6 +17,7 @@ const Options = () => {
   const [options, setOptions] = useState({
     admin: ["TEACHERS", "STUDENTS"],
     teacher: ["LESSONS", "ACCOUNT"],
+    student: ["GRADES", "ACCOUNT"],
   });
 
   // OPTION FUNCTIONS

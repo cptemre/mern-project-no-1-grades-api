@@ -2,8 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 
 // COMPONENTS
 import WrongPage from "../../../errors/WrongPage";
-import NoData from "../../../errors/NoData";
-import Loading from "../../loading/Loading";
 import { Context } from "../../../data/Context";
 import Semester from "./Semester";
 import StudentGrade from "./StudentGrade";
@@ -71,7 +69,6 @@ const Teacher = () => {
     });
     $(".studentsDiv").css("display", "none");
     $(e.currentTarget).parent().siblings(".studentsDiv").css("display", "grid");
-    // ! IS FETCH SET MAYBE
   };
 
   console.log(state.studentData);

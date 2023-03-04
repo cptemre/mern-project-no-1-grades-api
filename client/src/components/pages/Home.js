@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import Admin from "../pages/admin/Admin";
 import Teacher from "./teacher/Teacher";
+import Student from "./student/Student";
 import Login from "../login/Login";
 import { Context } from "../../data/Context";
 
@@ -49,7 +50,7 @@ const Home = () => {
           ) : state.title === "teacher" ? (
             <Teacher />
           ) : (
-            "student"
+            state.title === "student" && <Student />
           )}
         </section>
       ) : (
