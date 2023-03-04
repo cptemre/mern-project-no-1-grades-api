@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 // COMPONENTS
 import Navbar from "../navbar/Navbar";
 import Admin from "../pages/admin/Admin";
@@ -22,7 +22,16 @@ const Home = () => {
     dispatch({ type: "IS_NAVBAR", payload: false });
     dispatch({ type: "IS_SEMESTER", payload: false });
   };
-
+  useEffect(() => {
+    dispatch({ type: "IS_LOADING", payload: true });
+  }, []);
+  useEffect(() => {
+    if (state.isLoading) {
+      setTimeout(() => {
+        dispatch({ type: "IS_LOADING", payload: false });
+      }, 1500);
+    }
+  }, [state.isLoading]);
   return (
     <>
       {cookies.isAuth === "true" ? (

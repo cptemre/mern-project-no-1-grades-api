@@ -23,7 +23,7 @@ library.add(faSquareCaretLeft, faSquareCaretRight);
 
 const Pagination = () => {
   // STATE
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   // COMPONENT
   const component = useComponent();
   // USESEARCHPARAMS
@@ -84,7 +84,7 @@ const Pagination = () => {
   // NUMBERS FUNCTION TO SET SEARCH PARAMS
   const numbersHandle = (e) => {
     const value = $(e.currentTarget).html();
-    console.log(value);
+    dispatch({ type: "IS_LOADING", payload: true });
     setSearchParams((searchParams) => {
       searchParams.set("pageValue", value);
       return searchParams;

@@ -8,10 +8,10 @@ import $ from "jquery";
 
 const useNavbar = (component, isLoad) => {
   // CONTEXT
-  const {state} = useContext(Context)
+  const { state } = useContext(Context);
   // SET SELECTED BUTTON COLOR
   useEffect(() => {
-    if ((state.title, component, isLoad)) {
+    if ((state.title, component, state.isLoading)) {
       $(".option").css({
         backgroundColor: "var(--optionBg)",
         color: "black",
@@ -23,7 +23,7 @@ const useNavbar = (component, isLoad) => {
         transform: "translateX(-3px)",
       });
     }
-  }, [state.title, component, isLoad]);
+  }, [state.title, component, state.isLoading]);
 };
 
 export default useNavbar;

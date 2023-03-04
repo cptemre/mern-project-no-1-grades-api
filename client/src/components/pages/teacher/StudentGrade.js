@@ -10,12 +10,9 @@ import { useSearchParams } from "react-router-dom";
 
 // HOOKS
 import useFetch from "../../../hooks/useFetch";
-import useLoad from "../../../hooks/useLoad";
 
 const StudentGrade = () => {
   const { state } = useContext(Context);
-  // IS DATA LOADED ?
-  const isLoad = useLoad();
   // INPUT VALUE
   const [value, setValue] = useState("");
   const [lesson, setLesson] = useState("");
@@ -60,7 +57,7 @@ const StudentGrade = () => {
     const target = e.target;
     const value = e.target.value;
     const _id = $(target).parent().parent().attr("id");
-    const filtered = state.studentData.filter((student) => student._id == _id);
+    const filtered = state.studentsData.filter((student) => student._id == _id);
     const update = filtered[0].lessons.map((a) => {
       console.log(a);
       if (a.lesson === lesson) {
@@ -89,11 +86,18 @@ const StudentGrade = () => {
     fetchVars.searchParams,
     isFetch
   );
-  console.log("a");
+  console.log(state.studentsData);
   return (
     <section className="studentsDiv">
-      {state.studentData ? (
-        state.studentData.map((student) => {
+      {state.isLoading ? (
+        <Loading />
+      ) : state.studentsData &&
+        !state.isLoading &&
+        !state.studentsData.length ? (
+        <NoData />
+      ) : (
+        state.studentsData &&
+        state.studentsData.map((student) => {
           let grade;
           student.lessons.map((lessonObj) => {
             if (lessonObj.lesson === lesson && lessonObj.grade) {
@@ -135,8 +139,6 @@ const StudentGrade = () => {
             </div>
           );
         })
-      ) : (
-        <Loading />
       )}
     </section>
   );

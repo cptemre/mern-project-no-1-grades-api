@@ -14,7 +14,6 @@ import { useSearchParams } from "react-router-dom";
 
 // HOOKS
 import useFetch from "../../../hooks/useFetch";
-import useLoad from "../../../hooks/useLoad";
 import useComponent from "../../../hooks/useComponent";
 import useNavbar from "../../../hooks/useNavbar";
 
@@ -28,8 +27,6 @@ library.add(faChevronDown);
 const Teacher = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
-  // IS LOAD
-  const isLoad = useLoad();
   // COMPONENT
   const component = useComponent();
   // SHOULD I FETCH?
@@ -80,7 +77,7 @@ const Teacher = () => {
   console.log(state.studentData);
 
   // SET SELECTED BUTTON COLOR
-  useNavbar(component, isLoad);
+  useNavbar(component);
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -89,15 +86,10 @@ const Teacher = () => {
     fetchVars.searchParams,
     isFetch
   );
-  console.log(state.selectedSemester);
   return (
     <>
       {component !== "lessons" && component !== "account" ? (
         <WrongPage />
-      ) : !state.teachersData && !isLoad ? (
-        <Loading />
-      ) : !state.teachersData ? (
-        <NoData />
       ) : (
         <section
           id="teacherSection"
@@ -109,7 +101,8 @@ const Teacher = () => {
             onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
           >
             <article id="lessonContainer">
-              {state.teachersData.branches && state.selectedSemester ? (
+              {state.teachersData.branches &&
+                state.selectedSemester &&
                 state.teachersData.branches.map((branch) => {
                   const { lesson, semester } = branch;
                   if (semester == state.selectedSemester) {
@@ -137,10 +130,7 @@ const Teacher = () => {
                       </article>
                     );
                   }
-                })
-              ) : (
-                <div>CONTACT WITH ADMIN TO ADD LESSONS</div>
-              )}
+                })}
             </article>
           </div>
         </section>

@@ -41,6 +41,9 @@ const reducer = (state, action) => {
   if (action.type === "IS_SEMESTER") {
     return { ...state, isSemester: action.payload };
   }
+  if (action.type === "IS_LOADING") {
+    return { ...state, isLoading: action.payload };
+  }
   return state;
 };
 
@@ -65,6 +68,7 @@ const defaultState = {
   isNavbar: false,
   selectedSemester: 1,
   isSemester: false,
+  isLoading: true,
 };
 
 export { reducer, defaultState };
