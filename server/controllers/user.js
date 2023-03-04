@@ -8,7 +8,6 @@ const sign_in = async (req, res) => {
   const { name, surname } = req.body;
   const email = name[0] + surname + "@ga.pl";
   const teacher = await Teachers.findOne({ email });
-  console.log(email);
   if (!teacher) {
     await Teachers.create({
       name,

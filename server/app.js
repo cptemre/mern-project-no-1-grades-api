@@ -26,6 +26,8 @@ const studentsRoute = require("./routes/students");
 const teachersRoute = require("./routes/teachers");
 // LENGTH ROUTE
 const lengthRoute = require("./routes/length");
+// LESSONS ROUTE
+const lessonsRoute = require("./routes/lessons");
 
 app.use(express.json());
 
@@ -34,6 +36,8 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/students", auth, studentsRoute);
 app.use("/api/v1/teachers", auth, teacherAuth, teachersRoute);
 app.use("/api/v1/length", auth, teacherAuth, lengthRoute);
+app.use("/api/v1/lessons", auth, teacherAuth, lessonsRoute);
+
 // ERRORS
 app.use(error_handler);
 app.use(
