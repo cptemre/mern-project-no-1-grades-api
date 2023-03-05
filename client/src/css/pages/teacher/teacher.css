@@ -45,11 +45,6 @@
   cursor: pointer;
 }
 
-.slideDown:hover {
-  background-color: var(--inputBorder);
-  color: white;
-}
-
 .downIcon {
   transition: 0.2s;
   color: black;

@@ -71,7 +71,7 @@ const TableData = () => {
 
   // CHANGE DIV TO INPUT
   const clickHandle = (e) => {
-    const target = e.target;
+    const target = e.currentTarget;
     const className = $(target).parent().attr("class");
     const html = $(target).html();
     $(target).siblings("input").css("display", "initial").focus();
