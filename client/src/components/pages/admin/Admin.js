@@ -6,6 +6,7 @@ import Loading from "../../loading/Loading";
 import Search from "../../search/Search";
 import Pagination from "../../pagination/Pagination";
 import TableData from "./TableData";
+import Lessons from "./lessons/Lessons";
 import Teacher from "../teacher/Teacher";
 // HOOKS
 import useFetch from "../../../hooks/useFetch";
@@ -33,6 +34,8 @@ const Admin = () => {
         </section>
       ) : component === "teacher" ? (
         <Teacher />
+      ) : component === "lessons" ? (
+        <Lessons />
       ) : (
         <WrongPage />
       )}

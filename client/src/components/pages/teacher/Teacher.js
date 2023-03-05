@@ -44,7 +44,7 @@ const Teacher = () => {
     if (component) {
       if (state.title === "admin") {
         setFetchVars({
-          url: `${state.url.teachers}/${state.teachersData._id}`,
+          url: `${state.url.teachers}/${searchParams.get("_id")}`,
           body: "",
           action: "get",
         });
@@ -58,7 +58,7 @@ const Teacher = () => {
         });
       }
     }
-  }, [state.url, isFetch, component, state.ID, state.teachersData]);
+  }, [state.url, isFetch, component, state.ID, searchParams]);
   const clickHandle = (e) => {
     const query = $(e.currentTarget)
       .siblings(".lessonName")

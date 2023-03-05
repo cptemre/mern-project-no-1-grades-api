@@ -15,7 +15,7 @@ const Options = () => {
   // NAVIGATE
   const navigate = useNavigate();
   const [options, setOptions] = useState({
-    admin: ["TEACHERS", "STUDENTS"],
+    admin: ["TEACHERS", "STUDENTS", "LESSONS"],
     teacher: ["LESSONS", "ACCOUNT"],
     student: ["GRADES", "ACCOUNT"],
   });

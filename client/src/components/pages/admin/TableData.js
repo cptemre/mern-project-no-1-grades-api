@@ -177,7 +177,7 @@ const TableData = () => {
         }
         if (person.email.endsWith("@ga.pl")) {
           dispatch({ type: "TEACHERS_DATA", payload: person });
-          navigate(`/teacher`);
+          navigate(`/teacher?_id=${_id}`);
         }
       }
     });

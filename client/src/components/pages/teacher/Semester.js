@@ -84,7 +84,7 @@ const Semester = () => {
         }
       >
         <span className="semesterSpan">SEMESTER</span>
-        <span className="semesterNumber">
+        <span className="semesterNumber" id="selectedSemester">
           {state.selectedSemester && state.selectedSemester}
         </span>
         <FontAwesomeIcon

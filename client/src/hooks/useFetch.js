@@ -41,7 +41,15 @@ const usePost = async (
         deleteF();
       }
     }
-  }, [url, body, cookies.refresh_token, cookies.access_token, action, params]);
+  }, [
+    url,
+    body,
+    cookies.refresh_token,
+    cookies.access_token,
+    action,
+    params,
+    isFetch,
+  ]);
 
   // SET MSG TO STATE
   useEffect(() => {
@@ -81,6 +89,8 @@ const usePost = async (
         dispatch({ type: "TEACHERS_LENGTH", payload: data.result || data });
       } else if (data.studentsLength) {
         dispatch({ type: "STUDENTS_LENGTH", payload: data.result || data });
+      } else if (data.lesson) {
+        dispatch({ type: "LESSONS_DATA", payload: data.result || data });
       } else {
         dispatch({ type: "DATA", payload: data.result || data });
       }

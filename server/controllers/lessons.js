@@ -17,7 +17,7 @@ const createLesson = async (req, res) => {
 
 const getLessons = async (req, res) => {
   const { lesson, semester } = req.body;
-  const { email, access_token } = req.user;
+  const { access_token } = req.user;
 
   const query = {};
   if (lesson) {
@@ -26,12 +26,8 @@ const getLessons = async (req, res) => {
   if (semester) {
     query.semester = semester;
   }
-  if (email === "admin@ga.pl") {
-    const result = await Lessons.find({ query });
-    res.status(200).json({ result, access_token, lesson: true });
-  } else {
-    throw new Bad_Request("ADMIN LOGIN IS REQUIRED");
-  }
+  const result = await Lessons.find({ query });
+  res.status(200).json({ result, access_token, lesson: true });
 };
 
 const updateLesson = async (req, res) => {

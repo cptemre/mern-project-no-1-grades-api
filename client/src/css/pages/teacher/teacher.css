@@ -3,17 +3,24 @@
   grid-template-rows: 2rem auto;
   grid-row-gap: 1rem;
 }
-#lessonsSection {
-  align-items: flex-start;
-}
+
 #lessonContainer {
   align-items: flex-start;
   grid-row-gap: 2rem;
   height: auto;
 }
 
-.lessons {
+.lessons,
+.allLessons {
+  align-items: flex-start;
   height: auto;
+  grid-row-gap: 2rem;
+}
+
+.lessonComponentsDiv {
+  align-items: flex-start;
+  grid-template-rows: 2rem auto;
+  grid-row-gap: 3rem;
 }
 
 .lessonDiv {
