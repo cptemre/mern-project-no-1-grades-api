@@ -13,7 +13,7 @@ import useNavbar from "../../../hooks/useNavbar";
 
 // NPMS
 import $ from "jquery";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 // ERRORS
 import NoData from "../../../errors/NoData";
@@ -22,12 +22,10 @@ import WrongPage from "../../../errors/WrongPage";
 const TableData = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
-
   // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
   const component = useComponent();
   // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
-
   // TABLE HEADERS FOR TH
   const headers = {
     new: "NEW",
@@ -41,6 +39,8 @@ const TableData = () => {
 
   // USESEARCHPARAMS
   const [searchParams, setSearchParams] = useSearchParams();
+  // NAVIGATE
+  const navigate = useNavigate();
   // FETCH VARIABLES
   const [fetchVars, setFetchVars] = useState({
     url: "",
@@ -167,6 +167,22 @@ const TableData = () => {
     setIsFetch(!isFetch);
   };
 
+  const infoClickHandle = (e) => {
+    const _id = $(e.currentTarget).parent(".row").attr("id");
+    console.log(_id);
+    state.data.map((person) => {
+      if (person._id == _id) {
+        if (person.email.endsWith("@edu.ga.pl")) {
+          dispatch({ type: "STUDENTS_DATA", payload: person });
+        }
+        if (person.email.endsWith("@ga.pl")) {
+          dispatch({ type: "TEACHERS_DATA", payload: person });
+          navigate(`/teacher`);
+        }
+      }
+    });
+  };
+
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -263,7 +279,11 @@ const TableData = () => {
                 {Object.keys(headers).map((key, i) => {
                   if (key === "new") {
                     return (
-                      <td key={_id + key} className={key}>
+                      <td
+                        key={_id + key}
+                        className={key}
+                        onClick={(e) => infoClickHandle(e)}
+                      >
                         <div className="newDiv">&#8862;</div>
                       </td>
                     );

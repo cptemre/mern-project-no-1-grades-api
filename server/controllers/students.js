@@ -41,7 +41,7 @@ const getStudent = async (req, res) => {
     user: { ID, access_token },
     params: { _id: studentID },
   } = req;
-  let result = await Students.findOne({ _id: studentID });
+  let result = await Students.findOne({ _id: studentID }).select("-password");
   let lessons = {};
   if (result && result.lessons !== {}) {
     for (let i = 0; i < Object.keys(result.lessons).length; i++) {
@@ -78,7 +78,7 @@ const getAll = async (req, res) => {
 
   console.log(student);
   // FIND RAW RESULT
-  let search = Students.find({ query });
+  let search = Students.find({ query }).select("-password");
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
   const page = Number(req.query.page) || 1;
   const limit = 9;

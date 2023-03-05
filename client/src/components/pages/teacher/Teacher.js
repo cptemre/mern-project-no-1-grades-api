@@ -5,6 +5,7 @@ import WrongPage from "../../../errors/WrongPage";
 import { Context } from "../../../data/Context";
 import Semester from "./Semester";
 import StudentGrade from "./StudentGrade";
+import NewLesson from "./NewLesson";
 
 // NPMS
 import $ from "jquery";
@@ -41,15 +42,23 @@ const Teacher = () => {
 
   useEffect(() => {
     if (component) {
-      setFetchVars({
-        url: `${state.url.teachers}/${state.ID}`,
-        body: "",
-        action: "get",
-        searchParams,
-      });
+      if (state.title === "admin") {
+        setFetchVars({
+          url: `${state.url.teachers}/${state.teachersData._id}`,
+          body: "",
+          action: "get",
+        });
+      }
+      if (state.title === "teacher") {
+        setFetchVars({
+          url: `${state.url.teachers}/${state.ID}`,
+          body: "",
+          action: "get",
+          searchParams,
+        });
+      }
     }
-  }, [state.url, isFetch, component, state.ID]);
-
+  }, [state.url, isFetch, component, state.ID, state.teachersData]);
   const clickHandle = (e) => {
     const query = $(e.currentTarget)
       .siblings(".lessonName")
@@ -70,9 +79,6 @@ const Teacher = () => {
     $(".studentsDiv").css("display", "none");
     $(e.currentTarget).parent().siblings(".studentsDiv").css("display", "grid");
   };
-
-  console.log(state.studentData);
-
   // SET SELECTED BUTTON COLOR
   useNavbar(component);
   // AXIOS CALL
@@ -85,53 +91,50 @@ const Teacher = () => {
   );
   return (
     <>
-      {component !== "lessons" && component !== "account" ? (
-        <WrongPage />
-      ) : (
-        <section
-          id="teacherSection"
-          onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
+      <section
+        id="teacherSection"
+        onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
+      >
+        <Semester />
+        <div
+          id="lessonsSection"
+          onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
         >
-          <Semester />
-          <div
-            id="lessonsSection"
-            onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
-          >
-            <article id="lessonContainer">
-              {state.teachersData.branches &&
-                state.selectedSemester &&
-                state.teachersData.branches.map((branch) => {
-                  const { lesson, semester } = branch;
-                  if (semester == state.selectedSemester) {
-                    return (
-                      <article className="lessons" key={lesson + semester}>
-                        <div className="lessonDiv">
-                          <div className="lessonName">{lesson}</div>
-                          <div
-                            className="slideDown"
-                            onMouseEnter={(e) =>
-                              $(e.target).children().css("color", "white")
-                            }
-                            onMouseLeave={(e) =>
-                              $(e.target).children().css("color", "black")
-                            }
-                            onClick={(e) => clickHandle(e)}
-                          >
-                            <FontAwesomeIcon
-                              icon="fa-chevron-down"
-                              className="icon downIcon"
-                            />
-                          </div>
+          <article id="lessonContainer">
+            <NewLesson />
+            {state.teachersData.branches &&
+              state.selectedSemester &&
+              state.teachersData.branches.map((branch) => {
+                const { lesson, semester } = branch;
+                if (semester == state.selectedSemester) {
+                  return (
+                    <article className="lessons" key={lesson + semester}>
+                      <div className="lessonDiv">
+                        <div className="lessonName">{lesson}</div>
+                        <div
+                          className="slideDown"
+                          onMouseEnter={(e) =>
+                            $(e.target).children().css("color", "white")
+                          }
+                          onMouseLeave={(e) =>
+                            $(e.target).children().css("color", "black")
+                          }
+                          onClick={(e) => clickHandle(e)}
+                        >
+                          <FontAwesomeIcon
+                            icon="fa-chevron-down"
+                            className="icon downIcon"
+                          />
                         </div>
-                        <StudentGrade />
-                      </article>
-                    );
-                  }
-                })}
-            </article>
-          </div>
-        </section>
-      )}
+                      </div>
+                      <StudentGrade />
+                    </article>
+                  );
+                }
+              })}
+          </article>
+        </div>
+      </section>
     </>
   );
 };

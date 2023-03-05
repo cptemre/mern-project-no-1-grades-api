@@ -3,6 +3,7 @@ import React, { useReducer, useEffect, useState } from "react";
 // NAVBAR
 import Login from "./components/login/Login";
 import Home from "./components/pages/Home";
+import Teacher from "./components/pages/teacher/Teacher";
 import { Context } from "./data/Context";
 // * DATA
 import { reducer, defaultState } from "./data/reducer";
@@ -41,6 +42,7 @@ import "./css/pages/admin.css";
 import "./css/pages/teacher/teacher.css";
 import "./css/pages/teacher/semester.css";
 import "./css/pages/teacher/studentgrade.css";
+import "./css/pages/teacher/newLesson.css";
 // PAGINATION
 import "./css/pagination/pagination.css";
 const App = () => {
@@ -63,6 +65,14 @@ const App = () => {
           element={
             <Context.Provider value={{ state, dispatch }}>
               <Home />
+            </Context.Provider>
+          }
+        />
+        <Route
+          path="/teachers/:_id"
+          element={
+            <Context.Provider value={{ state, dispatch }}>
+              <Teacher />
             </Context.Provider>
           }
         />

@@ -14,14 +14,14 @@ const useComponent = () => {
 
   // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
   useEffect(() => {
-    if (!component) {
-      if (state.title === "admin") {
-        navigate("/teachers");
-      }
-      if (state.title === "teacher") {
-        navigate("/lessons");
-      }
-    }
+    // if (!component) {
+    //   if (state.title === "admin") {
+    //     navigate("/teachers");
+    //   }
+    //   if (state.title === "teacher") {
+    //     navigate("/lessons");
+    //   }
+    // }
     setComponentURL(component);
   }, [component, state.title]);
   return componentURL;
