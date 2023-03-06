@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 // COMPONENTS
 import { Context } from "../../../../data/Context";
 import Loading from "../../../loading/Loading";
+import Teacher from "../../teacher/Teacher";
 
 // ERRORS
 import NoData from "../../../../errors/NoData";
@@ -13,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 
 // HOOKS
 import useFetch from "../../../../hooks/useFetch";
+import useComponent from "../../../../hooks/useComponent";
 
 // FONT AWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,6 +32,8 @@ const GetLessons = () => {
   const { state, dispatch } = useContext(Context);
   // INPUT VALUE
   const [value, setValue] = useState("");
+  // COMPONENT
+  const component = useComponent();
   // QUERY
   const [searchParams, setSearchParams] = useSearchParams();
   // ISFETCH
@@ -120,9 +124,10 @@ const GetLessons = () => {
         <Loading />
       ) : state.lessonsData && !state.isLoading && !state.lessonsData.length ? (
         <NoData />
-      ) : (
-        state.lessonsData &&
+      ) : state.lessonsData &&
         searchParams &&
+        state.title === "admin" &&
+        component === "lessons" ? (
         state.lessonsData.map((lessons) => {
           const { lesson, semester, _id } = lessons;
           if (semester == searchParams.get("semester")) {
@@ -149,9 +154,7 @@ const GetLessons = () => {
                     onClick={(e) => clickHandle(e)}
                   >
                     <FontAwesomeIcon
-                      icon={
-                        state.title === "admin" ? "fa-trash" : "fa-chevron-down"
-                      }
+                      icon="fa-trash"
                       className="icon downIcon"
                     />
                   </div>
@@ -161,6 +164,8 @@ const GetLessons = () => {
             );
           }
         })
+      ) : (
+        component === "teacher" && "a"
       )}
     </>
   );

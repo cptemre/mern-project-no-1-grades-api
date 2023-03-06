@@ -82,11 +82,12 @@ const Semester = () => {
   const hiddenHandle = (e) => {
     $(".studentsDiv").css("display", "none");
     const value = $(e.currentTarget).children(".semesterNumber").html();
+    let filtered = [...semesters, searchParams.get("semester")];
+
     setSearchParams((searchParams) => {
       searchParams.set("semester", value);
       return searchParams;
     });
-    let filtered = [...semesters, searchParams.get("semester")];
     filtered = filtered.filter((semester) => semester != value);
     setSemesters(filtered.sort());
     dispatch({ type: "SELECTED_SEMESTER", payload: value });

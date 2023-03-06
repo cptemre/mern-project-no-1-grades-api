@@ -5,10 +5,16 @@ import { Context } from "../../../../data/Context";
 import Semester from "../../teacher/Semester";
 import CreateLesson from "./CreateLesson";
 import GetLessons from "./GetLessons";
+import AddLesson from "./AddLesson";
+
+// HOOKS
+import useComponent from "../../../../hooks/useComponent";
 
 const Lessons = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
+  // COMPONENT
+  const component = useComponent();
   return (
     <>
       <section
@@ -20,10 +26,16 @@ const Lessons = () => {
           className="lessonComponentsDiv"
           onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
         >
-          <CreateLesson />
-          <div className="allLessons">
-            <GetLessons />
-          </div>
+          {component === "lessons" ? (
+            <>
+              <CreateLesson />
+              <div className="allLessons">
+                <GetLessons />
+              </div>
+            </>
+          ) : (
+            <AddLesson />
+          )}
         </div>
       </section>
     </>

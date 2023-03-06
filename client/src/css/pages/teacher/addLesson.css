@@ -1,0 +1,16 @@
+.addLesson {
+  grid-template-columns: 1fr;
+  position: relative;
+}
+
+#lessonDiv {
+  position: absolute;
+  top: calc(3rem + 6px);
+  grid-row-gap: 1rem;
+}
+
+.recommendedLessons {
+  background-color: var(--optionBg);
+  height: 2rem;
+  cursor: pointer;
+}

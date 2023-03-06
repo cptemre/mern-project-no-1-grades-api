@@ -43,6 +43,7 @@ import "./css/pages/teacher/teacher.css";
 import "./css/pages/teacher/semester.css";
 import "./css/pages/teacher/studentgrade.css";
 import "./css/pages/teacher/newLesson.css";
+import "./css/pages/teacher/addLesson.css";
 // PAGINATION
 import "./css/pagination/pagination.css";
 const App = () => {

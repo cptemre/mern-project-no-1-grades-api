@@ -32,9 +32,7 @@ const Admin = () => {
           <TableData />
           <Pagination />
         </section>
-      ) : component === "teacher" ? (
-        <Teacher />
-      ) : component === "lessons" ? (
+      ) : component === "lessons" || component === "teacher" ? (
         <Lessons />
       ) : (
         <WrongPage />

@@ -16,17 +16,8 @@ const createLesson = async (req, res) => {
 };
 
 const getLessons = async (req, res) => {
-  const { lesson, semester } = req.body;
   const { access_token } = req.user;
-
-  const query = {};
-  if (lesson) {
-    query.lesson = lesson;
-  }
-  if (semester) {
-    query.semester = semester;
-  }
-  const result = await Lessons.find({ query });
+  const result = await Lessons.find({});
   res.status(200).json({ result, access_token, lesson: true });
 };
 
@@ -72,4 +63,9 @@ const deleteLesson = async (req, res) => {
   }
 };
 
-module.exports = { createLesson, getLessons, updateLesson, deleteLesson };
+module.exports = {
+  createLesson,
+  getLessons,
+  updateLesson,
+  deleteLesson,
+};

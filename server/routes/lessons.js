@@ -10,4 +10,5 @@ const {
 
 router.route("/").post(createLesson).get(getLessons);
 router.route("/:_id").patch(updateLesson).delete(deleteLesson);
+
 module.exports = router;

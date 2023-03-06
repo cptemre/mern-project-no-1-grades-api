@@ -17,7 +17,7 @@ import { faChevronDown, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faChevronDown, faCirclePlus);
 
-const CreateLesson = () => {
+const AddLesson = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
 
@@ -28,6 +28,12 @@ const CreateLesson = () => {
   const [value, setValue] = useState("");
   // QUERY
   const [searchParams, setSearchParams] = useSearchParams();
+  // RECOMMENDED LESSON
+  const [recommendedLessons, setRecommendedLessons] = useState([]);
+  // RECOMMENDED LESSON COUNT
+  const [recommendedLessonsCount, setRecommendedLessonsCount] = useState([
+    0, 1, 2,
+  ]);
   // FETCH VARS
   const [fetchVars, setFetchVars] = useState({
     url: "",
@@ -36,14 +42,34 @@ const CreateLesson = () => {
     searchParams: "",
   });
 
-  const iconClickHandle = () => {
+  // KEYDOWN HANDLE
+  const keyDownHandle = (e) => {
     setFetchVars({
       url: state.url.lessons,
-      body: { lesson: value, semester: searchParams.get("semester") },
-      action: "post",
+      body: "",
+      action: "get",
     });
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
+
+  useEffect(() => {
+    if (state.lessonsData) {
+      const lessonReg = new RegExp(value, "i");
+      const filteredLessons = state.lessonsData.filter((exampleLesson) => {
+        if (
+          exampleLesson.lesson.match(lessonReg) &&
+          searchParams.get("semester") == exampleLesson.semester
+        ) {
+          return exampleLesson;
+        }
+      });
+      setRecommendedLessons(filteredLessons);
+    }
+  }, [state.lessonsData]);
+
+  console.log(state.lessonsData);
+  console.log(fetchVars);
+
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -55,7 +81,7 @@ const CreateLesson = () => {
   return (
     <>
       <article className="lessons" id="newLesson">
-        <div className="lessonDiv" id="newLessonAdd">
+        <div className="lessonDiv addLesson" id="newLessonAdd">
           <div className="lessonName" id="newLessonName">
             <input
               className="tdInput"
@@ -64,17 +90,25 @@ const CreateLesson = () => {
               value={value}
               name="lesson"
               placeholder="ADD A NEW LESSON"
-              onBlur={() => $("#newLessonInput").css("opacity", 0.7)}
+              onBlur={(e) => $("#newLessonInput").css("opacity", 0.7)}
               onChange={(e) => setValue(e.target.value)}
+              onKeyDown={(e) => keyDownHandle(e)}
             />
-          </div>
-          <div id="newLessonIconDiv">
-            <FontAwesomeIcon
-              icon="fa-solid fa-circle-plus"
-              className="icon"
-              id="newLessonIcon"
-              onClick={(e) => iconClickHandle(e)}
-            />
+            {value && (
+              <div id="lessonDiv">
+                {recommendedLessons.length < 3
+                  ? recommendedLessons.map((recommend) => (
+                      <div className="recommendedLessons">
+                        {recommend.lesson}
+                      </div>
+                    ))
+                  : recommendedLessonsCount.map((number) => (
+                      <div className="recommendedLessons">
+                        {recommendedLessons[number].lesson}
+                      </div>
+                    ))}
+              </div>
+            )}
           </div>
         </div>
       </article>
@@ -82,4 +116,4 @@ const CreateLesson = () => {
   );
 };
 
-export default CreateLesson;
+export default AddLesson;
