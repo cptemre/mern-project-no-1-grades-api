@@ -8,6 +8,8 @@
   --headerBg: rgb(50, 88, 194);
   --optionBg: rgb(200, 223, 214);
   --buttonIcons: rgb(30, 36, 86);
+  --newLessonIcon: rgb(114, 220, 114);
+  --newLessonIconHover: rgb(58, 178, 58);
 }
 
 * {

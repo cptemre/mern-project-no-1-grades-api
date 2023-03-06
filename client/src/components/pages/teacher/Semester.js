@@ -5,6 +5,7 @@ import { Context } from "../../../data/Context";
 
 // NPMS
 import $ from "jquery";
+import { useSearchParams } from "react-router-dom";
 
 // FONT AWESOME
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +19,19 @@ const Semester = () => {
   const { state, dispatch } = useContext(Context);
   // SEMESTERS
   const [semesters, setSemesters] = useState([2, 3, 4, 5, 6, 7, 8]);
+  // QUERY
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // SET TO 1 IF NOT DECIDED
+  useEffect(() => {
+    console.log(searchParams.get("semester"));
+    if (searchParams.get("semester") === null) {
+      setSearchParams((searchParams) => {
+        searchParams.set("semester", 1);
+        return searchParams;
+      });
+    }
+  }, []);
 
   // SEMESTER FUNCTIONS
   const semesterEnter = (e) => {
@@ -68,7 +82,11 @@ const Semester = () => {
   const hiddenHandle = (e) => {
     $(".studentsDiv").css("display", "none");
     const value = $(e.currentTarget).children(".semesterNumber").html();
-    let filtered = [...semesters, state.selectedSemester];
+    setSearchParams((searchParams) => {
+      searchParams.set("semester", value);
+      return searchParams;
+    });
+    let filtered = [...semesters, searchParams.get("semester")];
     filtered = filtered.filter((semester) => semester != value);
     setSemesters(filtered.sort());
     dispatch({ type: "SELECTED_SEMESTER", payload: value });
@@ -85,7 +103,7 @@ const Semester = () => {
       >
         <span className="semesterSpan">SEMESTER</span>
         <span className="semesterNumber" id="selectedSemester">
-          {state.selectedSemester && state.selectedSemester}
+          {searchParams && searchParams.get("semester")}
         </span>
         <FontAwesomeIcon
           icon="fa-chevron-down"

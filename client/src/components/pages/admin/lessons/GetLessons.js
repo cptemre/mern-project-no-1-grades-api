@@ -32,12 +32,18 @@ const GetLessons = () => {
   const [value, setValue] = useState("");
   // QUERY
   const [searchParams, setSearchParams] = useSearchParams();
+  // ISFETCH
+  const [isFetch, setIsFetch] = useState(false);
   // FETCH VARS
   const [fetchVars, setFetchVars] = useState({
     url: "",
     body: "",
     action: "",
   });
+
+  useEffect(() => {
+    setIsFetch(state.isFetch);
+  }, [state.isFetch]);
   // GET LESSONS
   useEffect(() => {
     setFetchVars({
@@ -45,7 +51,7 @@ const GetLessons = () => {
       body: "",
       action: "get",
     });
-  }, [state.url, state.isFetch]);
+  }, [state.url]);
 
   // ICON FUNCTIONS
   const getLessonMouseEnter = (e) => {
@@ -62,15 +68,6 @@ const GetLessons = () => {
     $(e.currentTarget).css("backgroundColor", "var(--optionBg)");
     $(e.currentTarget).children(".icon").css("color", "black");
   };
-
-  // AXIOS CALL
-  useFetch(
-    fetchVars.url,
-    fetchVars.body,
-    fetchVars.action,
-    fetchVars.searchParams,
-    state.isFetch
-  );
 
   // DELETE LESSON
   const clickHandle = (e) => {
@@ -108,6 +105,15 @@ const GetLessons = () => {
     setValue("");
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
+  console.log(state.isFetch);
+  // AXIOS CALL
+  useFetch(
+    fetchVars.url,
+    fetchVars.body,
+    fetchVars.action,
+    fetchVars.searchParams,
+    isFetch
+  );
   return (
     <>
       {state.isLoading ? (
@@ -116,10 +122,10 @@ const GetLessons = () => {
         <NoData />
       ) : (
         state.lessonsData &&
-        state.selectedSemester &&
+        searchParams &&
         state.lessonsData.map((lessons) => {
           const { lesson, semester, _id } = lessons;
-          if (semester == state.selectedSemester) {
+          if (semester == searchParams.get("semester")) {
             return (
               <article className="lessons" key={_id} id={_id}>
                 <div className="lessonDiv">

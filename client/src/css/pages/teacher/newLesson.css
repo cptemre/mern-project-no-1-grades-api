@@ -2,6 +2,31 @@
   border: none;
 }
 
-.newLessonIcon {
-  color: rgb(114, 220, 114) !important;
+#newLessonIcon {
+  color: var(--newLessonIcon);
+  transition: 0.2s;
+}
+#newLessonIcon:hover {
+  color: var(--newLessonIconHover);
+}
+
+#newLessonName {
+  background-color: transparent;
+  border-bottom: 2px solid white;
+  color: var(--inputBorder);
+  transition: 0.2s;
+}
+
+#newLessonName > input,
+#newLessonName > input::placeholder {
+  font-size: 1.2rem;
+  color: var(--inputBorder);
+  font-weight: bold;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+#newLessonName > input {
+  display: initial !important;
+  opacity: 1;
 }

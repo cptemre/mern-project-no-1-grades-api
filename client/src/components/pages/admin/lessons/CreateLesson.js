@@ -38,24 +38,32 @@ const CreateLesson = () => {
 
   // CHANGE DIV TO INPUT
   const clickHandle = (e) => {
-    const target = e.target;
-    $(target).siblings("input").css("display", "initial").focus();
+    const target = e.currentTarget;
+    $("#newLessonName").css("opacity", 1);
+    $(target)
+      .siblings("input")
+      .css({
+        display: "initial",
+        fontSize: "1rem",
+        color: "var(--inputBorder)",
+      })
+      .focus();
     $(target).css("display", "none");
     setValue("");
   };
 
   // CHANGE INPUT TO DIV
   const blurHandle = (e) => {
-    const target = e.target;
+    const target = e.currentTarget;
+    $("#newLessonName").css("opacity", 0.6);
     $(target).siblings("div").css("display", "grid");
     $(target).css("display", "none");
   };
 
   const iconClickHandle = () => {
-    const semester = $("#selectedSemester").html();
     setFetchVars({
       url: state.url.lessons,
-      body: { lesson: value, semester },
+      body: { lesson: value, semester: searchParams.get("semester") },
       action: "post",
     });
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
@@ -72,15 +80,13 @@ const CreateLesson = () => {
     <>
       <article className="lessons" id="newLesson">
         <div className="lessonDiv" id="newLessonAdd">
-          <div className="lessonName">
-            <div className="nameDiv" onClick={(e) => clickHandle(e)}>
-              ----
-            </div>
+          <div className="lessonName" id="newLessonName">
             <input
               className="tdInput"
               type="text"
               value={value}
               name="lesson"
+              placeholder="ADD A NEW LESSON"
               onBlur={(e) => blurHandle(e)}
               onChange={(e) => setValue(e.target.value)}
             />
@@ -88,7 +94,8 @@ const CreateLesson = () => {
           <div id="newLessonIconDiv">
             <FontAwesomeIcon
               icon="fa-solid fa-circle-plus"
-              className="icon newLessonIcon"
+              className="icon"
+              id="newLessonIcon"
               onClick={(e) => iconClickHandle(e)}
             />
           </div>

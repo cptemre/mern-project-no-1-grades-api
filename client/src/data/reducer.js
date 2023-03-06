@@ -38,9 +38,6 @@ const reducer = (state, action) => {
   if (action.type === "IS_NAVBAR") {
     return { ...state, isNavbar: action.payload };
   }
-  if (action.type === "SELECTED_SEMESTER") {
-    return { ...state, selectedSemester: action.payload };
-  }
   if (action.type === "IS_SEMESTER") {
     return { ...state, isSemester: action.payload };
   }
@@ -74,7 +71,6 @@ const defaultState = {
   },
   searchOptions: { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" },
   isNavbar: false,
-  selectedSemester: 1,
   isSemester: false,
   isLoading: true,
   isFetch: false,
