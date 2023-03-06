@@ -9,6 +9,7 @@ import AddLesson from "./AddLesson";
 
 // HOOKS
 import useComponent from "../../../../hooks/useComponent";
+import Teacher from "../../teacher/Teacher";
 
 const Lessons = () => {
   // STATE
@@ -34,7 +35,12 @@ const Lessons = () => {
               </div>
             </>
           ) : (
-            <AddLesson />
+            <>
+              <AddLesson />
+              <div className="allLessons">
+                <Teacher />
+              </div>
+            </>
           )}
         </div>
       </section>

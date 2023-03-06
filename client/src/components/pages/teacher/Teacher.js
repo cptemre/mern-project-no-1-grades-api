@@ -59,6 +59,18 @@ const Teacher = () => {
       }
     }
   }, [state.url, isFetch, component, state.ID, searchParams]);
+
+  useEffect(() => {
+    if (state.teachersData) {
+      setFetchVars({
+        url: state.url.lessons,
+        body: { branches: state.teachersData.branches },
+        action: "get",
+      });
+    }
+  }, [state.teachersData]);
+
+  console.log(state.lessonsData);
   const clickHandle = (e) => {
     const query = $(e.currentTarget)
       .siblings(".lessonName")
@@ -91,50 +103,43 @@ const Teacher = () => {
   );
   return (
     <>
-      <section
-        id="teacherSection"
-        onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
+      <div
+        id="lessonsSection"
+        onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
       >
-        <Semester />
-        <div
-          id="lessonsSection"
-          onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
-        >
-          <article id="lessonContainer">
-            <NewLesson />
-            {state.teachersData.branches &&
-              state.selectedSemester &&
-              state.teachersData.branches.map((branch) => {
-                const { lesson, semester } = branch;
-                if (semester == state.selectedSemester) {
-                  return (
-                    <article className="lessons" key={lesson + semester}>
-                      <div className="lessonDiv">
-                        <div className="lessonName">{lesson}</div>
-                        <div
-                          className="slideDown"
-                          onMouseEnter={(e) =>
-                            $(e.target).children().css("color", "white")
-                          }
-                          onMouseLeave={(e) =>
-                            $(e.target).children().css("color", "black")
-                          }
-                          onClick={(e) => clickHandle(e)}
-                        >
-                          <FontAwesomeIcon
-                            icon="fa-chevron-down"
-                            className="icon downIcon"
-                          />
-                        </div>
+        <article id="lessonContainer">
+          {state.teachersData.branches &&
+            state.selectedSemester &&
+            state.teachersData.branches.map((branch) => {
+              const { lesson, semester } = branch;
+              if (semester == state.selectedSemester) {
+                return (
+                  <article className="lessons" key={lesson + semester}>
+                    <div className="lessonDiv">
+                      <div className="lessonName">{lesson}</div>
+                      <div
+                        className="slideDown"
+                        onMouseEnter={(e) =>
+                          $(e.target).children().css("color", "white")
+                        }
+                        onMouseLeave={(e) =>
+                          $(e.target).children().css("color", "black")
+                        }
+                        onClick={(e) => clickHandle(e)}
+                      >
+                        <FontAwesomeIcon
+                          icon="fa-chevron-down"
+                          className="icon downIcon"
+                        />
                       </div>
-                      <StudentGrade />
-                    </article>
-                  );
-                }
-              })}
-          </article>
-        </div>
-      </section>
+                    </div>
+                    <StudentGrade />
+                  </article>
+                );
+              }
+            })}
+        </article>
+      </div>
     </>
   );
 };

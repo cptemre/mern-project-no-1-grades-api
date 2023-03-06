@@ -17,6 +17,8 @@ const createLesson = async (req, res) => {
 
 const getLessons = async (req, res) => {
   const { access_token } = req.user;
+  const { branches } = req.body;
+
   const result = await Lessons.find({});
   res.status(200).json({ result, access_token, lesson: true });
 };

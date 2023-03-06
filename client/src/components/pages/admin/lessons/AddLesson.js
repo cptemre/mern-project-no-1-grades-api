@@ -52,6 +52,7 @@ const AddLesson = () => {
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
 
+  // REGEX THE DATA FROM STATE
   useEffect(() => {
     if (state.lessonsData) {
       const lessonReg = new RegExp(value, "i");
@@ -67,9 +68,25 @@ const AddLesson = () => {
     }
   }, [state.lessonsData]);
 
-  console.log(state.lessonsData);
-  console.log(fetchVars);
-
+  // RECOMMEND LESSON CLICK HANDLE TO ADD IT TO TEACHER
+  const recommendClick = (lessonID, lesson, semester) => {
+    let updatedTeacher = state.teachersData;
+    if (updatedTeacher.branches) {
+      const isUnique = updatedTeacher.branches.every((branch) => {
+        return !updatedTeacher.branches._id == lessonID;
+      });
+      if (isUnique) {
+        updatedTeacher.branches.push({ _id: lessonID, lesson, semester });
+      }
+    }
+    console.log(updatedTeacher);
+    setFetchVars({
+      url: `${state.url.teachers}/${searchParams.get("_id")}`,
+      body: { ...updatedTeacher },
+      action: "patch",
+    });
+    dispatch({ type: "IS_FETCH", payload: !state.isFetch });
+  };
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -97,13 +114,32 @@ const AddLesson = () => {
             {value && (
               <div id="lessonDiv">
                 {recommendedLessons.length < 3
-                  ? recommendedLessons.map((recommend) => (
-                      <div className="recommendedLessons">
-                        {recommend.lesson}
-                      </div>
-                    ))
+                  ? recommendedLessons.map((recommend) => {
+                      const { _id, lesson, semester } = recommend;
+                      return (
+                        <div
+                          className="recommendedLessons"
+                          key={_id}
+                          id={_id}
+                          onClick={() => recommendClick(_id, lesson, semester)}
+                        >
+                          {lesson}
+                        </div>
+                      );
+                    })
                   : recommendedLessonsCount.map((number) => (
-                      <div className="recommendedLessons">
+                      <div
+                        className="recommendedLessons"
+                        key={recommendedLessons[number]._id}
+                        id={recommendedLessons[number]._id}
+                        onClick={(e) =>
+                          recommendClick(
+                            recommendedLessons[number]._id,
+                            recommendedLessons[number].lesson,
+                            recommendedLessons[number].semester
+                          )
+                        }
+                      >
                         {recommendedLessons[number].lesson}
                       </div>
                     ))}
