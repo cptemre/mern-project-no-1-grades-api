@@ -123,6 +123,21 @@ const Teacher = () => {
                 return (
                   <article className="lessons" key={lesson + semester}>
                     <div className="lessonDiv">
+                      <div
+                        className="slideDown"
+                        onMouseEnter={(e) =>
+                          $(e.target).children().css("color", "white")
+                        }
+                        onMouseLeave={(e) =>
+                          $(e.target).children().css("color", "black")
+                        }
+                        onClick={(e) => clickHandle(e)}
+                      >
+                        <FontAwesomeIcon
+                          icon="fa-chevron-down"
+                          className="icon downIcon"
+                        />
+                      </div>
                       <div className="lessonName">{lesson}</div>
                       <div
                         className="slideDown"

@@ -81,22 +81,22 @@ const usePost = async (
       dispatch({ type: "ISAUTH", payload: true });
       if (data.teacher) {
         dispatch({ type: "TEACHERS_DATA", payload: data.result || data });
-      }
-      if (data.student) {
+      } else if (data.student) {
         console.log("a");
         dispatch({ type: "STUDENTS_DATA", payload: data.result || data });
-      }
-      if (data.teachersLength) {
+      } else if (data.teachersLength) {
         dispatch({ type: "TEACHERS_LENGTH", payload: data.result || data });
-      }
-      if (data.studentsLength) {
+      } else if (data.studentsLength) {
         dispatch({ type: "STUDENTS_LENGTH", payload: data.result || data });
-      }
-      if (data.lesson) {
+      } else if (data.lesson) {
         dispatch({ type: "LESSONS_DATA", payload: data.result || data });
-      }
-      if (data.branch) {
+      } else if (data.branch) {
         dispatch({ type: "BRANCHES_DATA", payload: data.result || data });
+      } else {
+        dispatch({
+          type: "DATA",
+          payload: data.result || data,
+        });
       }
       console.log(data);
     } catch (error) {

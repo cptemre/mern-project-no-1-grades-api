@@ -53,21 +53,15 @@ const AddLesson = () => {
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
 
-  // REGEX THE DATA FROM STATE
+  // FILTER LESSONS WHICH ALREADY ADDED TO TEACHER
   useEffect(() => {
-    if (state.lessonsData) {
-      const lessonReg = new RegExp(value, "i");
-      const filteredLessons = state.lessonsData.filter((exampleLesson) => {
-        if (
-          exampleLesson.lesson.match(lessonReg) &&
-          searchParams.get("semester") == exampleLesson.semester
-        ) {
-          return exampleLesson;
-        }
-      });
-      setRecommendedLessons(filteredLessons);
+    if (state.lessonsData && state.teachersData) {
+      let filtered = state.lessonsData.filter(
+        (lesson) => !state.teachersData.branches.includes(lesson._id)
+      );
+      setRecommendedLessons(filtered);
     }
-  }, [state.lessonsData]);
+  }, [state.lessonsData, state.teachersData]);
 
   // RECOMMEND LESSON CLICK HANDLE TO ADD IT TO TEACHER
   const recommendClick = (lessonID, lesson, semester) => {
@@ -80,6 +74,7 @@ const AddLesson = () => {
       body: { ...updatedTeacher },
       action: "patch",
     });
+    setRecommendedLessons([]);
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
   // AXIOS CALL

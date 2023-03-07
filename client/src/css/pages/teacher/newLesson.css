@@ -1,5 +1,6 @@
 #newLessonAdd {
   border: none;
+  grid-template-columns: 1fr 3rem;
 }
 
 #newLessonIcon {

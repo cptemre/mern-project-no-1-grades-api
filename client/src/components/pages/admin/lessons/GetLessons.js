@@ -54,9 +54,11 @@ const GetLessons = () => {
       url: state.url.lessons,
       body: "",
       action: "get",
+      searchParams: { semester: searchParams.get("semester") },
     });
   }, [state.url]);
 
+  console.log(state.lessonsData);
   // ICON FUNCTIONS
   const getLessonMouseEnter = (e) => {
     if (state.title === "admin") {
@@ -134,6 +136,17 @@ const GetLessons = () => {
             return (
               <article className="lessons" key={_id} id={_id}>
                 <div className="lessonDiv">
+                  <div
+                    className="slideDown"
+                    onMouseEnter={(e) => getLessonMouseEnter(e)}
+                    onMouseLeave={(e) => getLessonMouseLesson(e)}
+                    onClick={(e) => clickHandle(e)}
+                  >
+                    <FontAwesomeIcon
+                      icon="fa-trash"
+                      className="icon downIcon"
+                    />
+                  </div>
                   <div className="lessonName">
                     <div className="nameDiv" onClick={(e) => updateLesson(e)}>
                       {lesson}
