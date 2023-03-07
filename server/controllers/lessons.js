@@ -19,7 +19,6 @@ const getLessons = async (req, res) => {
   const { access_token } = req.user;
   const { semester } = req.query;
   const result = await Lessons.find({ semester });
-  console.log(result);
   res.status(200).json({ result, access_token, lesson: true });
 };
 
@@ -27,7 +26,6 @@ const getBranches = async (req, res) => {
   const { access_token } = req.user;
   const { branches } = req.query;
   const result = await Lessons.find({ _id: { $in: branches } });
-  console.log(result);
   res.status(200).json({ result, access_token, branch: true });
 };
 

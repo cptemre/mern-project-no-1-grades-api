@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../data/Context";
 import Loading from "../../loading/Loading";
 import NoData from "../../../errors/NoData";
+import NewStudent from "./NewStudent";
 // NPMS
 import $ from "jquery";
 import { useSearchParams } from "react-router-dom";
@@ -89,6 +90,7 @@ const StudentGrade = () => {
   console.log(state.studentsData);
   return (
     <section className="studentsDiv">
+      {state.title && state.title === "admin" && <NewStudent />}
       {state.isLoading ? (
         <Loading />
       ) : state.studentsData &&
@@ -100,14 +102,16 @@ const StudentGrade = () => {
         state.studentsData.map((student) => {
           let grade;
           student.lessons.map((lessonObj) => {
-            if (lessonObj.lesson === lesson && lessonObj.grade) {
+            console.log(student.lessons);
+            if (lessonObj.grade) {
               grade = lessonObj.grade;
             }
           });
           return (
             <div key={student.name + student.surname + lesson}>
-              {grade && (
+              {
                 <article className="studentDiv" id={student._id}>
+                  <div className="studentNo">{student.studentNo}</div>
                   <div className="studentName">
                     {student.name} {student.surname}
                   </div>
@@ -135,7 +139,7 @@ const StudentGrade = () => {
                     />
                   </div>
                 </article>
-              )}
+              }
             </div>
           );
         })

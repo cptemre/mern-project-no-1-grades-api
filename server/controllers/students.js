@@ -16,8 +16,7 @@ const createStudent = async (req, res) => {
 // * THEN UPDATE THE WHOLE GRADE BY REQ.BODY
 const updateStudent = async (req, res) => {
   const { ID, access_token } = req.user;
-  const { _id, update } = req.body;
-
+  const { _id } = req.params;
   console.log(req.body);
 
   // * SET CREATED BY TO LESSON
@@ -25,7 +24,7 @@ const updateStudent = async (req, res) => {
 
   const result = await Students.updateOne(
     { _id },
-    { lessons: update },
+    { ...req.body },
     { runValidators: true, new: true }
   );
   if (result.modifiedCount) {
@@ -66,26 +65,23 @@ const getStudent = async (req, res) => {
 // * GET ALL STUDENTS RELATED TO THE TEACHER
 const getAll = async (req, res) => {
   const { access_token } = req.user;
-  let { lesson, semester } = req.query;
+  let { lessonID } = req.query;
   let student = false;
-  const query = {};
-  // IF THERE IS LESSON QUERY REPLACE _ WITH SPACES AND SET STUDENT TRUE TO SEND DATA TO STATE.STUDENTS
-  if (lesson) {
-    lesson = lesson.replace(/_/g, " ");
-    query.lesson = { "lessons.lesson": lesson };
+
+  if (lessonID) {
     student = true;
   }
-
-  console.log(student);
   // FIND RAW RESULT
-  let search = Students.find({ query }).select("-password");
+  let search = Students.find({ "lessons.lessonID": lessonID }).select(
+    "-password"
+  );
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
   const page = Number(req.query.page) || 1;
   const limit = 9;
   const skip = (page - 1) * limit;
-
   result = await search.skip(skip).sort({ createdAt: 1 });
   console.log(result);
+
   res.status(200).json({ result, access_token, student });
 };
 

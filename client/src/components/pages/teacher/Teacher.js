@@ -59,7 +59,14 @@ const Teacher = () => {
       }
     }
     setIsFetch(true);
-  }, [state.url, component, state.ID, searchParams, state.title]);
+  }, [
+    state.url,
+    state.isFetch,
+    component,
+    state.ID,
+    searchParams,
+    state.title,
+  ]);
 
   useEffect(() => {
     if (state.teachersData) {
@@ -74,11 +81,25 @@ const Teacher = () => {
     }
   }, [state.teachersData]);
 
-  console.log(state.branchesData);
-  console.log(state.lessonsData);
-  console.log(state.teachersData);
+  // DELETE LESSON
+  const deleteHandle = (_id) => {
+    const updatedTeacher = state.teachersData;
+    const deleteLesson = updatedTeacher.branches.filter(
+      (branch) => branch !== _id
+    );
+    updatedTeacher.branches = deleteLesson;
+    setFetchVars({
+      url: `${state.url.teachers}/${state.teachersData._id}`,
+      body: updatedTeacher,
+      action: "patch",
+    });
+    dispatch({ type: "IS_FETCH", payload: !state.isFetch });
+
+    console.log(deleteLesson);
+  };
 
   const clickHandle = (e) => {
+    const lessonID = $(e.currentTarget).parent(".lessonDiv").attr("id");
     const query = $(e.currentTarget)
       .siblings(".lessonName")
       .html()
@@ -93,7 +114,7 @@ const Teacher = () => {
       url: state.url.students,
       body: "",
       action: "get",
-      searchParams,
+      searchParams: { lessonID },
     });
     $(".studentsDiv").css("display", "none");
     $(e.currentTarget).parent().siblings(".studentsDiv").css("display", "grid");
@@ -118,11 +139,11 @@ const Teacher = () => {
           {state.branchesData &&
             searchParams.get("semester") &&
             state.branchesData.map((branch) => {
-              const { lesson, semester } = branch;
+              const { lesson, semester, _id } = branch;
               if (semester == searchParams.get("semester")) {
                 return (
-                  <article className="lessons" key={lesson + semester}>
-                    <div className="lessonDiv">
+                  <article className="lessons" key={_id}>
+                    <div className="lessonDiv" id={_id}>
                       <div
                         className="slideDown"
                         onMouseEnter={(e) =>
@@ -131,10 +152,10 @@ const Teacher = () => {
                         onMouseLeave={(e) =>
                           $(e.target).children().css("color", "black")
                         }
-                        onClick={(e) => clickHandle(e)}
+                        onClick={() => deleteHandle(_id)}
                       >
                         <FontAwesomeIcon
-                          icon="fa-chevron-down"
+                          icon="fa-trash"
                           className="icon downIcon"
                         />
                       </div>
