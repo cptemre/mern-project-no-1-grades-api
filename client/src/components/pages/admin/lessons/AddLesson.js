@@ -48,6 +48,7 @@ const AddLesson = () => {
       url: state.url.lessons,
       body: "",
       action: "get",
+      searchParams: { semester: searchParams.get("semester") },
     });
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
@@ -71,15 +72,9 @@ const AddLesson = () => {
   // RECOMMEND LESSON CLICK HANDLE TO ADD IT TO TEACHER
   const recommendClick = (lessonID, lesson, semester) => {
     let updatedTeacher = state.teachersData;
-    if (updatedTeacher.branches) {
-      const isUnique = updatedTeacher.branches.every((branch) => {
-        return !updatedTeacher.branches._id == lessonID;
-      });
-      if (isUnique) {
-        updatedTeacher.branches.push({ _id: lessonID, lesson, semester });
-      }
+    if (!updatedTeacher.branches.includes(lessonID)) {
+      updatedTeacher.branches.push(lessonID);
     }
-    console.log(updatedTeacher);
     setFetchVars({
       url: `${state.url.teachers}/${searchParams.get("_id")}`,
       body: { ...updatedTeacher },

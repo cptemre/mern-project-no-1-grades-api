@@ -32,6 +32,9 @@ const reducer = (state, action) => {
   if (action.type === "LESSONS_DATA") {
     return { ...state, lessonsData: action.payload };
   }
+  if (action.type === "BRANCHES_DATA") {
+    return { ...state, branchesData: action.payload };
+  }
   if (action.type === "SEARCH_OPTIONS") {
     return { ...state, searchOptions: action.payload };
   }
@@ -62,12 +65,14 @@ const defaultState = {
   teachersLength: "",
   studentsData: "",
   lessonsData: "",
+  branchesData: "",
   url: {
     teachers: "/api/v1/teachers",
     teachersLength: "/api/v1/length/teachersLength",
     user: { sign_in: "/api/v1/user/sign_in" },
     students: "/api/v1/students",
     lessons: "/api/v1/lessons",
+    branches: "/api/v1/lessons/branches",
   },
   searchOptions: { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" },
   isNavbar: false,

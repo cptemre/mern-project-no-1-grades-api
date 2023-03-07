@@ -58,19 +58,26 @@ const Teacher = () => {
         });
       }
     }
-  }, [state.url, isFetch, component, state.ID, searchParams]);
+    setIsFetch(true);
+  }, [state.url, component, state.ID, searchParams, state.title]);
 
   useEffect(() => {
     if (state.teachersData) {
       setFetchVars({
-        url: state.url.lessons,
-        body: { branches: state.teachersData.branches },
+        url: state.url.branches,
+        body: "",
         action: "get",
+        searchParams: {
+          branches: state.teachersData.branches,
+        },
       });
     }
   }, [state.teachersData]);
 
+  console.log(state.branchesData);
   console.log(state.lessonsData);
+  console.log(state.teachersData);
+
   const clickHandle = (e) => {
     const query = $(e.currentTarget)
       .siblings(".lessonName")
@@ -99,7 +106,7 @@ const Teacher = () => {
     fetchVars.body,
     fetchVars.action,
     fetchVars.searchParams,
-    isFetch
+    state.isFetch
   );
   return (
     <>
@@ -108,11 +115,11 @@ const Teacher = () => {
         onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
       >
         <article id="lessonContainer">
-          {state.teachersData.branches &&
-            state.selectedSemester &&
-            state.teachersData.branches.map((branch) => {
+          {state.branchesData &&
+            searchParams.get("semester") &&
+            state.branchesData.map((branch) => {
               const { lesson, semester } = branch;
-              if (semester == state.selectedSemester) {
+              if (semester == searchParams.get("semester")) {
                 return (
                   <article className="lessons" key={lesson + semester}>
                     <div className="lessonDiv">
