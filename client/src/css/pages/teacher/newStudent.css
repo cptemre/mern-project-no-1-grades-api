@@ -1,3 +1,22 @@
+#newStudentArticle {
+  margin-bottom: 2rem;
+}
+
+#newStudentDiv,
+#recommendStudentName {
+  position: relative;
+}
+
+#recommendNo {
+  position: absolute;
+  top: 2rem;
+}
+
+.recommendNo {
+  background-color: white;
+  cursor: pointer;
+}
+
 #newStudentNo,
 #newStudentNo::placeholder {
   display: initial !important;

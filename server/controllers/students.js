@@ -28,7 +28,7 @@ const updateStudent = async (req, res) => {
     { runValidators: true, new: true }
   );
   if (result.modifiedCount) {
-    res.status(200).json({ result, access_token, student: true });
+    res.status(200).json({ result, access_token });
   } else {
     throw new Bad_Request("UPDATE FAILED");
   }
@@ -40,41 +40,46 @@ const getStudent = async (req, res) => {
     user: { ID, access_token },
     params: { _id: studentID },
   } = req;
-  let result = await Students.findOne({ _id: studentID }).select("-password");
-  let lessons = {};
-  if (result && result.lessons !== {}) {
-    for (let i = 0; i < Object.keys(result.lessons).length; i++) {
-      // LESSON NAME
-      const lesson = Object.keys(result.lessons)[i];
-      // CHECK IF THE LESSON IS CREATED BY THE THEACER
-      if (
-        result.lessons[lesson].createdBy &&
-        result.lessons[lesson].createdBy === ID
-      ) {
-        // SET LESSONS KEY TO MATCHED LESSON VALUES
-        lessons[lesson] = result.lessons[lesson];
-      }
-    }
-    result.lessons = lessons;
+  let result = await Students.findOne({
+    _id: studentID,
+  }).select("-password");
+  if (result) {
     res.status(200).json({ result, access_token, student: true });
   } else {
     throw new Bad_Request("STUDENT IS NOT EXIST");
   }
 };
-
+// * FIND ONE STUDENT BY NO ONLY
+const getStudentNo = async (req, res) => {
+  const {
+    user: { access_token },
+    query: { studentNo },
+  } = req;
+  console.log(studentNo);
+  let result = await Students.find({
+    studentNo: { $regex: studentNo },
+  }).select("-password");
+  console.log(result);
+  if (result) {
+    res.status(200).json({ result, access_token, studentNo: true });
+  } else {
+    throw new Bad_Request("STUDENT IS NOT EXIST");
+  }
+};
 // * GET ALL STUDENTS RELATED TO THE TEACHER
 const getAll = async (req, res) => {
   const { access_token } = req.user;
-  let { lessonID } = req.query;
+  let { lessonID, teacherID } = req.query;
   let student = false;
-
   if (lessonID) {
     student = true;
   }
+  console.log(teacherID);
   // FIND RAW RESULT
-  let search = Students.find({ "lessons.lessonID": lessonID }).select(
-    "-password"
-  );
+  let search = Students.find({
+    "lessons.lessonID": lessonID,
+    "lessons.teacherID": teacherID,
+  }).select("-password");
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
   const page = Number(req.query.page) || 1;
   const limit = 9;
@@ -106,6 +111,7 @@ const deleteStudent = async (req, res) => {
 module.exports = {
   getAll,
   getStudent,
+  getStudentNo,
   createStudent,
   updateStudent,
   deleteStudent,

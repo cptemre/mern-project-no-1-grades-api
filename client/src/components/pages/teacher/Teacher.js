@@ -37,6 +37,9 @@ const Teacher = () => {
     action: "",
     searchParams: "",
   });
+  // SELECTED TEACHERID
+  const [selectedTeacherID, setSelectedTeacherID] = useState("");
+
   // QUERY
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -48,6 +51,7 @@ const Teacher = () => {
           body: "",
           action: "get",
         });
+        setSelectedTeacherID(searchParams.get("_id"));
       }
       if (state.title === "teacher") {
         setFetchVars({
@@ -56,6 +60,7 @@ const Teacher = () => {
           action: "get",
           searchParams,
         });
+        setSelectedTeacherID(searchParams.get(state.ID));
       }
     }
     setIsFetch(true);
@@ -114,7 +119,7 @@ const Teacher = () => {
       url: state.url.students,
       body: "",
       action: "get",
-      searchParams: { lessonID },
+      searchParams: { lessonID, teacherID: selectedTeacherID },
     });
     $(".studentsDiv").css("display", "none");
     $(e.currentTarget).parent().siblings(".studentsDiv").css("display", "grid");

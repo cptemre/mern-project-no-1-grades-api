@@ -29,6 +29,9 @@ const reducer = (state, action) => {
   if (action.type === "STUDENTS_DATA") {
     return { ...state, studentsData: action.payload };
   }
+  if (action.type === "STUDENT_NO_DATA") {
+    return { ...state, studentNoData: action.payload };
+  }
   if (action.type === "LESSONS_DATA") {
     return { ...state, lessonsData: action.payload };
   }
@@ -64,6 +67,7 @@ const defaultState = {
   teachersData: "",
   teachersLength: "",
   studentsData: "",
+  studentNoData: "",
   lessonsData: "",
   branchesData: "",
   url: {

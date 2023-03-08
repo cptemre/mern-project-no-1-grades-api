@@ -60,7 +60,6 @@ const StudentGrade = () => {
     const _id = $(target).parent().parent().attr("id");
     const filtered = state.studentsData.filter((student) => student._id == _id);
     const update = filtered[0].lessons.map((a) => {
-      console.log(a);
       if (a.lesson === lesson) {
         a.grade = value;
       }
@@ -87,7 +86,6 @@ const StudentGrade = () => {
     fetchVars.searchParams,
     isFetch
   );
-  console.log(state.studentsData);
   return (
     <section className="studentsDiv">
       {state.title && state.title === "admin" && <NewStudent />}
@@ -102,7 +100,6 @@ const StudentGrade = () => {
         state.studentsData.map((student) => {
           let grade;
           student.lessons.map((lessonObj) => {
-            console.log(student.lessons);
             if (lessonObj.grade) {
               grade = lessonObj.grade;
             }

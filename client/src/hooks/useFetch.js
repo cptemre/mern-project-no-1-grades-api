@@ -81,8 +81,9 @@ const usePost = async (
       dispatch({ type: "ISAUTH", payload: true });
       if (data.teacher) {
         dispatch({ type: "TEACHERS_DATA", payload: data.result || data });
+      } else if (data.studentNo) {
+        dispatch({ type: "STUDENT_NO_DATA", payload: data.result || data });
       } else if (data.student) {
-        console.log("a");
         dispatch({ type: "STUDENTS_DATA", payload: data.result || data });
       } else if (data.teachersLength) {
         dispatch({ type: "TEACHERS_LENGTH", payload: data.result || data });
@@ -98,7 +99,6 @@ const usePost = async (
           payload: data.result || data,
         });
       }
-      console.log(data);
     } catch (error) {
       setMsg(error.response.data.msg);
       dispatch({ type: "ISAUTH", payload: false });

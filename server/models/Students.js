@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const StudentsSchema = new mongoose.Schema(
   {
     studentNo: {
-      type: Number,
+      type: String,
       required: [true, "STUDENT NO IS REQUIRED"],
       minlength: [6, "STUDENT NO IS TOO SHORT"],
       maxlength: [10, "STUDENT NO IS TOO LONG"],
