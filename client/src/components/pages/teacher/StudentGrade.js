@@ -5,6 +5,7 @@ import { Context } from "../../../data/Context";
 import Loading from "../../loading/Loading";
 import NoData from "../../../errors/NoData";
 import NewStudent from "./NewStudent";
+import Pagination from "../../pagination/Pagination";
 // NPMS
 import $ from "jquery";
 import { useSearchParams } from "react-router-dom";
@@ -12,8 +13,15 @@ import { useSearchParams } from "react-router-dom";
 // HOOKS
 import useFetch from "../../../hooks/useFetch";
 
+// FONT AWESOME
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faTrash);
+
 const StudentGrade = () => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   // INPUT VALUE
   const [value, setValue] = useState("");
   const [lesson, setLesson] = useState("");
@@ -78,6 +86,51 @@ const StudentGrade = () => {
     setValue("");
   };
 
+  // DELETE STUDENT FROM TEACHER
+
+  const deleteStudent = (e) => {
+    const studentID = $(e.currentTarget).parent().attr("id");
+    const teacherID =
+      state.title === "admin" ? searchParams.get("_id") : state.ID;
+    const lessonID = $(e.currentTarget)
+      .parent()
+      .parent()
+      .parent()
+      .siblings(".lessonDiv")
+      .attr("id");
+    let theStudent = state.studentsData.filter(
+      (student) => student._id === studentID
+    );
+    theStudent = theStudent[0];
+
+    theStudent.lessons.map((lesson) => {
+      if (
+        lesson.lessonID &&
+        lesson.teacherID &&
+        lesson.lessonID == lessonID &&
+        lesson.teacherID == teacherID
+      ) {
+        lesson.lessonID = "";
+        lesson.teacherID = "";
+        lesson.grade = "";
+      }
+    });
+    for (let i = 0; i < theStudent.lessons.length; i++) {
+      if (!theStudent.lessons[i].lessonID && !theStudent.lessons[i].teacherID) {
+        theStudent.lessons[i] = "";
+      }
+    }
+    setFetchVars({
+      url: `${state.url.students}/${studentID}`,
+      body: theStudent,
+      action: "patch",
+      searchParams: {
+        _id: studentID,
+      },
+    });
+    dispatch({ type: "IS_FETCH", payload: !state.isFetch });
+  };
+
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -87,7 +140,7 @@ const StudentGrade = () => {
     isFetch
   );
   return (
-    <section className="studentsDiv">
+    <section className="studentsDiv" id="studentsDivSection">
       {state.title && state.title === "admin" && <NewStudent />}
       {state.isLoading ? (
         <Loading />
@@ -108,6 +161,11 @@ const StudentGrade = () => {
             <div key={student.name + student.surname + lesson}>
               {
                 <article className="studentDiv" id={student._id}>
+                  <FontAwesomeIcon
+                    icon="fa-trash"
+                    className="icon downIcon"
+                    onClick={(e) => deleteStudent(e)}
+                  />
                   <div className="studentNo">{student.studentNo}</div>
                   <div className="studentName">
                     {student.name} {student.surname}
@@ -141,6 +199,7 @@ const StudentGrade = () => {
           );
         })
       )}
+      <Pagination />
     </section>
   );
 };

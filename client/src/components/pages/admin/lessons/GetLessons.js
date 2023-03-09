@@ -44,7 +44,6 @@ const GetLessons = () => {
     body: "",
     action: "",
   });
-
   useEffect(() => {
     setIsFetch(state.isFetch);
   }, [state.isFetch]);
@@ -56,7 +55,7 @@ const GetLessons = () => {
       action: "get",
       searchParams: { semester: searchParams.get("semester") },
     });
-  }, [state.url]);
+  }, [state.url, state.isFetch]);
 
   console.log(state.lessonsData);
   // ICON FUNCTIONS

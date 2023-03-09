@@ -48,7 +48,7 @@ const Pagination = () => {
         searchParams,
       });
     }
-  }, [component, searchParams]);
+  }, [component, searchParams, state.isFetch]);
 
   useEffect(() => {
     if (searchParams.get("pageValue")) {

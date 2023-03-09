@@ -15,9 +15,8 @@ const createStudent = async (req, res) => {
 // * CHECK IF THE GRADE ALREADY EXISTS WITH STUDENTID AND LESSON
 // * THEN UPDATE THE WHOLE GRADE BY REQ.BODY
 const updateStudent = async (req, res) => {
-  const { ID, access_token } = req.user;
+  const { access_token } = req.user;
   const { _id } = req.params;
-  console.log(req.body);
 
   // * SET CREATED BY TO LESSON
   // ! ONLY CHANGE THE ONE SENT FROM THE CLIENT NOT ALL
@@ -55,11 +54,9 @@ const getStudentNo = async (req, res) => {
     user: { access_token },
     query: { studentNo },
   } = req;
-  console.log(studentNo);
   let result = await Students.find({
     studentNo: { $regex: studentNo },
   }).select("-password");
-  console.log(result);
   if (result) {
     res.status(200).json({ result, access_token, studentNo: true });
   } else {
@@ -74,7 +71,6 @@ const getAll = async (req, res) => {
   if (lessonID) {
     student = true;
   }
-  console.log(teacherID);
   // FIND RAW RESULT
   let search = Students.find({
     "lessons.lessonID": lessonID,
@@ -99,7 +95,6 @@ const deleteStudent = async (req, res) => {
   const { _id } = req.params;
   if (email === "admin@ga.pl") {
     const student = await Students.deleteOne({ _id });
-    console.log(student);
     if (student.deletedCount) {
       res.status(200).json({ msg: "STUDENT IS DELETED", access_token });
     } else {

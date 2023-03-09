@@ -97,7 +97,7 @@ const NewStudent = () => {
         },
       });
     }
-  }, [selectedLessonID, selectedTeacherID]);
+  }, [selectedLessonID, selectedTeacherID, state.isFetch]);
 
   useFetch(
     fetchVars.url,
@@ -109,6 +109,7 @@ const NewStudent = () => {
 
   return (
     <article className="studentDiv" id="newStudentArticle">
+      <div></div>
       <div className="studentNo" id="newStudentDiv">
         <input
           className="tdInput"
