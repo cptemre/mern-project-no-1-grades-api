@@ -29,6 +29,7 @@ const TableData = () => {
   // TABLE HEADERS FOR TH
   const headers = {
     new: "NEW",
+    studentNo: "STUDENT NO",
     name: "NAME",
     surname: "SURNAME",
     email: "EMAIL",
@@ -68,7 +69,7 @@ const TableData = () => {
   }, [state.url, isFetch, searchParams, component]);
 
   //#region UPDATE
-
+  console.log(state.data);
   // CHANGE DIV TO INPUT
   const clickHandle = (e) => {
     const target = e.currentTarget;
@@ -122,11 +123,13 @@ const TableData = () => {
   // ADD NEW PERSON BUTTON FUNCTION
   const newPerson = (e) => {
     const target = e.target;
+    const studentNo = $(target).siblings(".student-no").children("div").html();
     const name = $(target).siblings(".name").children("div").html();
     const surname = $(target).siblings(".surname").children("div").html();
     setFetchVars({
-      url: state.url.user.sign_in,
-      body: { name, surname },
+      url:
+        component === "teachers" ? state.url.user.sign_in : state.url.students,
+      body: { studentNo, name, surname },
       action: "post",
       searchParams,
     });
@@ -191,7 +194,6 @@ const TableData = () => {
     fetchVars.searchParams,
     isFetch
   );
-  console.log(state.data.length);
   return state.isLoading ? (
     <Loading />
   ) : !state.isLoading && !state.data.length ? (
@@ -232,6 +234,19 @@ const TableData = () => {
           <tr className="row newRow">
             <td className="new" onClick={(e) => newPerson(e)}>
               &#x2713;
+            </td>
+            <td className="student-no">
+              <div className="studentNoDiv" onClick={(e) => clickHandle(e)}>
+                ----
+              </div>
+              <input
+                className="tdInput"
+                type="text"
+                value={value}
+                name="studentNo"
+                onChange={(e) => setValue(e.target.value)}
+                onBlur={(e) => newBlurHandle(e)}
+              />
             </td>
             <td className="name">
               <div className="nameDiv" onClick={(e) => clickHandle(e)}>

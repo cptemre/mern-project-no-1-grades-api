@@ -8,6 +8,7 @@ nav {
   transition: 0.2s;
   background-color: var(--navbarBg);
   border-right: 2px solid black;
+  z-index: 10;
   display: grid;
   grid-template-rows: 2rem 7rem 10rem auto;
   grid-template-areas:

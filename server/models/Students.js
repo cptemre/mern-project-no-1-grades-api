@@ -31,7 +31,7 @@ const StudentsSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "PASSWORD IS REQUIRED"],
+      default: "secretsecret",
       minlength: [7, "PASSWORD IS TOO SHORT"],
       maxlength: [30, "PASSWORD IS TOO LONG"],
     },

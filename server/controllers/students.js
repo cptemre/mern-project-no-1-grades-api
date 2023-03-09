@@ -5,6 +5,7 @@ const { Bad_Request, Unauthorized } = require("../errors");
 const createStudent = async (req, res) => {
   const { access_token, email } = req.user;
   if (email === "admin@ga.pl") {
+    console.log(req.body);
     await Students.create({ ...req.body });
     res.status(200).json({ msg: "STUDENT IS CREATED", access_token });
   } else {
@@ -67,21 +68,23 @@ const getStudentNo = async (req, res) => {
 const getAll = async (req, res) => {
   const { access_token } = req.user;
   let { lessonID, teacherID } = req.query;
+  const query = { lessons: { lessonID: "", teacherID: "" } };
   let student = false;
+
   if (lessonID) {
     student = true;
+    query.lessons.lessonID = lessonID;
+  }
+  if (teacherID) {
+    query.lessons.teacherID = teacherID;
   }
   // FIND RAW RESULT
-  let search = Students.find({
-    "lessons.lessonID": lessonID,
-    "lessons.teacherID": teacherID,
-  }).select("-password");
+  let search = Students.find({ query }).select("-password");
   // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
   const page = Number(req.query.page) || 1;
   const limit = 9;
   const skip = (page - 1) * limit;
   result = await search.skip(skip).sort({ createdAt: 1 });
-  console.log(result);
 
   res.status(200).json({ result, access_token, student });
 };

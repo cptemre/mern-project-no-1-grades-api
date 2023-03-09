@@ -199,7 +199,6 @@ const StudentGrade = () => {
           );
         })
       )}
-      <Pagination />
     </section>
   );
 };
