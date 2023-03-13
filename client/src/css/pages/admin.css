@@ -20,7 +20,11 @@ tr {
 
 th,
 td {
-  border: 2px solid transparent;
+  border: 2px solid black;
+}
+
+.studentNo {
+  border: 2px solid black !important;
 }
 
 th {
@@ -39,7 +43,7 @@ td:nth-child(2n) {
 
 th:nth-child(2n):hover,
 td:nth-child(2n):hover {
-  border: 2px solid white;
+  border: 2px solid white !important;
 }
 
 th:nth-child(2n-1) {

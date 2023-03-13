@@ -29,7 +29,7 @@ const TableData = () => {
   // TABLE HEADERS FOR TH
   const headers = {
     new: "NEW",
-    studentNo: "STUDENT NO",
+    studentNo: "NUMBER",
     name: "NAME",
     surname: "SURNAME",
     email: "EMAIL",
@@ -37,7 +37,7 @@ const TableData = () => {
     date: "DATE",
     delete: "DELETE",
   };
-
+  console.log(state.data);
   // USESEARCHPARAMS
   const [searchParams, setSearchParams] = useSearchParams();
   // NAVIGATE
@@ -69,7 +69,7 @@ const TableData = () => {
   }, [state.url, isFetch, searchParams, component]);
 
   //#region UPDATE
-  console.log(state.data);
+
   // CHANGE DIV TO INPUT
   const clickHandle = (e) => {
     const target = e.currentTarget;
@@ -221,12 +221,24 @@ const TableData = () => {
                     {headers[key]}
                   </th>
                 );
-              } else {
+              } else if (key === "studentNo" && component === "students") {
                 return (
-                  <th key={key} className={key} onClick={(e) => sortHeader(e)}>
+                  <th key={key} className={key}>
                     {headers[key]}
                   </th>
                 );
+              } else {
+                if (key !== "studentNo") {
+                  return (
+                    <th
+                      key={key}
+                      className={key}
+                      onClick={(e) => sortHeader(e)}
+                    >
+                      {headers[key]}
+                    </th>
+                  );
+                }
               }
             })}
         </tr>
@@ -312,29 +324,50 @@ const TableData = () => {
                         <div className="deleteDiv">&#x2716;</div>
                       </td>
                     );
-                  } else {
+                  } else if (key === "studentNo" && component === "students") {
                     return (
                       <td key={_id + key} className={key}>
                         <div
                           className={key + "Div"}
                           onClick={(e) => clickHandle(e)}
                         >
-                          {key === "password"
-                            ? "----"
-                            : key === "date"
-                            ? dateVal
-                            : result[key]}
+                          {result[key]}
                         </div>
                         <input
                           className="tdInput"
                           type="text"
                           value={value}
-                          name={key === "date" ? "createdAt" : key}
+                          name={key}
                           onBlur={(e) => blurHandle(e)}
                           onChange={(e) => setValue(e.target.value)}
                         />
                       </td>
                     );
+                  } else {
+                    if (key !== "studentNo") {
+                      return (
+                        <td key={_id + key} className={key}>
+                          <div
+                            className={key + "Div"}
+                            onClick={(e) => clickHandle(e)}
+                          >
+                            {key === "password"
+                              ? "----"
+                              : key === "date"
+                              ? dateVal
+                              : result[key]}
+                          </div>
+                          <input
+                            className="tdInput"
+                            type="text"
+                            value={value}
+                            name={key === "date" ? "createdAt" : key}
+                            onBlur={(e) => blurHandle(e)}
+                            onChange={(e) => setValue(e.target.value)}
+                          />
+                        </td>
+                      );
+                    }
                   }
                 })}
               </tr>

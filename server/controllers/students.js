@@ -5,7 +5,6 @@ const { Bad_Request, Unauthorized } = require("../errors");
 const createStudent = async (req, res) => {
   const { access_token, email } = req.user;
   if (email === "admin@ga.pl") {
-    console.log(req.body);
     await Students.create({ ...req.body });
     res.status(200).json({ msg: "STUDENT IS CREATED", access_token });
   } else {
@@ -68,24 +67,73 @@ const getStudentNo = async (req, res) => {
 const getAll = async (req, res) => {
   const { access_token } = req.user;
   let { lessonID, teacherID } = req.query;
-  const query = { lessons: { lessonID: "", teacherID: "" } };
+  const { name, surname, email, branches, createdAt, sortValue, pageValue } =
+    req.query;
+  const queryLesson = { lessons: { lessonID: "", teacherID: "" } };
+  const query = {};
   let student = false;
+  if (name) {
+    query.name = name;
+  }
+  if (surname) {
+    query.surname = surname;
+  }
+  if (email) {
+    query.email = email;
+  }
+  if (branches) {
+    query.branches = branches;
+  }
+  if (createdAt) {
+    // CREATE 24H DATE SPACE TO FIND
+    let splitDate = createdAt.split("-");
+
+    if (splitDate.length === 2) {
+      splitDate = splitDate[2] + "," + splitDate[1] + "," + splitDate[0];
+    }
+    const dateStart = new Date(
+      Number(splitDate[2]),
+      Number(splitDate[1]) - 1,
+      Number(splitDate[0])
+    );
+    const dateEnd = new Date(
+      Number(splitDate[2]),
+      Number(splitDate[1]) - 1,
+      Number(splitDate[0]) + 1
+    );
+    query.createdAt = { $gte: dateStart, $lte: dateEnd };
+  }
 
   if (lessonID) {
     student = true;
-    query.lessons.lessonID = lessonID;
+    queryLesson.lessons.lessonID = lessonID;
   }
   if (teacherID) {
-    query.lessons.teacherID = teacherID;
+    queryLesson.lessons.teacherID = teacherID;
   }
   // FIND RAW RESULT
-  let search = Students.find({ query }).select("-password");
-  // SET SKIP METHOD TO SEE STUDENTS ON PAGE AS 9
-  const page = Number(req.query.page) || 1;
-  const limit = 9;
-  const skip = (page - 1) * limit;
-  result = await search.skip(skip).sort({ createdAt: 1 });
+  let search = Students.find(query || queryLesson).select("-password");
+  let sortSplit;
+  if (sortValue) {
+    sortSplit = sortValue.split("_");
+  }
+  if (sortSplit && sortSplit[0] === "number") {
+    sortSplit[0] = "studentNo";
+  }
+  if (sortSplit && sortSplit[0] === "date") sortSplit[0] = "createdAt";
 
+  if (sortSplit) {
+    sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
+  }
+  const sort = sortSplit || { createdAt: 1 };
+  const page = pageValue || 1;
+  let limit;
+  if (page) {
+    limit = 10;
+  }
+  const skip = (page - 1) * 10;
+
+  const result = await search.sort(sort).skip(skip).limit(skip);
   res.status(200).json({ result, access_token, student });
 };
 

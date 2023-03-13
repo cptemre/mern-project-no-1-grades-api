@@ -40,17 +40,9 @@ const deleteTeacher = async (req, res) => {
 };
 
 const getAllTeachers = async (req, res) => {
-  const { email } = req.user;
   // IF THERE IS A QUERY ADD IT TO QUERY OBJECT TO FIND
-  const {
-    name,
-    surname,
-    teacherEmail,
-    branches,
-    createdAt,
-    sortValue,
-    pageValue,
-  } = req.query;
+  const { name, surname, email, branches, createdAt, sortValue, pageValue } =
+    req.query;
   const query = {};
   if (name) {
     query.name = name;
@@ -58,8 +50,8 @@ const getAllTeachers = async (req, res) => {
   if (surname) {
     query.surname = surname;
   }
-  if (teacherEmail) {
-    query.teacherEmail = teacherEmail;
+  if (email) {
+    query.email = email;
   }
   if (branches) {
     query.branches = branches;
@@ -84,30 +76,26 @@ const getAllTeachers = async (req, res) => {
     query.createdAt = { $gte: dateStart, $lte: dateEnd };
   }
 
-  if (email === "admin@ga.pl") {
-    const accounts = Teachers.find(query).select("-password");
+  const accounts = Teachers.find(query).select("-password");
 
-    let sortSplit;
-    if (sortValue) {
-      sortSplit = sortValue.split("_");
-    }
-    if (sortSplit && sortSplit[0] === "date") sortSplit[0] = "createdAt";
-
-    if (sortSplit) {
-      sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
-    }
-    const sort = sortSplit || { createdAt: 1 };
-    const page = pageValue || 1;
-    let limit;
-    if (page) {
-      limit = 10;
-    }
-    const skip = (page - 1) * 10;
-    const result = await accounts.sort(sort).skip(skip).limit(skip);
-    res.status(200).json(result);
-  } else {
-    throw new Unauthorized("AUTHORIZATION DENIED");
+  let sortSplit;
+  if (sortValue) {
+    sortSplit = sortValue.split("_");
   }
+  if (sortSplit && sortSplit[0] === "date") sortSplit[0] = "createdAt";
+
+  if (sortSplit) {
+    sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
+  }
+  const sort = sortSplit || { createdAt: 1 };
+  const page = pageValue || 1;
+  let limit;
+  if (page) {
+    limit = 10;
+  }
+  const skip = (page - 1) * 10;
+  const result = await accounts.sort(sort).skip(skip).limit(skip);
+  res.status(200).json(result);
 };
 
 const getSingleTeacher = async (req, res) => {
