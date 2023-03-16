@@ -36,7 +36,7 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/students", auth, studentsRoute);
 app.use("/api/v1/teachers", auth, teacherAuth, teachersRoute);
 app.use("/api/v1/length", auth, teacherAuth, lengthRoute);
-app.use("/api/v1/lessons", auth, teacherAuth, lessonsRoute);
+app.use("/api/v1/lessons", auth, lessonsRoute);
 
 // ERRORS
 app.use(error_handler);

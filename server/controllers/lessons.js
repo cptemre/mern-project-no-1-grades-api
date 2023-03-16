@@ -25,6 +25,7 @@ const getLessons = async (req, res) => {
 const getBranches = async (req, res) => {
   const { access_token } = req.user;
   const { branches } = req.query;
+  console.log(branches);
   const result = await Lessons.find({ _id: { $in: branches } });
   res.status(200).json({ result, access_token, branch: true });
 };

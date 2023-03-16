@@ -1,4 +1,12 @@
-#studentLessonsContainer {
-  background-color: var(--optionBg);
-  border-radius: 1rem;
+.studentLessons {
+  align-items: flex-start;
+  grid-row-gap: 2rem;
+}
+
+.studentLessons > .studentDiv {
+  grid-template-columns: 1fr 3rem;
+}
+
+#studentsDivSection {
+  display: grid !important;
 }
