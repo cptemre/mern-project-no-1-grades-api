@@ -55,9 +55,8 @@ const GetLessons = () => {
       action: "get",
       searchParams: { semester: searchParams.get("semester") },
     });
-  }, [state.url, state.isFetch]);
+  }, [state.url, state.isFetch, searchParams]);
 
-  console.log(state.lessonsData);
   // ICON FUNCTIONS
   const getLessonMouseEnter = (e) => {
     if (state.title === "admin") {

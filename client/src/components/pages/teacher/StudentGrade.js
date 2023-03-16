@@ -20,7 +20,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faTrash);
 
-const StudentGrade = () => {
+const StudentGrade = (props) => {
   const { state, dispatch } = useContext(Context);
   // INPUT VALUE
   const [value, setValue] = useState("");
@@ -68,19 +68,19 @@ const StudentGrade = () => {
     const _id = $(target).parent().parent().attr("id");
     const filtered = state.studentsData.filter((student) => student._id == _id);
     const update = filtered[0].lessons.map((a) => {
-      if (a.lesson === lesson) {
+      if (a.lessonID === props.props) {
         a.grade = value;
       }
       return a;
     });
+    filtered[0].lessons = update;
     setFetchVars({
       url: `${state.url.students}/${_id}`,
-      body: { update, _id },
+      body: filtered[0],
       action: "patch",
       searchParams: "",
     });
     setIsFetch(!isFetch);
-
     $(target).siblings("div").css("display", "grid");
     $(target).css("display", "none");
     setValue("");
@@ -158,44 +158,52 @@ const StudentGrade = () => {
             }
           });
           return (
-            <div key={student.name + student.surname + lesson}>
-              {
-                <article className="studentDiv" id={student._id}>
-                  <FontAwesomeIcon
-                    icon="fa-trash"
-                    className="icon downIcon"
-                    onClick={(e) => deleteStudent(e)}
-                  />
-                  <div className="studentNo">{student.studentNo}</div>
-                  <div className="studentName">
-                    {student.name} {student.surname}
+            student.lessons.length &&
+            student.lessons.map((singleLesson) => {
+              if (singleLesson.lessonID === props.props) {
+                console.log("yes");
+                return (
+                  <div key={student.name + student.surname + lesson}>
+                    {
+                      <article className="studentDiv" id={student._id}>
+                        <FontAwesomeIcon
+                          icon="fa-trash"
+                          className="icon downIcon"
+                          onClick={(e) => deleteStudent(e)}
+                        />
+                        <div className="studentNo">{student.studentNo}</div>
+                        <div className="studentName">
+                          {student.name} {student.surname}
+                        </div>
+                        <div className="studentGrade">
+                          <div
+                            className="gradeDiv"
+                            onClick={(e) => clickHandle(e)}
+                            style={{
+                              backgroundColor: !grade
+                                ? "var(--inputBorder)"
+                                : grade > 2
+                                ? "green"
+                                : "red",
+                            }}
+                          >
+                            {grade !== undefined ? grade : "----"}
+                          </div>
+                          <input
+                            className="tdInput"
+                            type="number"
+                            value={value}
+                            name="grade"
+                            onChange={(e) => setValue(e.target.value)}
+                            onBlur={(e) => blurHandle(e)}
+                          />
+                        </div>
+                      </article>
+                    }
                   </div>
-                  <div className="studentGrade">
-                    <div
-                      className="gradeDiv"
-                      onClick={(e) => clickHandle(e)}
-                      style={{
-                        backgroundColor: !grade
-                          ? "var(--inputBorder)"
-                          : grade > 2
-                          ? "green"
-                          : "red",
-                      }}
-                    >
-                      {grade !== undefined ? grade : "----"}
-                    </div>
-                    <input
-                      className="tdInput"
-                      type="number"
-                      value={value}
-                      name="grade"
-                      onChange={(e) => setValue(e.target.value)}
-                      onBlur={(e) => blurHandle(e)}
-                    />
-                  </div>
-                </article>
+                );
               }
-            </div>
+            })
           );
         })
       )}

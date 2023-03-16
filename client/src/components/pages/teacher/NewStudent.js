@@ -68,6 +68,7 @@ const NewStudent = () => {
       state.title === "admin" ? searchParams.get("_id") : state.ID;
     setSelectedTeacherID(teacherID);
     let filtered = recommendStudents.filter((student) => student._id === _id);
+    console.log(recommendStudents);
     filtered[0].lessons = [
       ...filtered[0].lessons,
       {
@@ -88,7 +89,7 @@ const NewStudent = () => {
     if ((selectedLessonID, selectedTeacherID)) {
       // GET STUDENTS
       setFetchVars({
-        url: state.url.students,
+        url: state.url.students + "/getByID",
         body: "",
         action: "get",
         searchParams: {

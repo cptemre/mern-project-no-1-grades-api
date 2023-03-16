@@ -45,6 +45,8 @@ import "./css/pages/teacher/studentgrade.css";
 import "./css/pages/teacher/newLesson.css";
 import "./css/pages/teacher/addLesson.css";
 import "./css/pages/teacher/newStudent.css";
+// STUDENT
+import "./css/pages/student/lessons.css";
 // PAGINATION
 import "./css/pagination/pagination.css";
 const App = () => {

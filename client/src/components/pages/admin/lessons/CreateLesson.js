@@ -35,7 +35,15 @@ const CreateLesson = () => {
     action: "",
     searchParams: "",
   });
-
+  // GET LESSONS
+  useEffect(() => {
+    setFetchVars({
+      url: state.url.lessons,
+      body: "",
+      action: "get",
+      searchParams: { semester: searchParams.get("semester") },
+    });
+  }, [state.url, state.isFetch, searchParams]);
   const iconClickHandle = () => {
     setFetchVars({
       url: state.url.lessons,

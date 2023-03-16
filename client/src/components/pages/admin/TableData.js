@@ -26,6 +26,8 @@ const TableData = () => {
   const component = useComponent();
   // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
+  // SHOULD I FETCH?
+  const [isNew, setIsNew] = useState(false);
   // TABLE HEADERS FOR TH
   const headers = {
     new: "NEW",
@@ -122,7 +124,7 @@ const TableData = () => {
   };
   // ADD NEW PERSON BUTTON FUNCTION
   const newPerson = (e) => {
-    const target = e.target;
+    const target = e.currentTarget;
     const studentNo = $(target).siblings(".student-no").children("div").html();
     const name = $(target).siblings(".name").children("div").html();
     const surname = $(target).siblings(".surname").children("div").html();
@@ -133,7 +135,7 @@ const TableData = () => {
       action: "post",
       searchParams,
     });
-    setIsFetch(!isFetch);
+    setIsNew(true);
     setNewTd(false);
   };
   //#endregion ADD NEW PERSON
@@ -141,7 +143,7 @@ const TableData = () => {
   //#region DELETE PERSON
 
   const deleteHandle = (e) => {
-    const target = e.target;
+    const target = e.currentTarget;
     const _id = $(target).parent().attr("id");
     setFetchVars({
       url: `${state.url[component]}/${_id}`,

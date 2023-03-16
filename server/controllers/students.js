@@ -18,13 +18,15 @@ const updateStudent = async (req, res) => {
   const { access_token } = req.user;
   const { _id } = req.params;
 
-  // * SET CREATED BY TO LESSON
-  // ! ONLY CHANGE THE ONE SENT FROM THE CLIENT NOT ALL
+  console.log(req.body);
 
   const result = await Students.updateOne(
     { _id },
     { ...req.body },
-    { runValidators: true, new: true }
+    {
+      runValidators: true,
+      new: true,
+    }
   );
   if (result.modifiedCount) {
     res.status(200).json({ result, access_token });
@@ -63,7 +65,31 @@ const getStudentNo = async (req, res) => {
     throw new Bad_Request("STUDENT IS NOT EXIST");
   }
 };
-// * GET ALL STUDENTS RELATED TO THE TEACHER
+// * GET STUDENTS BY TEACHER AND LESSON
+const getByID = async (req, res) => {
+  const { access_token } = req.user;
+  let { lessonID, teacherID } = req.query;
+  console.log(lessonID, teacherID);
+  const query = { lessons: { lessonID: "", teacherID: "" } };
+  let student = false;
+
+  if (lessonID) {
+    student = true;
+    query.lessons.lessonID = lessonID;
+  }
+  if (teacherID) {
+    query.lessons.teacherID = teacherID;
+  }
+  // FIND RAW RESULT
+  let search = Students.find({ query }).select("-password");
+  const sort = { createdAt: 1 };
+
+  const result = await search.sort(sort);
+  console.log(result);
+  res.status(200).json({ result, access_token, student });
+};
+
+// * GET ALL STUDENTS RELATED TO SEARCH PARAMS
 const getAll = async (req, res) => {
   const { access_token } = req.user;
   let { lessonID, teacherID } = req.query;
@@ -112,7 +138,8 @@ const getAll = async (req, res) => {
     queryLesson.lessons.teacherID = teacherID;
   }
   // FIND RAW RESULT
-  let search = Students.find(query || queryLesson).select("-password");
+  console.log(query);
+  let search = Students.find(query).select("-password");
   let sortSplit;
   if (sortValue) {
     sortSplit = sortValue.split("_");
@@ -126,14 +153,8 @@ const getAll = async (req, res) => {
     sortSplit = { [sortSplit[0]]: Number(sortSplit[1]) };
   }
   const sort = sortSplit || { createdAt: 1 };
-  const page = pageValue || 1;
-  let limit;
-  if (page) {
-    limit = 10;
-  }
-  const skip = (page - 1) * 10;
 
-  const result = await search.sort(sort).skip(skip).limit(skip);
+  const result = await search.sort(sort);
   res.status(200).json({ result, access_token, student });
 };
 
@@ -158,6 +179,7 @@ module.exports = {
   getAll,
   getStudent,
   getStudentNo,
+  getByID,
   createStudent,
   updateStudent,
   deleteStudent,

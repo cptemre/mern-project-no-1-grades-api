@@ -7,14 +7,18 @@
   transform: translateY(-2rem);
   background-color: rgb(58, 82, 112);
   color: white;
-
 }
 
 #userInfo > article {
   justify-items: flex-start;
-  font-size: 1.1rem;
 }
 
-#userTitle,#userName, #userSurname {
-    font-weight: bold;
+#userName,
+#userSurname {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+#userEmail {
+  font-size: 0.6rem !important;
 }

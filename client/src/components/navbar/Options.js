@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Options = () => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   // PARAM
   const { component } = useParams();
   // NAVIGATE
@@ -22,9 +22,9 @@ const Options = () => {
 
   // OPTION FUNCTIONS
   const mouseenterHandle = (e) => {
-    const html = $(e.target).html().toLowerCase();
+    const html = $(e.currentTarget).html().toLowerCase();
     if (component !== html) {
-      $(e.target).css({
+      $(e.currentTarget).css({
         backgroundColor: "var(--inputBorder)",
         color: "white",
         transform: "translateX(-3px)",
@@ -32,16 +32,20 @@ const Options = () => {
     }
   };
   const mouseleaveHandle = (e) => {
-    const html = $(e.target).html().toLowerCase();
+    const html = $(e.currentTarget).html().toLowerCase();
     if (component !== html) {
-      $(e.target).css({
+      $(e.currentTarget).css({
         backgroundColor: "var(--optionBg)",
         color: "black",
         transform: "translateX(-10px)",
       });
     }
   };
-
+  const clickHandle = (option) => {
+    let tempParams = { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" };
+    dispatch({ type: "SEARCH_OPTIONS", payload: tempParams });
+    navigate(`/${option.toLowerCase()}`);
+  };
   // ACCORDING TO STATE TITLE RETURN OPTIONS FROM OPTIONS VARIABLE WITH KEY
   return (
     <section id="options">
@@ -51,7 +55,7 @@ const Options = () => {
             id={option.toLowerCase() + "Option"}
             className="option"
             key={option + i}
-            onClick={() => navigate(`/${option.toLowerCase()}`)}
+            onClick={() => clickHandle(option)}
             onMouseEnter={(e) => mouseenterHandle(e)}
             onMouseLeave={(e) => mouseleaveHandle(e)}
           >

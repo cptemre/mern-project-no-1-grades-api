@@ -30,6 +30,8 @@ const Teacher = () => {
   const component = useComponent();
   // SHOULD I FETCH?
   const [isFetch, setIsFetch] = useState(true);
+  // LESSON ID
+  const [lessonsID, setLessonsID] = useState("");
   // FETCH VARS
   const [fetchVars, setFetchVars] = useState({
     url: "",
@@ -105,6 +107,7 @@ const Teacher = () => {
 
   const clickHandle = (e) => {
     const lessonID = $(e.currentTarget).parent(".lessonDiv").attr("id");
+    setLessonsID(lessonID);
     const query = $(e.currentTarget)
       .siblings(".lessonName")
       .html()
@@ -116,7 +119,7 @@ const Teacher = () => {
     });
     // GET STUDENTS
     setFetchVars({
-      url: state.url.students,
+      url: state.url.students + "/getByID",
       body: "",
       action: "get",
       searchParams: { lessonID, teacherID: selectedTeacherID },
@@ -181,7 +184,7 @@ const Teacher = () => {
                         />
                       </div>
                     </div>
-                    <StudentGrade />
+                    <StudentGrade props={lessonsID} />
                   </article>
                 );
               }
