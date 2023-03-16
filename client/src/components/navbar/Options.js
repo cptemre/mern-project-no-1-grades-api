@@ -16,8 +16,8 @@ const Options = () => {
   const navigate = useNavigate();
   const [options, setOptions] = useState({
     admin: ["TEACHERS", "STUDENTS", "LESSONS"],
-    teacher: ["LESSONS", "ACCOUNT"],
-    student: ["GRADES", "ACCOUNT"],
+    teacher: ["LESSONS"],
+    student: ["GRADES"],
   });
 
   // OPTION FUNCTIONS
@@ -33,7 +33,11 @@ const Options = () => {
   };
   const mouseleaveHandle = (e) => {
     const html = $(e.currentTarget).html().toLowerCase();
-    if (component !== html) {
+    if (
+      component !== html &&
+      component !== "student" &&
+      component !== "teacher"
+    ) {
       $(e.currentTarget).css({
         backgroundColor: "var(--optionBg)",
         color: "black",
@@ -41,7 +45,17 @@ const Options = () => {
       });
     }
   };
-  const clickHandle = (option) => {
+  const clickHandle = (option, e) => {
+    $(".option").css({
+      backgroundColor: "var(--optionBg)",
+      color: "black",
+      transform: "translateX(-10px)",
+    });
+    $(e.currentTarget).css({
+      backgroundColor: "var(--inputBorder)",
+      color: "white",
+      transform: "translateX(-3px)",
+    });
     let tempParams = { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" };
     dispatch({ type: "SEARCH_OPTIONS", payload: tempParams });
     navigate(`/${option.toLowerCase()}`);
@@ -55,7 +69,7 @@ const Options = () => {
             id={option.toLowerCase() + "Option"}
             className="option"
             key={option + i}
-            onClick={() => clickHandle(option)}
+            onClick={(e) => clickHandle(option, e)}
             onMouseEnter={(e) => mouseenterHandle(e)}
             onMouseLeave={(e) => mouseleaveHandle(e)}
           >

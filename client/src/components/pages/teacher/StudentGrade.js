@@ -63,7 +63,7 @@ const StudentGrade = (props) => {
   };
   // CHANGE INPUT TO DIV
   const blurHandle = (e) => {
-    const target = e.target;
+    const target = e.currentTarget;
     const value = e.target.value;
     const _id = $(target).parent().parent().attr("id");
     const filtered = state.studentsData.filter((student) => student._id == _id);
@@ -166,11 +166,22 @@ const StudentGrade = (props) => {
                   <div key={student.name + student.surname + lesson}>
                     {
                       <article className="studentDiv" id={student._id}>
-                        <FontAwesomeIcon
-                          icon="fa-trash"
-                          className="icon downIcon"
+                        <div
+                          className="slideDown"
+                          onMouseEnter={(e) =>
+                            $(e.currentTarget).children().css("color", "red")
+                          }
+                          onMouseLeave={(e) =>
+                            $(e.currentTarget).children().css("color", "black")
+                          }
                           onClick={(e) => deleteStudent(e)}
-                        />
+                        >
+                          <FontAwesomeIcon
+                            icon="fa-trash"
+                            className="icon downIcon"
+                          />
+                        </div>
+
                         <div className="studentNo">{student.studentNo}</div>
                         <div className="studentName">
                           {student.name} {student.surname}

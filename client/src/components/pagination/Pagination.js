@@ -59,8 +59,7 @@ const Pagination = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    // setLastPage(state[`${component}Length`] / 10 + 1);
-    setLastPage(10);
+    setLastPage(state[`${component}Length`] / 10 + 1);
   }, [state[`${component}Length`]]);
 
   // ARROWS FUNCTIONS TO SET SEARCH PARAMS

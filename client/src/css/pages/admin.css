@@ -68,6 +68,7 @@ td {
   width: 100%;
   background-color: transparent;
   display: none;
+  text-transform: uppercase;
 }
 
 .new {
@@ -90,4 +91,8 @@ td {
 
 .icon {
   cursor: pointer;
+}
+
+.tdInputPswrd {
+  text-transform: none !important;
 }

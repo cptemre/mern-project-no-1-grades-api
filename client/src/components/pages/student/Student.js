@@ -35,10 +35,12 @@ const Student = () => {
   }, [state.url, component, state.ID]);
   // AXIOS CALL
   useFetch(fetchVars.url, fetchVars.body, fetchVars.action);
-  console.log(state.studentsData);
+
   return (
     <>
-      {component !== "grades" && component !== "account" ? (
+      {component !== "grades" &&
+      component !== "account" &&
+      component !== "student" ? (
         <WrongPage />
       ) : (
         <section id="teacherSection">

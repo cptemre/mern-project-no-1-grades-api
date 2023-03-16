@@ -96,8 +96,8 @@ const GetLessons = () => {
   };
   // CHANGE INPUT TO DIV
   const blurHandle = (e) => {
-    const target = e.target;
-    const name = e.target.name;
+    const target = e.currentTarget;
+    const name = e.currentTarget.name;
     const _id = $(target).parent().parent().parent().attr("id");
     setFetchVars({
       url: `${state.url.lessons}/${_id}`,
@@ -133,18 +133,7 @@ const GetLessons = () => {
           if (semester == searchParams.get("semester")) {
             return (
               <article className="lessons" key={_id} id={_id}>
-                <div className="lessonDiv">
-                  <div
-                    className="slideDown"
-                    onMouseEnter={(e) => getLessonMouseEnter(e)}
-                    onMouseLeave={(e) => getLessonMouseLesson(e)}
-                    onClick={(e) => clickHandle(e)}
-                  >
-                    <FontAwesomeIcon
-                      icon="fa-trash"
-                      className="icon downIcon"
-                    />
-                  </div>
+                <div className="lessonDiv getLessonsDiv">
                   <div className="lessonName">
                     <div className="nameDiv" onClick={(e) => updateLesson(e)}>
                       {lesson}

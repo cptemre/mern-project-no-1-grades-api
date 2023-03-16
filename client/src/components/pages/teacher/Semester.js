@@ -3,6 +3,9 @@ import React, { useEffect, useState, useContext } from "react";
 // COMPONENTS
 import { Context } from "../../../data/Context";
 
+// HOOKS
+import useComponent from "../../../hooks/useComponent";
+
 // NPMS
 import $ from "jquery";
 import { useSearchParams } from "react-router-dom";
@@ -17,6 +20,8 @@ library.add(faChevronDown);
 const Semester = () => {
   // STATE
   const { state, dispatch } = useContext(Context);
+  // COMPONENT
+  const component = useComponent();
   // SEMESTERS
   const [semesters, setSemesters] = useState([2, 3, 4, 5, 6, 7, 8]);
   // QUERY
@@ -92,39 +97,52 @@ const Semester = () => {
     setSemesters(filtered.sort());
     dispatch({ type: "SELECTED_SEMESTER", payload: value });
   };
+  const clickHandle = () => {
+    dispatch({ type: "IS_SEMESTER", payload: false });
+    dispatch({ type: "IS_NAVBAR", payload: false });
+  };
   return (
-    <div id="semesterDiv">
-      <div
-        id="semester"
-        onMouseEnter={(e) => semesterEnter(e)}
-        onMouseLeave={(e) => semesterLeave(e)}
-        onClick={() =>
-          dispatch({ type: "IS_SEMESTER", payload: !state.isSemester })
-        }
-      >
-        <span className="semesterSpan">SEMESTER</span>
-        <span className="semesterNumber" id="selectedSemester">
-          {searchParams && searchParams.get("semester")}
-        </span>
-        <FontAwesomeIcon
-          icon="fa-chevron-down"
-          id="semesterIcon"
-          className="icon downIcon"
-        />
+    <div className="semesterContainer">
+      <div className="semesterInfoDiv" onClick={() => clickHandle()}>
+        {state.title === "admin" && component === "teacher"
+          ? state.teachersData.name
+          : component === "student"
+          ? state.studentsData.name
+          : ""}
       </div>
-      <div id="hiddenSemesters">
-        {semesters.map((semester) => (
-          <div
-            className="hiddenSemesters"
-            key={`semester${semester}`}
-            onMouseEnter={(e) => semesterEnter(e)}
-            onMouseLeave={(e) => semesterLeave(e)}
-            onClick={(e) => hiddenHandle(e)}
-          >
-            <span className="semesterSpan">SEMESTER</span>
-            <span className="semesterNumber">{semester}</span>
-          </div>
-        ))}
+      <div id="semesterDiv">
+        <div
+          id="semester"
+          onMouseEnter={(e) => semesterEnter(e)}
+          onMouseLeave={(e) => semesterLeave(e)}
+          onClick={() =>
+            dispatch({ type: "IS_SEMESTER", payload: !state.isSemester })
+          }
+        >
+          <span className="semesterSpan">SEMESTER</span>
+          <span className="semesterNumber" id="selectedSemester">
+            {searchParams && searchParams.get("semester")}
+          </span>
+          <FontAwesomeIcon
+            icon="fa-chevron-down"
+            id="semesterIcon"
+            className="icon downIcon"
+          />
+        </div>
+        <div id="hiddenSemesters">
+          {semesters.map((semester) => (
+            <div
+              className="hiddenSemesters"
+              key={`semester${semester}`}
+              onMouseEnter={(e) => semesterEnter(e)}
+              onMouseLeave={(e) => semesterLeave(e)}
+              onClick={(e) => hiddenHandle(e)}
+            >
+              <span className="semesterSpan">SEMESTER</span>
+              <span className="semesterNumber">{semester}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

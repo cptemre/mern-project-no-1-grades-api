@@ -7,7 +7,8 @@ import Search from "../../search/Search";
 import Pagination from "../../pagination/Pagination";
 import TableData from "./TableData";
 import Lessons from "./lessons/Lessons";
-import Teacher from "../teacher/Teacher";
+import Student from "../student/Student";
+
 // HOOKS
 import useFetch from "../../../hooks/useFetch";
 import useComponent from "../../../hooks/useComponent";
@@ -34,8 +35,10 @@ const Admin = () => {
         </section>
       ) : component === "lessons" || component === "teacher" ? (
         <Lessons />
+      ) : component === "student" ? (
+        <Student />
       ) : (
-        <WrongPage />
+        <Student />
       )}
     </>
   );

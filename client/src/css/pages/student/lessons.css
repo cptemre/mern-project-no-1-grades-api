@@ -7,6 +7,6 @@
   grid-template-columns: 1fr 3rem;
 }
 
-#studentsDivSection {
+#studentLessonsContainer > #studentsDivSection {
   display: grid !important;
 }

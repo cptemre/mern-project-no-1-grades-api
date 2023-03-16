@@ -1,3 +1,7 @@
+.semesterContainer {
+  grid-template-columns: 1fr 8rem;
+}
+
 #semesterDiv {
   justify-content: flex-end;
   position: relative;

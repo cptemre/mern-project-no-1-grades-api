@@ -61,6 +61,7 @@ const Student = () => {
       setLessonGrade(tempGrade);
     }
   }, [state.studentsData]);
+  console.log(state.studentsData);
 
   // GET BRANCHESDATA INFORMATION
   useEffect(() => {
@@ -112,7 +113,7 @@ const Student = () => {
         ) : state.studentsData && !state.isLoading && !state.studentsData ? (
           <NoData />
         ) : (
-          finalLessons.length &&
+          finalLessons &&
           finalLessons.map((singleLesson) => {
             const { _id, lesson, semester, grade } = singleLesson;
             if (semester == searchParams.get("semester")) {

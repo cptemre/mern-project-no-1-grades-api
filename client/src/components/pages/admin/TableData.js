@@ -179,6 +179,7 @@ const TableData = () => {
       if (person._id == _id) {
         if (person.email.endsWith("@edu.ga.pl")) {
           dispatch({ type: "STUDENTS_DATA", payload: person });
+          navigate(`/student?_id=${_id}`);
         }
         if (person.email.endsWith("@ga.pl")) {
           dispatch({ type: "TEACHERS_DATA", payload: person });
@@ -187,7 +188,6 @@ const TableData = () => {
       }
     });
   };
-
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -360,7 +360,11 @@ const TableData = () => {
                               : result[key]}
                           </div>
                           <input
-                            className="tdInput"
+                            className={
+                              key === "password"
+                                ? "tdInputPswrd tdInput"
+                                : "tdInput"
+                            }
                             type="text"
                             value={value}
                             name={key === "date" ? "createdAt" : key}

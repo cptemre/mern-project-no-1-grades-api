@@ -1,5 +1,5 @@
 .addLesson {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr !important;
   position: relative;
 }
 
@@ -11,7 +11,16 @@
 }
 
 .recommendedLessons {
-  background-color: var(--optionBg);
-  height: 2rem;
+  background-color: var(--headerBg);
+  color: white;
+  border: 5px solid transparent;
+  height: 4rem;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.recommendedLessons:hover {
+  background-color: var(--inputBorder);
+  border: 5px solid white;
+  color: white;
 }

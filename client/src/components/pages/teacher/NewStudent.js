@@ -51,7 +51,11 @@ const NewStudent = () => {
 
   // INPUT BLUR HANDLE
   const blurHandle = (e) => {
-    $("#newStudentNo").css("opacity", 0.7);
+    $("#newLessonInput").css("opacity", 0.7);
+    setTimeout(() => {
+      setValue("");
+      setRecommendStudents([]);
+    }, 400);
   };
 
   // CLICK AND ADD STUDENT

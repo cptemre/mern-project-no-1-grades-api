@@ -45,6 +45,7 @@ import "./css/pages/teacher/studentgrade.css";
 import "./css/pages/teacher/newLesson.css";
 import "./css/pages/teacher/addLesson.css";
 import "./css/pages/teacher/newStudent.css";
+import "./css/pages/teacher/getLessonsDiv.css";
 // STUDENT
 import "./css/pages/student/lessons.css";
 // PAGINATION

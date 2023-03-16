@@ -77,6 +77,12 @@ const AddLesson = () => {
     setRecommendedLessons([]);
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
+  const blurHandle = (e) => {
+    $("#newLessonInput").css("opacity", 0.7);
+    setTimeout(() => {
+      setValue("");
+    }, 400);
+  };
   // AXIOS CALL
   useFetch(
     fetchVars.url,
@@ -97,7 +103,7 @@ const AddLesson = () => {
               value={value}
               name="lesson"
               placeholder="ADD A NEW LESSON"
-              onBlur={(e) => $("#newLessonInput").css("opacity", 0.7)}
+              onBlur={(e) => blurHandle(e)}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={(e) => keyDownHandle(e)}
             />

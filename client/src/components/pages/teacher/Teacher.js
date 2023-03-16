@@ -155,10 +155,10 @@ const Teacher = () => {
                       <div
                         className="slideDown"
                         onMouseEnter={(e) =>
-                          $(e.target).children().css("color", "white")
+                          $(e.currentTarget).children().css("color", "red")
                         }
                         onMouseLeave={(e) =>
-                          $(e.target).children().css("color", "black")
+                          $(e.currentTarget).children().css("color", "black")
                         }
                         onClick={() => deleteHandle(_id)}
                       >
@@ -171,10 +171,12 @@ const Teacher = () => {
                       <div
                         className="slideDown"
                         onMouseEnter={(e) =>
-                          $(e.target).children().css("color", "white")
+                          $(e.currentTarget)
+                            .children()
+                            .css("color", "var(--inputBorder)")
                         }
                         onMouseLeave={(e) =>
-                          $(e.target).children().css("color", "black")
+                          $(e.currentTarget).children().css("color", "black")
                         }
                         onClick={(e) => clickHandle(e)}
                       >
