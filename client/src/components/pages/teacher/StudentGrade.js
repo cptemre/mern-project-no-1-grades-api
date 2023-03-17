@@ -157,64 +157,61 @@ const StudentGrade = (props) => {
               grade = lessonObj.grade;
             }
           });
-          return (
-            student.lessons.length &&
-            student.lessons.map((singleLesson) => {
-              if (singleLesson.lessonID === props.props) {
-                return (
-                  <div key={student.name + student.surname + lesson}>
-                    {
-                      <article className="studentDiv" id={student._id}>
-                        <div
-                          className="slideDown"
-                          onMouseEnter={(e) =>
-                            $(e.currentTarget).children().css("color", "red")
-                          }
-                          onMouseLeave={(e) =>
-                            $(e.currentTarget).children().css("color", "black")
-                          }
-                          onClick={(e) => deleteStudent(e)}
-                        >
-                          <FontAwesomeIcon
-                            icon="fa-trash"
-                            className="icon downIcon"
-                          />
-                        </div>
+          return student.lessons.map((singleLesson) => {
+            if (singleLesson.lessonID === props.props) {
+              return (
+                <div key={student.name + student.surname + lesson}>
+                  {
+                    <article className="studentDiv" id={student._id}>
+                      <div
+                        className="slideDown"
+                        onMouseEnter={(e) =>
+                          $(e.currentTarget).children().css("color", "red")
+                        }
+                        onMouseLeave={(e) =>
+                          $(e.currentTarget).children().css("color", "black")
+                        }
+                        onClick={(e) => deleteStudent(e)}
+                      >
+                        <FontAwesomeIcon
+                          icon="fa-trash"
+                          className="icon downIcon"
+                        />
+                      </div>
 
-                        <div className="studentNo">{student.studentNo}</div>
-                        <div className="studentName">
-                          {student.name} {student.surname}
+                      <div className="studentNo">{student.studentNo}</div>
+                      <div className="studentName">
+                        {student.name} {student.surname}
+                      </div>
+                      <div className="studentGrade">
+                        <div
+                          className="gradeDiv"
+                          onClick={(e) => clickHandle(e)}
+                          style={{
+                            backgroundColor: !grade
+                              ? "var(--inputBorder)"
+                              : grade > 2
+                              ? "green"
+                              : "red",
+                          }}
+                        >
+                          {grade !== undefined ? grade : "----"}
                         </div>
-                        <div className="studentGrade">
-                          <div
-                            className="gradeDiv"
-                            onClick={(e) => clickHandle(e)}
-                            style={{
-                              backgroundColor: !grade
-                                ? "var(--inputBorder)"
-                                : grade > 2
-                                ? "green"
-                                : "red",
-                            }}
-                          >
-                            {grade !== undefined ? grade : "----"}
-                          </div>
-                          <input
-                            className="tdInput"
-                            type="number"
-                            value={value}
-                            name="grade"
-                            onChange={(e) => setValue(e.target.value)}
-                            onBlur={(e) => blurHandle(e)}
-                          />
-                        </div>
-                      </article>
-                    }
-                  </div>
-                );
-              }
-            })
-          );
+                        <input
+                          className="tdInput"
+                          type="number"
+                          value={value}
+                          name="grade"
+                          onChange={(e) => setValue(e.target.value)}
+                          onBlur={(e) => blurHandle(e)}
+                        />
+                      </div>
+                    </article>
+                  }
+                </div>
+              );
+            }
+          });
         })
       )}
     </section>

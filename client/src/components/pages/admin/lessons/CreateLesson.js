@@ -74,7 +74,7 @@ const CreateLesson = () => {
               name="lesson"
               placeholder="ADD A NEW LESSON"
               onBlur={() => $("#newLessonInput").css("opacity", 0.7)}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => setValue(e.currentTarget.value.toUpperCase())}
             />
           </div>
           <div id="newLessonIconDiv">

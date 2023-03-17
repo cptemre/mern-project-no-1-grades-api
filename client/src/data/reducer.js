@@ -24,10 +24,13 @@ const reducer = (state, action) => {
     return { ...state, teachersData: action.payload };
   }
   if (action.type === "TEACHERS_LENGTH") {
-    return { ...state, teacherLength: action.payload };
+    return { ...state, teachersLength: action.payload };
   }
   if (action.type === "STUDENTS_DATA") {
     return { ...state, studentsData: action.payload };
+  }
+  if (action.type === "STUDENTS_LENGTH") {
+    return { ...state, studentsLength: action.payload };
   }
   if (action.type === "STUDENT_NO_DATA") {
     return { ...state, studentNoData: action.payload };
@@ -73,6 +76,7 @@ const defaultState = {
   url: {
     teachers: "/api/v1/teachers",
     teachersLength: "/api/v1/length/teachersLength",
+    studentsLength: "/api/v1/length/studentsLength",
     user: { sign_in: "/api/v1/user/sign_in" },
     students: "/api/v1/students",
     lessons: "/api/v1/lessons",

@@ -158,7 +158,6 @@ const GetLessons = () => {
                     />
                   </div>
                 </div>
-                {/* <StudentGrade /> */}
               </article>
             );
           }

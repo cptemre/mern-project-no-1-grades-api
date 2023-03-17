@@ -9,7 +9,7 @@ const teachersLength = async (req, res) => {
 
 const studentsLength = async (req, res) => {
   const { access_token } = req.user;
-  const result = await Teachers.find().countDocuments({});
+  const result = await Students.find().countDocuments({});
   res.status(200).json({ result, access_token, studentsLength: true });
 };
 

@@ -67,8 +67,17 @@ const TableData = () => {
         searchParams,
       });
     }
-  }, [state.url, isFetch, searchParams, component, isNew]);
-
+  }, [state.url, isFetch, searchParams, component]);
+  useEffect(() => {
+    if (component && state.msg === "CREATED") {
+      setFetchVars({
+        url: state.url[component],
+        body: "",
+        action: "get",
+        searchParams,
+      });
+    }
+  }, [state.msg, component, isNew]);
   //#region UPDATE
 
   // CHANGE DIV TO INPUT
@@ -179,6 +188,7 @@ const TableData = () => {
       if (person._id == _id) {
         if (person.email.endsWith("@edu.ga.pl")) {
           dispatch({ type: "STUDENTS_DATA", payload: person });
+          dispatch({ type: "BRANCHES_DATA", payload: [] });
           navigate(`/student?_id=${_id}`);
         }
         if (person.email.endsWith("@ga.pl")) {
@@ -245,7 +255,7 @@ const TableData = () => {
         {newTd && (
           <tr className="row newRow">
             <td className="new" onClick={(e) => newPerson(e)}>
-              &#x2713;
+              <div className="newDiv">&#x2713;</div>
             </td>
             {state.title === "admin" && component === "students" && (
               <td className="student-no">
@@ -292,7 +302,7 @@ const TableData = () => {
             <td className="password"></td>
             <td className="date"></td>
             <td className="delete" onClick={() => setNewTd(false)}>
-              &#x2716;
+              <div className="deleteDiv">&#x2716;</div>
             </td>
           </tr>
         )}

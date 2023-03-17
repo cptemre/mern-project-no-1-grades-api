@@ -1,4 +1,4 @@
-![Login](public/imgs/example1.png)
+![Login](/client/public/imgs/example1.png)
 
 <hr>
 
@@ -6,11 +6,11 @@
 
 ## MERN Personal Project No: 1
 
-![Table](public/imgs/example2.png)
+![Table](/client/public/imgs/example2.png)
 
 <hr>
 
-![Lessons](public/imgs/example3.png)
+![Lessons](/client/public/imgs/example3.png)
 
 # Table of Contents
 

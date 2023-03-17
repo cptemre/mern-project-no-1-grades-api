@@ -8,6 +8,7 @@ import Pagination from "../../pagination/Pagination";
 import TableData from "./TableData";
 import Lessons from "./lessons/Lessons";
 import Student from "../student/Student";
+import Semester from "../teacher/Semester";
 
 // HOOKS
 import useFetch from "../../../hooks/useFetch";
@@ -34,11 +35,12 @@ const Admin = () => {
           <Pagination />
         </section>
       ) : component === "lessons" || component === "teacher" ? (
-        <Lessons />
-      ) : component === "student" ? (
-        <Student />
+        <section id="teacherSection">
+          <Semester />
+          <Lessons />
+        </section>
       ) : (
-        <Student />
+        component === "student" && <Student />
       )}
     </>
   );

@@ -19,7 +19,6 @@ const usePost = async (
   const [msg, setMsg] = useState("");
   const [jwt, setjwt] = useState("");
   useEffect(() => {
-    console.log(url, action, body);
     if (url) {
       if (body && body.email) {
         if (body.email.endsWith("@edu.ga.pl")) {

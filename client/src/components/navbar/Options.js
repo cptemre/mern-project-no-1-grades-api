@@ -33,11 +33,7 @@ const Options = () => {
   };
   const mouseleaveHandle = (e) => {
     const html = $(e.currentTarget).html().toLowerCase();
-    if (
-      component !== html &&
-      component !== "student" &&
-      component !== "teacher"
-    ) {
+    if (component !== html) {
       $(e.currentTarget).css({
         backgroundColor: "var(--optionBg)",
         color: "black",
@@ -66,6 +62,15 @@ const Options = () => {
       navigate(`/${option.toLowerCase()}`);
     }
   };
+
+  useEffect(() => {
+    $(".option").eq(0).css({
+      backgroundColor: "var(--inputBorder)",
+      color: "white",
+      transform: "translateX(-3px)",
+    });
+  }, []);
+
   // ACCORDING TO STATE TITLE RETURN OPTIONS FROM OPTIONS VARIABLE WITH KEY
   return (
     <section id="options">

@@ -37,6 +37,7 @@ const Pagination = () => {
   });
   // PAGE LENGTH
   const [lastPage, setLastPage] = useState("");
+
   // SELECTED PAGE
   const [selectedPage, setSelectedPage] = useState(1);
   useEffect(() => {
@@ -59,8 +60,8 @@ const Pagination = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    setLastPage(state[`${component}Length`] / 10 + 1);
-  }, [state[`${component}Length`]]);
+    setLastPage(Math.floor(Number(state[`${component}Length`]) / 10 + 1));
+  }, [component, state[`${component}Length`]]);
 
   // ARROWS FUNCTIONS TO SET SEARCH PARAMS
   const leftArrowClickHandle = () => {
@@ -106,6 +107,7 @@ const Pagination = () => {
         style={{
           opacity: selectedPage == 1 && "0.5",
           color: selectedPage == 1 && "white",
+          cursor: selectedPage == 1 && "not-allowed",
         }}
       >
         <FontAwesomeIcon icon="fa-solid fa-square-caret-left" id="leftIcon" />
@@ -146,7 +148,7 @@ const Pagination = () => {
         {selectedPage + 1 <= lastPage && (
           <>
             <div className="numbers" onClick={(e) => numbersHandle(e)}>
-              {selectedPage + 2}
+              {selectedPage + 1}
             </div>
           </>
         )}
@@ -168,6 +170,7 @@ const Pagination = () => {
         style={{
           opacity: selectedPage == lastPage && "0.5",
           color: selectedPage == lastPage && "white",
+          cursor: selectedPage == lastPage && "not-allowed",
         }}
       >
         <FontAwesomeIcon icon="fa-solid fa-square-caret-right" id="rigthIcon" />

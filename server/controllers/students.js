@@ -6,7 +6,7 @@ const createStudent = async (req, res) => {
   const { access_token, email } = req.user;
   if (email === "admin@ga.pl") {
     await Students.create({ ...req.body });
-    res.status(200).json({ msg: "STUDENT IS CREATED", access_token });
+    res.status(200).json({ msg: "CREATED", access_token });
   } else {
     throw new Unauthorized("AUTHORIZATION DENIED");
   }
@@ -149,7 +149,10 @@ const getAll = async (req, res) => {
   }
   const sort = sortSplit || { createdAt: 1 };
 
-  const result = await search.sort(sort);
+  const result = await search
+    .sort(sort)
+    .skip(Number((pageValue - 1) * 10))
+    .limit(10);
   res.status(200).json({ result, access_token, student });
 };
 

@@ -137,7 +137,6 @@ const Teacher = () => {
   );
   return (
     <section id="teacherSection">
-      <Semester />
       <div
         id="lessonsSection"
         onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}

@@ -60,7 +60,7 @@ const Student = () => {
       setLessonGrade(tempGrade);
     }
   }, [state.studentsData]);
-
+  console.log(state);
   // GET BRANCHESDATA INFORMATION
   useEffect(() => {
     if (lessonIDs.length) {

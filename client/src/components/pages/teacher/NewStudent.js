@@ -48,7 +48,6 @@ const NewStudent = () => {
       setRecommendStudents(state.studentNoData);
     }
   }, [state.studentNoData]);
-
   // INPUT BLUR HANDLE
   const blurHandle = (e) => {
     $("#newLessonInput").css("opacity", 0.7);
@@ -127,27 +126,44 @@ const NewStudent = () => {
         />
         <div id="recommendNo">
           {recommendStudents && recommendStudents.length < 3
-            ? recommendStudents.map((student) => (
-                <div
-                  key={student._id}
-                  id={student._id}
-                  className="recommendNo"
-                  onClick={(e) => addStudent(e, student._id)}
-                >
-                  {student.studentNo}
-                </div>
-              ))
+            ? recommendStudents.map((student) => {
+                for (let i = 0; i < state.studentsData.length; i++) {
+                  if (state.studentsData[i].studentNo != student.studentNo) {
+                    return (
+                      <div
+                        key={student._id}
+                        id={student._id}
+                        className="recommendNo"
+                        onClick={(e) => addStudent(e, student._id)}
+                      >
+                        {student.studentNo}
+                      </div>
+                    );
+                  }
+                }
+              })
             : iterateNums &&
-              iterateNums.map((number) => (
-                <div
-                  key={recommendStudents[number]._id}
-                  id={recommendStudents[number]._id}
-                  className="recommendNo"
-                  onClick={(e) => addStudent(e, recommendStudents[number]._id)}
-                >
-                  {recommendStudents[number].studentNo}
-                </div>
-              ))}
+              iterateNums.map((number) => {
+                for (let i = 0; i < state.studentsData.length; i++) {
+                  if (
+                    state.studentsData[i].studentNo !=
+                    recommendStudents[number].studentNo
+                  ) {
+                    return (
+                      <div
+                        key={recommendStudents[number]._id}
+                        id={recommendStudents[number]._id}
+                        className="recommendNo"
+                        onClick={(e) =>
+                          addStudent(e, recommendStudents[number]._id)
+                        }
+                      >
+                        {recommendStudents[number].studentNo}
+                      </div>
+                    );
+                  }
+                }
+              })}
         </div>
       </div>
       <div className="studentName" id="studentName">
