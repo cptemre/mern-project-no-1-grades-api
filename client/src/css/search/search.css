@@ -1,11 +1,23 @@
 #searchDiv {
   grid-row-gap: 0.5rem;
   height: 6rem;
+  margin-top: 1rem;
 }
 
 #searchOptions {
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 650px) {
+  #searchOptions {
+    font-size: 0.7rem;
+  }
+}
+@media screen and (max-width: 450px) {
+  #searchOptions {
+    font-size: 0.5rem;
+  }
 }
 
 .searchOption {
@@ -36,8 +48,7 @@
 #searchInput {
   background-color: var(--optionBg);
   height: 2rem;
-    width: 100%;
-
+  width: 100%;
 }
 #searchInput:focus {
   background-color: var(--inputBorder);

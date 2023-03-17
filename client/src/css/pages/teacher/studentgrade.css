@@ -31,3 +31,30 @@
 .gradeDiv {
   padding: 7px;
 }
+
+@media screen and (max-width: 410px) {
+  .studentDiv {
+    grid-template-columns: 1.5rem 4rem 1fr 2rem;
+    height: 2rem;
+  }
+  .studentNo,
+  .studentName,
+  .downIcon,
+  .gradeDiv {
+    font-size: 0.6rem;
+  }
+}
+@media screen and (max-width: 260px) {
+  .studentNo,
+  .studentName,
+  .gradeDiv {
+    font-size: 0.5rem;
+  }
+}
+@media screen and (max-width: 210px) {
+  .studentNo,
+  .studentName,
+  .gradeDiv {
+    font-size: 0.3rem;
+  }
+}

@@ -24,3 +24,19 @@
   border: 5px solid white;
   color: white;
 }
+
+@media screen and (max-width: 410px) {
+  .lessonName {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 260px) {
+  .lessonName {
+    font-size: 0.5rem;
+  }
+}
+@media screen and (max-width: 210px) {
+  .lessonName {
+    font-size: 0.3rem;
+  }
+}

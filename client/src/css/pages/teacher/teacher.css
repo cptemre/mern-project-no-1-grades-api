@@ -37,7 +37,27 @@
   background-color: var(--inputBorder);
   color: white;
 }
-
+@media screen and (max-width: 410px) {
+  .lessonDiv {
+    grid-template-columns: 2rem 1fr 2rem;
+  }
+  .nameDiv,
+  .downIcon {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 260px) {
+  .nameDiv,
+  .downIcon {
+    font-size: 0.5rem;
+  }
+}
+@media screen and (max-width: 210px) {
+  .nameDiv,
+  .downIcon {
+    font-size: 0.3rem;
+  }
+}
 .slideDown {
   border-left: 2px solid black;
   background-color: var(--optionBg);

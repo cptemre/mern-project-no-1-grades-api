@@ -46,3 +46,24 @@
   padding-right: 1.5rem;
   background-color: var(--optionBg);
 }
+
+@media screen and (max-width: 410px) {
+  .semesterContainer {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-row-gap: 0.5rem;
+  }
+  .semesterInfoDiv {
+    justify-content: flex-end;
+  }
+}
+@media screen and (max-width: 260px) {
+  .semesterInfoDiv {
+    font-size: 0.5rem;
+  }
+}
+@media screen and (max-width: 210px) {
+  .semesterInfoDiv {
+    font-size: 0.3rem;
+  }
+}

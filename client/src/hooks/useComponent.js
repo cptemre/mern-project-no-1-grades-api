@@ -14,14 +14,22 @@ const useComponent = () => {
 
   // IF SUB LINK NOT DECIDED THEN AUTO START FOR ADMIN IS FROM TEACHERS
   useEffect(() => {
-    // if (!component) {
-    //   if (state.title === "admin") {
-    //     navigate("/teachers");
-    //   }
-    //   if (state.title === "teacher") {
-    //     navigate("/lessons");
-    //   }
-    // }
+    if (
+      state.title === "admin" &&
+      component !== "teachers" &&
+      component !== "students" &&
+      component !== "lessons" &&
+      component !== "teacher" &&
+      component !== "student"
+    ) {
+      navigate("/teachers");
+    }
+    if (state.title === "teacher") {
+      navigate("/lessons?semester=1");
+    }
+    if (state.title === "student") {
+      navigate("/grades?semester=1");
+    }
     setComponentURL(component);
   }, [component, state.title]);
   return componentURL;

@@ -30,3 +30,22 @@
 #newLessonName > input {
   display: initial !important;
 }
+
+@media screen and (max-width: 410px) {
+  #newLessonName > input,
+  #newLessonName > input::placeholder {
+    font-size: 0.8rem;
+  }
+}
+@media screen and (max-width: 260px) {
+  #newLessonName > input,
+  #newLessonName > input::placeholder {
+    font-size: 0.5rem;
+  }
+}
+@media screen and (max-width: 210px) {
+  #newLessonName > input,
+  #newLessonName > input::placeholder {
+    font-size: 0.3rem;
+  }
+}

@@ -44,7 +44,7 @@ const Student = () => {
   console.log(state);
   // SET LESSON ARRAY
   useEffect(() => {
-    if (state.studentsData) {
+    if (state.studentsData.length) {
       // PUT LESSON IDS TO THIS ARRAY
       let tempLessons = [];
       let tempGrade = [];
@@ -57,6 +57,7 @@ const Student = () => {
           });
         }
       }
+      console.log(state.studentsData);
       setLessonIDs(tempLessons);
       setLessonGrade(tempGrade);
     }
@@ -77,6 +78,7 @@ const Student = () => {
 
   // SET ALL LESSONS OF THE STUDENT HERE
   useEffect(() => {
+    console.log("a");
     if (state.branchesData && lessonGrade) {
       let tempArray = [];
       for (let i = 0; i < state.branchesData.length; i++) {
@@ -88,10 +90,10 @@ const Student = () => {
         }
         tempArray.push(tempLesson);
       }
+      console.log(tempArray);
       setFinalLessons(tempArray);
     }
   }, [state.branchesData, lessonGrade]);
-
   // AXIOS CALL
   useFetch(
     fetchVars.url,
