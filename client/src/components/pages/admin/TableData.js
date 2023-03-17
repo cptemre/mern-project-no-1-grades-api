@@ -68,7 +68,7 @@ const TableData = () => {
         searchParams,
       });
     }
-  }, [state.url, isFetch, searchParams, component]);
+  }, [state.url, isFetch, searchParams, component, isNew]);
 
   //#region UPDATE
 
@@ -90,9 +90,9 @@ const TableData = () => {
 
   // CHANGE INPUT TO DIV
   const blurHandle = (e) => {
-    const target = e.target;
-    const value = e.target.value;
-    const name = e.target.name;
+    const target = e.currentTarget;
+    const value = e.currentTarget.value;
+    const name = e.currentTarget.name;
     const _id = $(target).parent().parent().attr("id");
     setFetchVars({
       url: `${state.url[component]}/${_id}`,
@@ -117,7 +117,7 @@ const TableData = () => {
   };
   // INPUT FOCUS OUT FUNCTION
   const newBlurHandle = (e) => {
-    const target = e.target;
+    const target = e.currentTarget;
     $(target).siblings("div").css("display", "grid");
     $(target).siblings("div").html(target.value);
     $(target).css("display", "none");
@@ -128,6 +128,7 @@ const TableData = () => {
     const studentNo = $(target).siblings(".student-no").children("div").html();
     const name = $(target).siblings(".name").children("div").html();
     const surname = $(target).siblings(".surname").children("div").html();
+    console.log(name, surname);
     setFetchVars({
       url:
         component === "teachers" ? state.url.user.sign_in : state.url.students,
@@ -135,9 +136,10 @@ const TableData = () => {
       action: "post",
       searchParams,
     });
-    setIsNew(true);
+    setIsNew(!isNew);
     setNewTd(false);
   };
+
   //#endregion ADD NEW PERSON
 
   //#region DELETE PERSON
@@ -157,7 +159,7 @@ const TableData = () => {
   //#endregion DELETE PERSON
 
   const sortHeader = (e) => {
-    const sortValue = e.target.innerHTML.toLowerCase();
+    const sortValue = e.currentTarget.innerHTML.toLowerCase();
     // SET QUERY TO BE ABLE TO SORT FROM SERVER SIDE
     let sortNumber = -1;
     if (
@@ -198,8 +200,6 @@ const TableData = () => {
   );
   return state.isLoading ? (
     <Loading />
-  ) : !state.isLoading && !state.data.length ? (
-    <NoData />
   ) : (
     <table>
       <tbody>
@@ -249,19 +249,21 @@ const TableData = () => {
             <td className="new" onClick={(e) => newPerson(e)}>
               &#x2713;
             </td>
-            <td className="student-no">
-              <div className="studentNoDiv" onClick={(e) => clickHandle(e)}>
-                ----
-              </div>
-              <input
-                className="tdInput"
-                type="text"
-                value={value}
-                name="studentNo"
-                onChange={(e) => setValue(e.target.value)}
-                onBlur={(e) => newBlurHandle(e)}
-              />
-            </td>
+            {state.title === "admin" && component === "students" && (
+              <td className="student-no">
+                <div className="studentNoDiv" onClick={(e) => clickHandle(e)}>
+                  ----
+                </div>
+                <input
+                  className="tdInput"
+                  type="text"
+                  value={value}
+                  name="studentNo"
+                  onChange={(e) => setValue(e.currentTarget.value)}
+                  onBlur={(e) => newBlurHandle(e)}
+                />
+              </td>
+            )}
             <td className="name">
               <div className="nameDiv" onClick={(e) => clickHandle(e)}>
                 ----
@@ -271,7 +273,7 @@ const TableData = () => {
                 type="text"
                 value={value}
                 name="name"
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => setValue(e.currentTarget.value.toUpperCase())}
                 onBlur={(e) => newBlurHandle(e)}
               />
             </td>
@@ -284,7 +286,7 @@ const TableData = () => {
                 type="text"
                 value={value}
                 name="surname"
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => setValue(e.currentTarget.value.toUpperCase())}
                 onBlur={(e) => newBlurHandle(e)}
               />
             </td>
@@ -341,7 +343,9 @@ const TableData = () => {
                           value={value}
                           name={key}
                           onBlur={(e) => blurHandle(e)}
-                          onChange={(e) => setValue(e.target.value)}
+                          onChange={(e) =>
+                            setValue(e.currentTarget.value.toUpperCase())
+                          }
                         />
                       </td>
                     );
@@ -369,7 +373,11 @@ const TableData = () => {
                             value={value}
                             name={key === "date" ? "createdAt" : key}
                             onBlur={(e) => blurHandle(e)}
-                            onChange={(e) => setValue(e.target.value)}
+                            onChange={(e) =>
+                              key !== "password"
+                                ? setValue(e.currentTarget.value)
+                                : setValue(e.currentTarget.value.toUpperCase())
+                            }
                           />
                         </td>
                       );
