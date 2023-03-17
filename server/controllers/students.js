@@ -18,8 +18,6 @@ const updateStudent = async (req, res) => {
   const { access_token } = req.user;
   const { _id } = req.params;
 
-  console.log(req.body);
-
   const result = await Students.updateOne(
     { _id },
     { ...req.body },
@@ -69,7 +67,6 @@ const getStudentNo = async (req, res) => {
 const getByID = async (req, res) => {
   const { access_token } = req.user;
   let { lessonID, teacherID } = req.query;
-  console.log(lessonID, teacherID);
   const query = { lessons: { lessonID: "", teacherID: "" } };
   let student = false;
 
@@ -85,7 +82,6 @@ const getByID = async (req, res) => {
   const sort = { createdAt: 1 };
 
   const result = await search.sort(sort);
-  console.log(result);
   res.status(200).json({ result, access_token, student });
 };
 
@@ -138,7 +134,6 @@ const getAll = async (req, res) => {
     queryLesson.lessons.teacherID = teacherID;
   }
   // FIND RAW RESULT
-  console.log(query);
   let search = Students.find(query).select("-password");
   let sortSplit;
   if (sortValue) {

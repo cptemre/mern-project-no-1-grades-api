@@ -109,7 +109,6 @@ const GetLessons = () => {
     setValue("");
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };
-  console.log(state.isFetch);
   // AXIOS CALL
   useFetch(
     fetchVars.url,

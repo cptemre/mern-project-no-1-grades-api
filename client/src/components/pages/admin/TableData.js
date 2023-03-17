@@ -39,7 +39,6 @@ const TableData = () => {
     date: "DATE",
     delete: "DELETE",
   };
-  console.log(state.data);
   // USESEARCHPARAMS
   const [searchParams, setSearchParams] = useSearchParams();
   // NAVIGATE
@@ -128,7 +127,6 @@ const TableData = () => {
     const studentNo = $(target).siblings(".student-no").children("div").html();
     const name = $(target).siblings(".name").children("div").html();
     const surname = $(target).siblings(".surname").children("div").html();
-    console.log(name, surname);
     setFetchVars({
       url:
         component === "teachers" ? state.url.user.sign_in : state.url.students,
@@ -154,6 +152,7 @@ const TableData = () => {
       searchParams,
     });
     setIsFetch(!isFetch);
+    setIsNew(!isNew);
   };
 
   //#endregion DELETE PERSON
@@ -176,7 +175,6 @@ const TableData = () => {
 
   const infoClickHandle = (e) => {
     const _id = $(e.currentTarget).parent(".row").attr("id");
-    console.log(_id);
     state.data.map((person) => {
       if (person._id == _id) {
         if (person.email.endsWith("@edu.ga.pl")) {

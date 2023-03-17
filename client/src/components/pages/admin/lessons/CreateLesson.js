@@ -50,7 +50,6 @@ const CreateLesson = () => {
       body: { lesson: value, semester: searchParams.get("semester") },
       action: "post",
     });
-    console.log(searchParams.get("semester"));
 
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
   };

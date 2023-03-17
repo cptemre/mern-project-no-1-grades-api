@@ -101,8 +101,6 @@ const Teacher = () => {
       action: "patch",
     });
     dispatch({ type: "IS_FETCH", payload: !state.isFetch });
-
-    console.log(deleteLesson);
   };
 
   const clickHandle = (e) => {
@@ -138,7 +136,8 @@ const Teacher = () => {
     state.isFetch
   );
   return (
-    <>
+    <section id="teacherSection">
+      <Semester />
       <div
         id="lessonsSection"
         onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
@@ -193,7 +192,7 @@ const Teacher = () => {
             })}
         </article>
       </div>
-    </>
+    </section>
   );
 };
 

@@ -29,7 +29,6 @@ const Semester = () => {
 
   // SET TO 1 IF NOT DECIDED
   useEffect(() => {
-    console.log(searchParams.get("semester"));
     if (searchParams.get("semester") === null) {
       setSearchParams((searchParams) => {
         searchParams.set("semester", 1);

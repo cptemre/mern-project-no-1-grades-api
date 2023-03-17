@@ -161,7 +161,6 @@ const StudentGrade = (props) => {
             student.lessons.length &&
             student.lessons.map((singleLesson) => {
               if (singleLesson.lessonID === props.props) {
-                console.log("yes");
                 return (
                   <div key={student.name + student.surname + lesson}>
                     {

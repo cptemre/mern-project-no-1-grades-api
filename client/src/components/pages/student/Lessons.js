@@ -41,10 +41,9 @@ const Student = () => {
     action: "",
     searchParams: "",
   });
-  console.log(state);
   // SET LESSON ARRAY
   useEffect(() => {
-    if (state.studentsData.length) {
+    if (state.studentsData) {
       // PUT LESSON IDS TO THIS ARRAY
       let tempLessons = [];
       let tempGrade = [];
@@ -57,12 +56,10 @@ const Student = () => {
           });
         }
       }
-      console.log(state.studentsData);
       setLessonIDs(tempLessons);
       setLessonGrade(tempGrade);
     }
   }, [state.studentsData]);
-  console.log(state.studentsData);
 
   // GET BRANCHESDATA INFORMATION
   useEffect(() => {
@@ -78,7 +75,6 @@ const Student = () => {
 
   // SET ALL LESSONS OF THE STUDENT HERE
   useEffect(() => {
-    console.log("a");
     if (state.branchesData && lessonGrade) {
       let tempArray = [];
       for (let i = 0; i < state.branchesData.length; i++) {
@@ -90,7 +86,6 @@ const Student = () => {
         }
         tempArray.push(tempLesson);
       }
-      console.log(tempArray);
       setFinalLessons(tempArray);
     }
   }, [state.branchesData, lessonGrade]);
@@ -102,7 +97,6 @@ const Student = () => {
     fetchVars.searchParams,
     state.isFetch
   );
-  console.log(finalLessons);
   const clickHandle = () => {
     dispatch({ type: "IS_SEMESTER", payload: false });
     dispatch({ type: "IS_NAVBAR", payload: false });
@@ -119,7 +113,6 @@ const Student = () => {
           finalLessons.map((singleLesson) => {
             const { _id, lesson, semester, grade } = singleLesson;
             if (semester == searchParams.get("semester")) {
-              console.log(semester);
               return (
                 <div
                   key={_id + lesson + semester + grade}

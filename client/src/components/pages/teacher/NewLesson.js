@@ -53,7 +53,6 @@ const NewLesson = () => {
     const target = e.target;
     const value = e.target.value;
     const name = "lesson";
-    console.log(state.teachersData);
     setFetchVars({
       url: `${state.url.teachers}/${searchParams.get("_id")}`,
       body: { [name]: value },

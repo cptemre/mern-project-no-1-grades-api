@@ -58,7 +58,13 @@ const Options = () => {
     });
     let tempParams = { NAME: "", SURNAME: "", EMAIL: "", CREATEDAT: "" };
     dispatch({ type: "SEARCH_OPTIONS", payload: tempParams });
-    navigate(`/${option.toLowerCase()}`);
+    if (option === "GRADES") {
+      navigate(`/${option.toLowerCase()}?semester=1`);
+    } else if (option === "LESSONS") {
+      navigate(`/${option.toLowerCase()}?semester=1`);
+    } else {
+      navigate(`/${option.toLowerCase()}`);
+    }
   };
   // ACCORDING TO STATE TITLE RETURN OPTIONS FROM OPTIONS VARIABLE WITH KEY
   return (

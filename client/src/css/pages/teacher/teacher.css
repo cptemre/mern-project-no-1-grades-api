@@ -1,3 +1,7 @@
+#lessonsSection {
+  align-items: flex-start;
+}
+
 #teacherSection {
   padding: 1.5rem;
   grid-template-rows: 2rem auto;

@@ -2,6 +2,12 @@
   grid-template-columns: 1fr 8rem;
 }
 
+.semesterInfoDiv {
+  justify-content: flex-start;
+  letter-spacing: 1px;
+  color: var(--inputBorder);
+}
+
 #semesterDiv {
   justify-content: flex-end;
   position: relative;

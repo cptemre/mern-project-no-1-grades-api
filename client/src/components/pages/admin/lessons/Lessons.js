@@ -22,7 +22,6 @@ const Lessons = () => {
         id="teacherSection"
         onClick={() => dispatch({ type: "IS_NAVBAR", payload: false })}
       >
-        <Semester />
         <div
           className="lessonComponentsDiv"
           onClick={() => dispatch({ type: "IS_SEMESTER", payload: false })}
