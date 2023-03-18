@@ -26,9 +26,8 @@
    2. [Teacher Account](#teacher-account)
    3. [Student Account](#student-account)
 5. [Video](#5-video)
-6. [Live Page](#6-live-page)
-7. [Credits](#7-credits)
-8. [Licence](#8-licence)
+6. [Credits](#6-credits)
+7. [Licence](#7-licence)
 
 <hr>
 
@@ -105,19 +104,15 @@ There is only grades page for students. You can change the semester to see your 
 
 # 5. Video
 
-Video will be added.
+https://youtu.be/51sDCKv5Dyw
 
-# 6. Live Page
-
-Live page may be added.
-
-# 7. Credits
+# 6. Credits
 
 This project created by Emre Kunduraci. All the code and styling created by my own ideas. The image in the login page is taken from https://www.pexels.com website.
 
 The project is completed in a month.
 
-# 8. Licence
+# 7. Licence
 
 Copyright (c) 2023 Emre Kunduraci
 
