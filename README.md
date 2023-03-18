@@ -45,7 +45,7 @@ Student account is able to read his own lessons.
 
 I wanted to test my skills of JWT and cookie usage to connect my client with my server.
 
-Creatind database collections to read and manipulate them.
+Creating database collections to read and manipulate them.
 
 <hr>
 
